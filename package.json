@@ -13,6 +13,7 @@
     "vite": "^5.1.0"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.18.2",
+    "handlebars": "^4.7.8"
   }
 }

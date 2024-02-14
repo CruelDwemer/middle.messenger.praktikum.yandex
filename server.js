@@ -10,7 +10,7 @@ app.use(express.static(path.join(__dirname, "dist")))
 
 const PORT = 3000;
 // respond with "hello world" when a GET request is made to the homepage
-app.get('/', function(req, res) {
+app.get('*', function(req, res) {
     res.sendFile(path.join(path.join(__dirname, "dist"), 'index.html'));
 });
 
