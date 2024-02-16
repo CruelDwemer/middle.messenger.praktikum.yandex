@@ -1,0 +1,43 @@
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 95vh;
+}
+
+.main-paper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    border: #1a1a1a solid 1px;
+    height: 90%
+}
+
+.chats {
+    flex-grow: 1;
+    border-right: #efefef solid 1px;
+    height: 100%;
+    padding: 10px
+}
+
+.active {
+    flex-grow: 5;
+    height: 100%;
+}
+
+.chats-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-bottom: #efefef solid 1px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.chats-profile {
+    align-self: flex-end;
+}

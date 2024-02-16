@@ -3,13 +3,18 @@ import Handlebars from "handlebars/runtime";
 import errorPage from "./pages/error/error.hbs";
 import loginPage from "./pages/login/login.hbs";
 import registerPage from "./pages/register/register.hbs";
+import mainPage from "./pages/main/main.hbs";
 import button from "./common/components/button/button.hbs";
+import chat from "./common/components/chat/chat.hbs";
 // стили
 import buttonStyles from "./common/components/button/button.css";
+import chatStyles from "./common/components/chat/chat.css";
 import styles from "./common/styles/styles.css";
 import loginStyle from "./pages/login/login.css"
+import mainStyle from "./pages/main/main.css"
 
 Handlebars.registerPartial("button", button);
+Handlebars.registerPartial("chat", chat);
 
 document.addEventListener("DOMContentLoaded", () => {
     const app = document.querySelector("#app");
@@ -17,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (path) {
         case "/":
         case "":
-            app.innerHTML = "Start page";
+            app.innerHTML = mainPage();
             break
         case "/login":
             app.innerHTML = loginPage();
