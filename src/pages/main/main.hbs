@@ -9,6 +9,26 @@
             {{> chat }}
             {{> chat }}
         </div>
-        <div class="active">Active chat</div>
+        <div class="active">
+            <div class="active-header">
+                <div class="chats-item-avatar"></div>
+                <div class="active-contact-name">Вадим</div>
+                <div class="active-menu">menu</div>
+            </div>
+            <div class="active-chat-area">
+                {{> message }}
+                {{> message }}
+                {{> message }}
+            </div>
+            <div class="active-bottom">
+                <div>pin</div>
+                <div class="active-bottom-input-area">
+                    <input class="active-bottom-input" placeholder="Сообщение" />
+                </div>
+                <div class="active-bottom-send">
+                    >
+                </div>
+            </div>
+        </div>
     </div>
 </div>

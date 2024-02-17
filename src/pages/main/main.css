@@ -41,3 +41,55 @@
 .chats-profile {
     align-self: flex-end;
 }
+
+.active {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+}
+
+.active-header {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    padding: 10px;
+    border-bottom: #efefef solid 1px;
+}
+
+.active-chat-area {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 10px
+}
+
+.active-bottom {
+    justify-self: flex-end;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    border-top: #efefef solid 1px;
+}
+
+.active-menu {
+
+}
+
+.active-contact-name {
+    flex-grow: 1;
+}
+
+.active-bottom-input-area {
+    flex-grow: 1;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.active-bottom-input {
+    width: 100%;
+}
+
+.active-bottom-send {
+
+}

@@ -6,8 +6,10 @@ import registerPage from "./pages/register/register.hbs";
 import mainPage from "./pages/main/main.hbs";
 import button from "./common/components/button/button.hbs";
 import chat from "./common/components/chat/chat.hbs";
+import message from "./common/components/message/message.hbs";
 // стили
 import buttonStyles from "./common/components/button/button.css";
+import messageStyles from "./common/components/message/message.css";
 import chatStyles from "./common/components/chat/chat.css";
 import styles from "./common/styles/styles.css";
 import loginStyle from "./pages/login/login.css"
@@ -15,6 +17,7 @@ import mainStyle from "./pages/main/main.css"
 
 Handlebars.registerPartial("button", button);
 Handlebars.registerPartial("chat", chat);
+Handlebars.registerPartial("message", message);
 
 document.addEventListener("DOMContentLoaded", () => {
     const app = document.querySelector("#app");

@@ -1,0 +1,8 @@
+.message-container {
+    width: 50%;
+    height: fit-content;
+    border: #efefef solid 1px;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
