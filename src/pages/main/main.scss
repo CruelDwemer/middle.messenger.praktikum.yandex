@@ -1,3 +1,5 @@
+@import "src/common/styles/styles";
+
 .main-container {
     display: flex;
     justify-content: center;
@@ -18,7 +20,7 @@
 
 .chats {
     flex-grow: 1;
-    border-right: #efefef solid 1px;
+    border-right: $thin-grey-line;
     height: 100%;
     padding: 10px;
     min-width: 250px;
@@ -34,7 +36,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    border-bottom: #efefef solid 1px;
+    border-bottom: $thin-grey-line;
     padding-top: 10px;
     padding-bottom: 10px;
 }
@@ -59,7 +61,7 @@
     flex-direction: row;
     align-content: center;
     padding: 10px;
-    border-bottom: #efefef solid 1px;
+    border-bottom: $thin-grey-line;
 }
 
 .active-chat-area {
@@ -74,11 +76,7 @@
     display: flex;
     flex-direction: row;
     padding: 10px;
-    border-top: #efefef solid 1px;
-}
-
-.active-menu {
-
+    border-top: $thin-grey-line;
 }
 
 .active-contact-name {
@@ -93,8 +91,4 @@
 
 .active-bottom-input {
     width: 100%;
-}
-
-.active-bottom-send {
-
 }

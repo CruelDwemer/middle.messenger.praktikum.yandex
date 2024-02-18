@@ -14,15 +14,15 @@ import menu from "./common/svg/menu.hbs";
 import attach from "./common/svg/attach.hbs";
 import dataRow from "./common/components/dataRow/dataRow.hbs";
 // стили
-import buttonStyles from "./common/components/button/button.css";
-import messageStyles from "./common/components/message/message.css";
-import chatStyles from "./common/components/chat/chat.css";
-import dataRowStyles from "./common/components/dataRow/dataRow.css";
-import styles from "./common/styles/styles.css";
+import buttonStyles from "./common/components/button/button.scss";
+import messageStyles from "./common/components/message/message.scss";
+import chatStyles from "./common/components/chat/chat.scss";
+import dataRowStyles from "./common/components/dataRow/dataRow.scss";
+import styles from "./common/styles/styles.scss";
 import loginStyle from "./pages/login/login.css";
 import errorStyle from "./pages/error/error.css";
-import mainStyle from "./pages/main/main.css";
-import profileStyle from "./pages/profile/profile.css";
+import mainStyle from "./pages/main/main.scss";
+import profileStyle from "./pages/profile/profile.scss";
 
 const messageText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 const messageTime = "10:46";

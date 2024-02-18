@@ -1,8 +1,10 @@
+@import "src/common/styles/styles";
+
 .profile-data-row {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     min-width: 350px;
-    border-bottom: #efefef solid 1px;
+    border-bottom: $thin-grey-line;
     margin-top: 10px;
 }
