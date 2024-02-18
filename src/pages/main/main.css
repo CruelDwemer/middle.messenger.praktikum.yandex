@@ -13,14 +13,15 @@
     align-items: center;
     width: 80%;
     border: #1a1a1a solid 1px;
-    height: 90%
+    height: 90%;
 }
 
 .chats {
     flex-grow: 1;
     border-right: #efefef solid 1px;
     height: 100%;
-    padding: 10px
+    padding: 10px;
+    min-width: 250px;
 }
 
 .active {
@@ -36,6 +37,10 @@
     border-bottom: #efefef solid 1px;
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.chats-header-search {
+    margin-top: 5px;
 }
 
 .chats-profile {
@@ -61,11 +66,11 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    padding: 10px
+    padding: 10px;
 }
 
 .active-bottom {
-    justify-self: flex-end;
+    align-items: center;
     display: flex;
     flex-direction: row;
     padding: 10px;

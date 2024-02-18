@@ -1,0 +1,8 @@
+.profile-data-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 350px;
+    border-bottom: #efefef solid 1px;
+    margin-top: 10px;
+}

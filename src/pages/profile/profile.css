@@ -1,0 +1,27 @@
+.profile-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+}
+
+.profile-item-avatar {
+    border-radius: 50%;
+    background-color: #646cff;
+    height: 100px;
+    width: 100px;
+    margin-right: 20px;
+}
+
+.profile-actions-block {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-name {
+    margin-top: 20px;
+}
