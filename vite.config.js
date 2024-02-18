@@ -5,9 +5,6 @@ import handlebars from "./vitePrecompilePlugin.js";
 export default defineConfig({
     plugins: [handlebars()],
     root: resolve(__dirname, "src"),
-    // build: {
-    //     outDir: resolve(__dirname, "dist"),
-    // },
     build: {
         rollupOptions: {
             input: './src/index.html',
@@ -21,5 +18,5 @@ export default defineConfig({
                     assetFileNames: `assets/[name].[ext]`,
                 }
         }
-    },
+    }
 });
