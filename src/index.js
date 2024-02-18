@@ -42,13 +42,11 @@ document.addEventListener("DOMContentLoaded", () => {
     switch (path) {
         case "/":
         case "":
-            window.location.href = "/login";
+        case "/login":
+            app.innerHTML = loginPage();
             break
         case "/main":
             app.innerHTML = mainPage();
-            break
-        case "/login":
-            app.innerHTML = loginPage();
             break
         case "/profile":
             app.innerHTML = profilePage();
