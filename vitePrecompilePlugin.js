@@ -13,6 +13,7 @@ export default function handlebarsPrecompile() {
                 import Handlebars from "handlebars/runtime";
                 
                 export default Handlebars.template(${Handlebars.precompile(src)})
+                
             `)
         }
     })
