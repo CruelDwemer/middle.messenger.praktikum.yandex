@@ -5,7 +5,21 @@ import handlebars from "./vitePrecompilePlugin.js";
 export default defineConfig({
     plugins: [handlebars()],
     root: resolve(__dirname, "src"),
+    // build: {
+    //     outDir: resolve(__dirname, "dist"),
+    // },
     build: {
-        outDir: resolve(__dirname, "dist"),
+        rollupOptions: {
+            input: './src/index.html',
+            output:
+                {
+                    format: 'es',
+                    strict: false,
+                    dir: 'dist/',
+                    entryFileNames: `assets/[name].js`,
+                    chunkFileNames: `assets/[name].js`,
+                    assetFileNames: `assets/[name].[ext]`,
+                }
+        }
     },
 });
