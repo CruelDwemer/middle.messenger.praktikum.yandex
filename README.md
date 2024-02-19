@@ -19,6 +19,8 @@ https://bmike-messenger.netlify.app/
 
 профиль - https://bmike-messenger.netlify.app/profile
 
+редактирование данных профиля - https://bmike-messenger.netlify.app/profile/edit
+
 - **Команды**
 
 установка - `npm install`
