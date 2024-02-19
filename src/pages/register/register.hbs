@@ -1,13 +1,13 @@
 <div class="login-container">
-    <div class="login-paper">
+    <form class="login-paper">
         <h2>Регистрация</h2>
-        <input class="input-login" placeholder="Почта" />
-        <input class="input-login" placeholder="Логин" />
-        <input class="input-login" placeholder="Пароль" type="password"/>
-        <input class="input-login" placeholder="Имя"/>
-        <input class="input-login" placeholder="Фамилия"/>
-        <input class="input-password" placeholder="Телефон" />
+        <input name="email" class="input-login" placeholder="Почта" />
+        <input name="login" class="input-login" placeholder="Логин" />
+        <input name="password" class="input-login" placeholder="Пароль" type="password"/>
+        <input name="first_name" class="input-login" placeholder="Имя"/>
+        <input name="second_name" class="input-login" placeholder="Фамилия"/>
+        <input name="phone" class="input-password" placeholder="Телефон" />
         {{> button classname="filled" label="Зарегистрироваться" link="/main" }}
         {{> button classname="flat" label="Войти" link="/login" }}
-    </div>
+    </form>
 </div>

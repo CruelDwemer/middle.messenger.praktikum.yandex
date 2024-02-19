@@ -5,6 +5,7 @@ import loginPage from "./pages/login/login.hbs";
 import registerPage from "./pages/register/register.hbs";
 import mainPage from "./pages/main/main.hbs";
 import profilePage from "./pages/profile/profile.hbs";
+import profileEditPage from "./pages/profileEdit/profileEdit.hbs";
 // компоненты
 import button from "./common/components/button/button.hbs";
 import chat from "./common/components/chat/chat.hbs";
@@ -13,6 +14,7 @@ import send from "./common/svg/send.hbs";
 import menu from "./common/svg/menu.hbs";
 import attach from "./common/svg/attach.hbs";
 import dataRow from "./common/components/dataRow/dataRow.hbs";
+import dataRowEdit from "./common/components/dataRow/dataRowEdit.hbs";
 // стили
 import buttonStyles from "./common/components/button/button.scss";
 import messageStyles from "./common/components/message/message.scss";
@@ -34,6 +36,7 @@ Handlebars.registerPartial("send", send);
 Handlebars.registerPartial("menu", menu);
 Handlebars.registerPartial("attach", attach);
 Handlebars.registerPartial("dataRow", dataRow);
+Handlebars.registerPartial("dataRowEdit", dataRowEdit);
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -50,6 +53,9 @@ document.addEventListener("DOMContentLoaded", () => {
         case "/login":
             app.innerHTML = loginPage();
             break
+        case "/profile/edit":
+            app.innerHTML = profileEditPage();
+            break
         case "/profile":
             app.innerHTML = profilePage();
             break
@@ -57,10 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
             app.innerHTML = registerPage();
             break
         case "/404":
-            app.innerHTML = errorPage({ message: "Не найдено"});
+            app.innerHTML = errorPage({ message: "Не найдено" });
             break
         case "/500":
-            app.innerHTML = errorPage({ message: "Ошибка сервера"});
+            app.innerHTML = errorPage({ message: "Ошибка сервера" });
             break
         default:
             window.location.href = "/404";
