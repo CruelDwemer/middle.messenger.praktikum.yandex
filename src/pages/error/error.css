@@ -1,0 +1,17 @@
+.error-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 95vh;
+}
+
+.error-header {
+    text-align: center;
+}
+
+.error-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

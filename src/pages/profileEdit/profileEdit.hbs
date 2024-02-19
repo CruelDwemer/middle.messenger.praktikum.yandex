@@ -1,0 +1,12 @@
+<form class="profile-container">
+    <div class="profile-item-avatar"></div>
+    {{> dataRowEdit title="Почта" name="email" }}
+    {{> dataRowEdit title="Логин" name="login" }}
+    {{> dataRowEdit title="Имя" name="first_name" }}
+    {{> dataRowEdit title="Фамилия" name="seond_name" }}
+    {{> dataRowEdit title="Имя в чате" name="display_name" }}
+    {{> dataRowEdit title="Телефон" name="phone" }}
+    <div class="profile-actions-block">
+        {{> button classname="filled" label="Сохранить" link="/profile" }}
+    </div>
+</form>

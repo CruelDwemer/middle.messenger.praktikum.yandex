@@ -1,0 +1,16 @@
+@import "src/common/styles/styles";
+
+.message-container {
+    width: 50%;
+    height: fit-content;
+    border: $thin-grey-line;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.message-bottom {
+    text-align: end;
+    font-size: small;
+    color: $grey;
+}

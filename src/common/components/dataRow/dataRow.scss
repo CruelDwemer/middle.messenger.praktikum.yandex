@@ -1,0 +1,15 @@
+@import "src/common/styles/styles";
+
+.profile-data-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 350px;
+    border-bottom: $thin-grey-line;
+    margin-top: 10px;
+}
+
+.profile-data-input {
+    border: none;
+    text-align: end;
+}

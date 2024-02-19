@@ -1,0 +1,36 @@
+<div class="main-container">
+    <div class="main-paper">
+        <div class="chats">
+            <div class="chats-header">
+                <div class="chats-profile">
+                    {{> button classname="flat" label="Профиль >" link="/profile" }}
+                </div>
+                <div class="chats-header-search"><input placeholder="Поиск"/></div>
+            </div>
+            {{> chat }}
+            {{> chat }}
+            {{> chat }}
+        </div>
+        <div class="active">
+            <div class="active-header">
+                <div class="chats-item-avatar"></div>
+                <div class="active-contact-name">Вадим</div>
+                <div class="active-menu">{{> menu width="40px" height="40px" }}</div>
+            </div>
+            <div class="active-chat-area">
+                {{> message }}
+                {{> message }}
+                {{> message }}
+            </div>
+            <div class="active-bottom">
+                <div>{{> attach width="40px" height="40px" }}</div>
+                <div class="active-bottom-input-area">
+                    <input class="active-bottom-input" placeholder="Сообщение" />
+                </div>
+                <div class="active-bottom-send">
+                    {{> send width="40px" height="40px" }}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
