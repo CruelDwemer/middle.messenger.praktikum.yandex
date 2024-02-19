@@ -38,7 +38,6 @@ Handlebars.registerPartial("attach", attach);
 Handlebars.registerPartial("dataRow", dataRow);
 Handlebars.registerPartial("dataRowEdit", dataRowEdit);
 
-
 document.addEventListener("DOMContentLoaded", () => {
     const app = document.querySelector("#app");
     const path = window.location.pathname;
