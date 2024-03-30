@@ -1,0 +1,15 @@
+<div class="profile-container">
+    <div class="profile-item-avatar" ></div>
+    <div class="profile-name">Иван</div>
+    {{> dataRow title="Почта" value="e@mail.com" }}
+    {{> dataRow title="Логин" value="login" }}
+    {{> dataRow title="Имя" value="Иван" }}
+    {{> dataRow title="Фамилия" value="Иванов" }}
+    {{> dataRow title="Имя в чате" value="username" }}
+    {{> dataRow title="Телефон" value="+* (***) *** - ** - **" }}
+    <div class="profile-actions-block">
+        {{> button classname="flat" label="Изменить данные" link="/profile/edit" }}
+        {{> button classname="flat" label="Изменить пароль" link="/profile" }}
+        {{> button classname="flat-red" label="Выйти" link="/login" }}
+    </div>
+</div>
