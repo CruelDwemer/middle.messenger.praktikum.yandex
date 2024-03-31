@@ -92,10 +92,10 @@ abstract class Block {
     }
 
     private _registerEvents(eventBus: EventBus) {
-        eventBus.on(Block.EVENTS.INIT, this._init.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
-        eventBus.on(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
+        eventBus.on<() => void>(Block.EVENTS.INIT, this._init.bind(this));
+        eventBus.on<() => void>(Block.EVENTS.FLOW_CDM, this._componentDidMount.bind(this));
+        eventBus.on<(o: Props, n: Props) => void>(Block.EVENTS.FLOW_CDU, this._componentDidUpdate.bind(this));
+        eventBus.on<() => void>(Block.EVENTS.FLOW_RENDER, this._render.bind(this));
     }
 
     private _init() {
@@ -212,7 +212,7 @@ abstract class Block {
             set(target, prop, value) {
                 const oldTarget = { ...target };
                 target[prop] = value;
-                self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+                self.eventBus().emit<Props, Props>(Block.EVENTS.FLOW_CDU, oldTarget, target);
                 return true;
             },
             deleteProperty() {

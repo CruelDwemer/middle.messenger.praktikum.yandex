@@ -1,5 +1,3 @@
-import { Props } from "./Block"
-
 export type Listeners = Record<string, ((...args: unknown[]) => void)[]>
 
 export default class EventBus {
@@ -9,18 +7,18 @@ export default class EventBus {
         this.listeners = {}
     }
 
-    on(event: string, callback: (() => void) | ((oldProps: Props, newProps: Props) => void)): void {
+    on<T>(event: string, callback: T): void {
         if(!this.listeners[event]) {
             this.listeners[event] = []
         }
         this.listeners[event].push(callback)
     }
 
-    off(event: string, callback: () => void): void {
+    off<T>(event: string, callback: T): void {
         this.listeners[event] = this.listeners[event].filter(listener => listener !== callback)
     }
 
-    emit(event: string, ...args: unknown[]): void {
+    emit<T>(event: string, ...args: T): void {
         this.listeners[event].forEach(listener => { listener(...args) })
     }
 }
