@@ -16,6 +16,6 @@
     "noUnusedParameters": true,
     "sourceMap": true,
     "strictNullChecks": true,
-    "types": ["handlebars"]
+    "types": ["handlebars", "hbs", "hbs?raw"]
   }
 }
