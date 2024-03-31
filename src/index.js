@@ -22,7 +22,7 @@ import chatStyles from "./common/components/chat/chat.scss";
 import dataRowStyles from "./common/components/dataRow/dataRow.scss";
 import styles from "./common/styles/styles.scss";
 // import loginStyle from "./pages/login/login.scss";
-import errorStyle from "./pages/error/error.css";
+import errorStyle from "./pages/error/error.scss";
 import mainStyle from "./pages/main/main.scss";
 import profileStyle from "./pages/profile/profile.scss";
 
