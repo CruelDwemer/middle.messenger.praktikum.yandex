@@ -1,5 +1,5 @@
 import './login.scss';
-import loginTmpl from './login.hbs?raw';
+import loginTmpl from './login.hbs';
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
@@ -53,9 +53,7 @@ export default class LoginPage extends Block {
                 classname: "filled",
                 label: "Авторизоваться",
                 link: "/main",
-                onClick: (e: Event | undefined) => {
-                    this.props.onLogin(e)
-                }
+                onClick: this.props.onLogin as (event: Event | undefined) => void
             }),
             noAccButton: new Button({
                 classname: "flat",
