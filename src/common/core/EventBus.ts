@@ -7,14 +7,14 @@ export default class EventBus {
         this.listeners = {}
     }
 
-    on<T>(event: string, callback: T): void {
+    on(event: string, callback: (...args: unknown[]) => void): void {
         if(!this.listeners[event]) {
             this.listeners[event] = []
         }
         this.listeners[event].push(callback)
     }
 
-    off<T>(event: string, callback: T): void {
+    off(event: string, callback: (...args: unknown[]) => void): void {
         this.listeners[event] = this.listeners[event].filter(listener => listener !== callback)
     }
 
