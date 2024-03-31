@@ -90,7 +90,7 @@ export default class ProfileEditPage extends Block {
             saveButton: new Button({
                 classname: "filled",
                 label: "Сохранить",
-                onClick: (e) => {
+                onClick: (e: Event | undefined) => {
                     this.props.onSubmit(e)
                 }
             })

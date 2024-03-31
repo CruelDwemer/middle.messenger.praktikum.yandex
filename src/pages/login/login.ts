@@ -21,7 +21,7 @@ export default class LoginPage extends Block {
                         if(!child.validate()) {
                             isValid = false
                         }
-                        dataForms[child.props.name] = child.value()
+                        dataForms[child.props.name] as string = child.value()
                     }
                 })
                 console.log("LOGIN DATA", dataForms);
@@ -53,7 +53,7 @@ export default class LoginPage extends Block {
                 classname: "filled",
                 label: "Авторизоваться",
                 link: "/main",
-                onClick: (e) => {
+                onClick: (e: Event | undefined) => {
                     this.props.onLogin(e)
                 }
             }),

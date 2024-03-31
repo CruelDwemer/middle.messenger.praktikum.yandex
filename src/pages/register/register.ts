@@ -84,7 +84,7 @@ export default class RegisterPage extends Block {
                 classname: "filled",
                 label: "Зарегистрироваться",
                 link: "/main",
-                onClick: (e) => {
+                onClick: (e: Event | undefined) => {
                     this.props.onSubmit(e)
                 }
             }),

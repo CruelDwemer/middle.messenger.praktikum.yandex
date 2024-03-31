@@ -7,7 +7,7 @@ export default class EventBus {
         this.listeners = {}
     }
 
-    on(event: string, callback: () => void): void {
+    on(event: string, callback: (...args: unknown[]) => void): void {
         if(!this.listeners[event]) {
             this.listeners[event] = []
         }

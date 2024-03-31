@@ -25,7 +25,7 @@ abstract class Block {
 
     public id: string = v4();
 
-    protected props: Props;
+    public props: Props;
 
     protected parent: Parent;
     public children: Children;
@@ -58,7 +58,7 @@ abstract class Block {
         let parent: Parent;
 
         Object.entries(childrenAndProps)
-            .forEach(([key, value]: [string, Props | Children | Parent]) => {
+            .forEach(([key, value]: [string, unknown]) => {
                 if(value instanceof Block || value instanceof Element) {
                     if(key === 'parent') {
                         parent = value;
@@ -159,7 +159,7 @@ abstract class Block {
     }
 
     /* eslint-disable  @typescript-eslint/no-explicit-any */
-    protected compile(template: (context: any) => string, context: any) {
+    protected compile(template: ((context: any) => string) | string, context: any) {
         const contextAndDummies = { ...context }
 
         Object.entries(this.children).forEach(([name, component]) => {
@@ -186,7 +186,7 @@ abstract class Block {
             if(Array.isArray(component)) {
                 component.forEach((comp) => replaceDummy(comp))
             } else {
-                replaceDummy(component)
+                replaceDummy(component as Block)
             }
         })
 
@@ -204,7 +204,6 @@ abstract class Block {
     _makePropsProxy(props: Props) {
         /* eslint-disable  @typescript-eslint/no-this-alias */
         const self = this;
-
         return new Proxy(props, {
             get(target, prop) {
                 const value = target[prop];
@@ -212,13 +211,8 @@ abstract class Block {
             },
             set(target, prop, value) {
                 const oldTarget = { ...target };
-
                 target[prop] = value;
-
-                // Запускаем обновление компоненты. Плохой cloneDeep,
-                // в следующей итерации нужно заставлять добавлять cloneDeep им самим
-                self.eventBus()
-                    .emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
+                self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget, target);
                 return true;
             },
             deleteProperty() {
