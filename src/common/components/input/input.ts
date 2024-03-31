@@ -52,12 +52,12 @@ export default class Input extends Block implements IInput {
         let hasErrors = false;
         const rules: IRules = this.props.validationRules as IRules;
 
-        if("minLength" in rules) {
+        if("minLength" in rules && rules.minLength) {
             if(this._value().length < rules.minLength) {
                 hasErrors = true
             }
         }
-        if("maxLength" in rules) {
+        if("maxLength" in rules && rules.maxLength) {
             if(this._value().length > rules.maxLength) {
                 hasErrors = true
             }

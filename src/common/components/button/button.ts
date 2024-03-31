@@ -1,5 +1,5 @@
 import './button.scss';
-import tmplButton from './button.hbs?raw';
+import button from './button.hbs?raw';
 
 import Block, { Props } from '../../core/Block';
 
@@ -12,6 +12,6 @@ export default class Button extends Block {
     }
 
     protected render(): string {
-        return tmplButton
+        return button
     }
 }
