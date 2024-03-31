@@ -4,10 +4,18 @@
     "target": "es2016",
     "declaration": false,
     "module": "commonjs",
-    "strictNullChecks": true,
-    "sourceMap": true,
+    "moduleResolution": "Node",
+    "strict": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "noEmit": true,
+    "noImplicitReturns": true,
+    "skipLibCheck": true,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noUnusedParameters": true
+    "noUnusedParameters": true,
+    "sourceMap": true,
+    "strictNullChecks": true
   }
 }
