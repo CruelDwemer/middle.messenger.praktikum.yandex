@@ -50,11 +50,7 @@ export default class Input extends Block implements IInput {
 
     private _validate() {
         let hasErrors = false;
-        const {
-            props: {
-                validationRules: rules
-            }
-        } = this;
+        const rules: IRules = this.props.validationRules as IRules;
 
         if("minLength" in rules) {
             if(this._value().length < rules.minLength) {
