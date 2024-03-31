@@ -1,11 +1,9 @@
 import Handlebars from "handlebars/runtime";
 // страницы
 import errorPage from "./pages/error/error.hbs";
-// import loginPage from "./pages/login/login.hbs";
-import registerPage from "./pages/register/register.hbs";
 import mainPage from "./pages/main/main.hbs";
 import profilePage from "./pages/profile/profile.hbs";
-import profileEditPage from "./pages/profileEdit/profileEdit.hbs";
+// import profileEditPage from "./pages/profileEdit/profileEdit.hbs";
 // компоненты
 import button from "./common/components/button/button.hbs";
 import input from "./common/components/input/input.hbs";
@@ -19,18 +17,19 @@ import dataRowEdit from "./common/components/dataRow/dataRowEdit.hbs";
 // стили
 
 /* eslint-disable  @typescript-eslint/no-unused-vars */
-import buttonStyles from "./common/components/button/button.scss";
+// import buttonStyles from "./common/components/button/button.scss";
 import messageStyles from "./common/components/message/message.scss";
 import chatStyles from "./common/components/chat/chat.scss";
 import dataRowStyles from "./common/components/dataRow/dataRow.scss";
 import styles from "./common/styles/styles.scss";
-import loginStyle from "./pages/login/login.scss";
+// import loginStyle from "./pages/login/login.scss";
 import errorStyle from "./pages/error/error.css";
 import mainStyle from "./pages/main/main.scss";
 import profileStyle from "./pages/profile/profile.scss";
 
-import LoginPage from "./pages/login/login"
-import ButtonC from "./common/components/button/button"
+import LoginPage from "./pages/login/login";
+import RegisterPage from "./pages/register/register";
+import ProfileEditPage from "./pages/profileEdit/profileEdit";
 
 const messageText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 const messageTime = "10:46";
@@ -53,7 +52,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // console.log(Handlebars)
 
-    const loginScreen = new LoginPage()
+    const loginScreen = new LoginPage();
+    const registerScreen = new RegisterPage();
+    const profileEditScreen = new ProfileEditPage();
     switch (path) {
         case "/":
         case "":
@@ -66,13 +67,13 @@ document.addEventListener("DOMContentLoaded", () => {
             app.append(loginScreen.getContent());
             break
         case "/profile/edit":
-            app.innerHTML = profileEditPage();
+            app.append(profileEditScreen.getContent());
             break
         case "/profile":
             app.innerHTML = profilePage();
             break
         case "/register":
-            app.innerHTML = registerPage();
+            app.append(registerScreen.getContent());
             break
         case "/404":
             app.innerHTML = errorPage({ message: "Не найдено" });

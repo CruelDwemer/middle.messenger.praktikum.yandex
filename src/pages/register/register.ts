@@ -1,15 +1,13 @@
-import './login.scss';
-import loginTmpl from './login.hbs?raw';
+import loginTmpl from './register.hbs?raw';
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
 
-export default class LoginPage extends Block {
+export default class RegisterPage extends Block {
     protected constructor(data: Props | Children = {}) {
-
         super({
             data,
-            onLogin: (event: Event | undefined) => {
+            onSubmit: (event: Event | undefined) => {
                 if (!event) return;
                 event.preventDefault();
 
@@ -24,11 +22,19 @@ export default class LoginPage extends Block {
                         dataForms[child.props.name] = child.value()
                     }
                 })
-                console.log("LOGIN DATA", dataForms);
+                console.log("REGISTRATION DATA", dataForms);
                 if(isValid) {
                     window.location.href = "/main"
                 }
             },
+            emailInput: new Input({
+                name: "email",
+                classname: "input-login",
+                placeholder: "Почта",
+                validationRules: {
+                    regexp: new RegExp(/^[a-zA-Z\d._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/)
+                }
+            }),
             loginInput: new Input({
                 name: "login",
                 classname: "input-login",
@@ -41,26 +47,51 @@ export default class LoginPage extends Block {
             }),
             passwordInput: new Input({
                 name: "password",
-                classname: "input-password",
+                classname: "input-login",
                 placeholder: "Пароль",
+                type: "password",
                 validationRules: {
                     minLength: 8,
                     maxLength: 40,
                     regexp: new RegExp(/^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/)
                 }
             }),
-            authButton: new Button({
-                classname: "filled",
-                label: "Авторизоваться",
-                link: "/main",
-                onClick: (e) => {
-                    this.props.onLogin(e)
+            firstNameInput: new Input({
+                name: "first_name",
+                classname: "input-login",
+                placeholder: "Имя",
+                validationRules: {
+                    regexp: new RegExp(/^[A-Za-zА-Яа-я][A-Za-zА-Яа-я-]*$/)
                 }
             }),
-            noAccButton: new Button({
+            secondNameInput: new Input({
+                name: "second_name",
+                classname: "input-login",
+                placeholder: "Фамилия",
+                validationRules: {
+                    regexp: new RegExp(/^[A-Za-zА-Яа-я][A-Za-zА-Яа-я-]*$/)
+                }
+            }),
+            phoneInput: new Input({
+                name: "phone",
+                classname: "input-password",
+                placeholder: "Телефон",
+                validationRules: {
+                    regexp: new RegExp(/^\+?\d{10,15}$/)
+                }
+            }),
+            registrationButton: new Button({
+                classname: "filled",
+                label: "Зарегистрироваться",
+                link: "/main",
+                onClick: (e) => {
+                    this.props.onSubmit(e)
+                }
+            }),
+            loginButton: new Button({
                 classname: "flat",
-                label: "Нет аккаунта?",
-                link: "/register"
+                label: "Войти",
+                link: "/login"
             })
         });
     }
