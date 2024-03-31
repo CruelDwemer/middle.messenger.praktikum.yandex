@@ -3,7 +3,8 @@
   "rules": {
     "color-hex-length": "long",
     "font-family-name-quotes": null,
-    "max-nesting-depth": 2
+    "max-nesting-depth": 2,
+    "import-notation": "string"
   },
   "ignoreFiles": [
     "dist/*"
