@@ -212,7 +212,7 @@ abstract class Block {
             set(target, prop, value) {
                 const oldTarget = { ...target };
                 target[prop] = value;
-                self.eventBus().emit<Props, Props>(Block.EVENTS.FLOW_CDU, oldTarget, target);
+                self.eventBus().emit(Block.EVENTS.FLOW_CDU, oldTarget as unknown, target as unknown);
                 return true;
             },
             deleteProperty() {
