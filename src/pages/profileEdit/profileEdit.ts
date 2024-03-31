@@ -32,7 +32,7 @@ export default class ProfileEditPage extends Block {
                         if(!child.validate()) {
                             isValid = false
                         }
-                        dataForms[child.props.name] = child.value()
+                        dataForms[child.props.name as string] = child.value()
                     }
                 })
                 console.log("PROFILE DATA")
