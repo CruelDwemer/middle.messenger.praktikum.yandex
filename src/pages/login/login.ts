@@ -6,7 +6,6 @@ import Input from "../../common/components/input/input";
 
 export default class LoginPage extends Block {
     protected constructor(data: Props | Children = {}) {
-
         super({
             data,
             onLogin: (event: Event | undefined) => {
@@ -24,7 +23,8 @@ export default class LoginPage extends Block {
                         dataForms[child.props.name as string] = child.value()
                     }
                 })
-                console.log("LOGIN DATA", dataForms);
+                console.log("LOGIN DATA");
+                console.table(dataForms);
                 if(isValid) {
                     window.location.href = "/main"
                 }
@@ -53,7 +53,9 @@ export default class LoginPage extends Block {
                 classname: "filled",
                 label: "Авторизоваться",
                 link: "/main",
-                onClick: this.props.onLogin as (event: Event | undefined) => void
+                onClick: (e: Event | undefined) => {
+                    this.props.onLogin(e as Event | undefined)
+                }
             }),
             noAccButton: new Button({
                 classname: "flat",

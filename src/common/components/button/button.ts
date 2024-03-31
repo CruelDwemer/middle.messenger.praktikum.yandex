@@ -1,5 +1,5 @@
 import './button.scss';
-import button from './button.hbs?raw';
+import button from './button.hbs';
 
 import Block, { Props } from '../../core/Block';
 

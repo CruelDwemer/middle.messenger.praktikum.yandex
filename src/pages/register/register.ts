@@ -1,4 +1,4 @@
-import loginTmpl from './register.hbs?raw';
+import registerTmpl from './register.hbs';
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
@@ -22,7 +22,8 @@ export default class RegisterPage extends Block {
                         dataForms[child.props.name as string] = child.value()
                     }
                 })
-                console.log("REGISTRATION DATA", dataForms);
+                console.log("REGISTRATION DATA");
+                console.table(dataForms);
                 if(isValid) {
                     window.location.href = "/main"
                 }
@@ -97,6 +98,6 @@ export default class RegisterPage extends Block {
     }
 
     protected render(): string {
-        return loginTmpl;
+        return registerTmpl;
     }
 }

@@ -1,4 +1,4 @@
-import profileEditTmpl from './profileEdit.hbs?raw';
+import profileEditTmpl from './profileEdit.hbs';
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
@@ -16,9 +16,13 @@ class ProfileInput extends Input {
     }
 }
 
+interface ProfileEditBlockProps extends Props {
+    onSubmit: (event: Event | undefined) => void
+}
+
 export default class ProfileEditPage extends Block {
     protected constructor(data: Props | Children = {}) {
-        super({
+        const newProps: ProfileEditBlockProps = {
             data,
             onSubmit: (event: Event | undefined) => {
                 if(!event) return;
@@ -94,7 +98,8 @@ export default class ProfileEditPage extends Block {
                     this.props.onSubmit(e)
                 }
             })
-        });
+        }
+        super(newProps);
     }
 
     protected render(): string {
