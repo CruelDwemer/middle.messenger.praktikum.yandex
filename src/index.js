@@ -3,7 +3,6 @@ import Handlebars from "handlebars/runtime";
 import errorPage from "./pages/error/error.hbs";
 import mainPage from "./pages/main/main.hbs";
 import profilePage from "./pages/profile/profile.hbs";
-// import profileEditPage from "./pages/profileEdit/profileEdit.hbs";
 // компоненты
 import button from "./common/components/button/button.hbs";
 import input from "./common/components/input/input.hbs";

@@ -85,7 +85,6 @@ abstract class Block {
             });
     }
 
-    // Not used anywhere yet
     // @ts-expect-error because
     private _removeEvents() {
         const { events = {} } = this.props as { events: Events };
@@ -168,7 +167,7 @@ abstract class Block {
         const contextAndDummies = { ...context }
 
         Object.entries(this.children).forEach(([name, component]) => {
-            if (Array.isArray(component)) {
+            if(Array.isArray(component)) {
                 contextAndDummies[name] = component.map((child) => `<div data-id="${child.id}"></div>`)
             } else {
                 contextAndDummies[name] = `<div data-id="${component.id}"></div>`
@@ -179,21 +178,16 @@ abstract class Block {
         const temp = document.createElement('template')
         temp.innerHTML = html
 
-        /**
-         * @description Replaces a dummy element with a real one, storing all childNodes in the component
-         *
-         * @param {Block} component (handlebars)
-         * */
         const replaceDummy = (component: Block) => {
             const dummy = temp.content.querySelector(`[data-id="${component.id}"]`)
-            if (!dummy) return
+            if(!dummy) return
             component.getContent()?.append(...Array.from(dummy.childNodes))
             dummy.replaceWith(component.getContent()!)
         }
 
         /* eslint-disable  @typescript-eslint/no-unused-vars */
         Object.entries(this.children).forEach(([_, component]) => {
-            if (Array.isArray(component)) {
+            if(Array.isArray(component)) {
                 component.forEach((comp) => replaceDummy(comp))
             } else {
                 replaceDummy(component)

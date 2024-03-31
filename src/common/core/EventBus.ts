@@ -8,7 +8,7 @@ export default class EventBus {
     }
 
     on(event: string, callback: () => void): void {
-        if (!this.listeners[event]) {
+        if(!this.listeners[event]) {
             this.listeners[event] = []
         }
         this.listeners[event].push(callback)
