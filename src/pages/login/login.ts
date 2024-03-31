@@ -1,5 +1,5 @@
 import './login.scss';
-import loginTmpl from './login.hbs';
+import loginTmpl from './login.hbs?raw';
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
