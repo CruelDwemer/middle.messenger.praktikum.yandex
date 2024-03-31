@@ -6,6 +6,7 @@
     "module": "commonjs",
     "strictNullChecks": true,
     "sourceMap": true,
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "noUnusedLocals": true
   }
 }
