@@ -6,10 +6,9 @@ type EventsEnum = {
     [key in Uppercase<string>]: Lowercase<string>;
 };
 
-type Events = Record<string, () => void>;
+type Events = Record<string, EventListenerOrEventListenerObject>;
 export type Props = Record<string | symbol, unknown>;
 export type Children = Record<string, Element | Block>;
-// type Ref = Record<string | symbol, Element | Block>;
 type Parent = Element | Block | undefined;
 
 export type BlockType = {
@@ -28,7 +27,6 @@ abstract class Block {
 
     protected props: Props;
 
-    // protected refs: Ref = {};
     protected parent: Parent;
     public children: Children;
 
@@ -60,8 +58,7 @@ abstract class Block {
         let parent: Parent;
 
         Object.entries(childrenAndProps)
-            .forEach(([key, value]) => {
-
+            .forEach(([key, value]: [string, Props | Children | Parent]) => {
                 if(value instanceof Block || value instanceof Element) {
                     if(key === 'parent') {
                         parent = value;
@@ -77,12 +74,11 @@ abstract class Block {
     }
 
     private _addEvents() {
-        const { events = {} } = this.props as { events: Events };
+        const { events = {} } = this.props as Props & { events: Events };
 
-        Object.keys(events)
-            .forEach((eventName) => {
-                this._element?.addEventListener(eventName, events[eventName]);
-            });
+        Object.keys(events).forEach((eventName) => {
+            this._element?.addEventListener(eventName, events[eventName]);
+        });
     }
 
     // @ts-expect-error because
