@@ -17,5 +17,6 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "types": ["handlebars"]
-  }
+  },
+  "include": ["src"]
 }
