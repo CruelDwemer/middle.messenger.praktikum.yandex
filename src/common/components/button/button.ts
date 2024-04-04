@@ -1,6 +1,6 @@
 import './button.scss';
-// import button from './button.hbs?raw';
-let buttonTemplate = require("./button.hbs?raw")
+import buttonTemplate from './button.hbs?raw';
+// let buttonTemplate = require("./button.hbs?raw")
 
 import Block, { Props } from '../../core/Block';
 
