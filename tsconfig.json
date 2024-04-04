@@ -4,6 +4,7 @@
     "target": "es2017",
     "declaration": false,
     "module": "commonjs",
+    "moduleResolution": "Node",
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
