@@ -1,5 +1,6 @@
 import './button.scss';
-import button from './button.hbs?raw';
+// import button from './button.hbs?raw';
+let buttonTemplate = require("./button.hbs?raw")
 
 import Block, { Props } from '../../core/Block';
 
@@ -16,6 +17,6 @@ export default class Button extends Block {
     }
 
     protected render(): string {
-        return button
+        return buttonTemplate
     }
 }
