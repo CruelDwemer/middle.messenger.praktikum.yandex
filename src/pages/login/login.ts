@@ -1,8 +1,11 @@
-import './login.scss';
-import loginTmpl from './login.hbs?raw';
+/*
+*  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
+* */
+const loginTemplate = require("./login.hbs?raw");
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
+import './login.scss';
 
 export default class LoginPage extends Block {
     protected constructor(data: Props | Children = {}) {
@@ -66,6 +69,6 @@ export default class LoginPage extends Block {
     }
 
     protected render(): string {
-        return loginTmpl;
+        return loginTemplate;
     }
 }

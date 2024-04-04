@@ -1,4 +1,7 @@
-import registerTmpl from './register.hbs?raw';
+/*
+*  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
+* */
+const registerTemplate = require("./register.hbs?raw");
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
@@ -98,6 +101,6 @@ export default class RegisterPage extends Block {
     }
 
     protected render(): string {
-        return registerTmpl;
+        return registerTemplate;
     }
 }

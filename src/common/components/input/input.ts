@@ -1,4 +1,7 @@
-import template from "./input.hbs?raw";
+/*
+*  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
+* */
+const inputTemplate = require("./input.hbs?raw");
 import Block, { Props } from "../../core/Block";
 import "./input.scss"
 
@@ -89,6 +92,6 @@ export default class Input extends Block implements IInput {
     }
 
     protected render(): string {
-        return template
+        return inputTemplate
     }
 }
