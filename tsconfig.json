@@ -5,6 +5,8 @@
     "declaration": false,
     "module": "commonjs",
     "moduleResolution": "Node",
+    "types": [ "node", "handlebars" ],
+    "typeRoots": [ "../node_modules/@types" ],
     "strict": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
@@ -16,8 +18,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "sourceMap": true,
-    "strictNullChecks": true,
-    "types": ["handlebars"]
+    "strictNullChecks": true
   },
   "include": ["src"]
 }
