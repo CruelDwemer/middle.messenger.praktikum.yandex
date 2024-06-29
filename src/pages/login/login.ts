@@ -1,44 +1,26 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-// const loginTemplate = require("./login.hbs?raw");
-import loginTemplate from "./login.hbs?raw";
+const loginTemplate = require("./login.hbs?raw");
+/*
+*  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
+*  поэтому локально используется import при сборке
+* */
+// import loginTemplate from "./login.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
 import './login.scss';
+import onLogin from "../../common/utils/formSubmit"
 
 interface ILoginProps extends Props {
     onLogin?: (event: Event | undefined) => void
-}
-
-const onLogin = (event: Event | undefined) => {
-    if (!event) return;
-    event.preventDefault();
-
-    const dataForms: Record<string, string | false> = {};
-
-    let isValid = true;
-    Object.values(this.children).forEach(child => {
-        if(child instanceof Input) {
-            if(!child.validate()) {
-                isValid = false
-            }
-            dataForms[child.props.name as string] = child.value()
-        }
-    })
-    console.log("LOGIN DATA");
-    console.table(dataForms);
-    if(isValid) {
-        window.location.href = "/main"
-    }
 }
 
 export default class LoginPage extends Block {
     protected constructor(data: ILoginProps | Children = {}) {
         super({
             data,
-
             loginInput: new Input({
                 name: "login",
                 classname: "input-login",
@@ -64,7 +46,7 @@ export default class LoginPage extends Block {
                 label: "Авторизоваться",
                 link: "/main",
                 onClick: (e: Event | undefined): void => {
-                    onLogin(e)
+                    onLogin(e, this.children, "/main", "LOGIN DATA")
                 }
             }),
             noAccButton: new Button({

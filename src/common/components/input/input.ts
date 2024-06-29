@@ -1,8 +1,12 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-// const inputTemplate = require("./input.hbs?raw");
-import inputTemplate from "./input.hbs?raw";
+const inputTemplate = require("./input.hbs?raw");
+/*
+*  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
+*  поэтому локально используется import при сборке
+* */
+// import inputTemplate from "./input.hbs?raw";
 import Block, { Props } from "../../core/Block";
 import "./input.scss"
 
@@ -56,21 +60,24 @@ export default class Input extends Block implements IInput {
         let hasErrors = false;
         const rules: IRules = this.props.validationRules as IRules;
 
-        if("minLength" in rules && rules.minLength) {
-            if(this._value().length < rules.minLength) {
-                hasErrors = true
+        if(rules) {
+            if("minLength" in rules && rules.minLength) {
+                if(this._value().length < rules.minLength) {
+                    hasErrors = true
+                }
+            }
+            if("maxLength" in rules && rules.maxLength) {
+                if(this._value().length > rules.maxLength) {
+                    hasErrors = true
+                }
+            }
+            if(rules.regexp) {
+                if(!rules.regexp.test(this._value())) {
+                    hasErrors = true
+                }
             }
         }
-        if("maxLength" in rules && rules.maxLength) {
-            if(this._value().length > rules.maxLength) {
-                hasErrors = true
-            }
-        }
-        if(rules.regexp) {
-            if(!rules.regexp.test(this._value())) {
-                hasErrors = true
-            }
-        }
+
         return !hasErrors
     }
 

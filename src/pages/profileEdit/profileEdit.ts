@@ -1,11 +1,16 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-// const profileEditTemplate = require("./profileEdit.hbs?raw");
-import profileEditTemplate from "./profileEdit.hbs?raw";
+const profileEditTemplate = require("./profileEdit.hbs?raw");
+/*
+*  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
+*  поэтому локально используется import при сборке
+* */
+// import profileEditTemplate from "./profileEdit.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
+import onSubmit from "../../common/utils/formSubmit"
 
 class ProfileInput extends Input {
     constructor(props: Props) {
@@ -20,35 +25,10 @@ class ProfileInput extends Input {
     }
 }
 
-interface ProfileEditBlockProps extends Props {
-    onSubmit: (event: Event | undefined) => void
-}
-
 export default class ProfileEditPage extends Block {
     protected constructor(data: Props | Children = {}) {
-        const newProps: ProfileEditBlockProps = {
+        const newProps: Props = {
             data,
-            onSubmit: (event: Event | undefined) => {
-                if(!event) return;
-                event.preventDefault();
-
-                const dataForms: Record<string, string | false> = {};
-
-                let isValid = true;
-                Object.values(this.children).forEach(child => {
-                    if(child instanceof Input) {
-                        if(!child.validate()) {
-                            isValid = false
-                        }
-                        dataForms[child.props.name as string] = child.value()
-                    }
-                })
-                console.log("PROFILE DATA")
-                console.table(dataForms);
-                if(isValid) {
-                    window.location.href = "/profile"
-                }
-            },
             emailInput: new ProfileInput({
                 name: "email",
                 placeholder: "Почта",
@@ -99,7 +79,7 @@ export default class ProfileEditPage extends Block {
                 classname: "filled",
                 label: "Сохранить",
                 onClick: (e: Event | undefined) => {
-                    this.props.onSubmit(e)
+                    onSubmit(e, this.children, "/profile", "PROFILE DATA")
                 }
             })
         }
