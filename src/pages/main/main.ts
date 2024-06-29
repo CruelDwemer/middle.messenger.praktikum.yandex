@@ -12,10 +12,6 @@ import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
 import Input from "../../common/components/input/input";
 import './main.scss';
-import chat from "../../common/components/chat/chat.hbs";
-import Handlebars from "handlebars/runtime";
-
-Handlebars.registerPartial("chat", chat);
 
 const sendMessage = (
     event: Event | undefined,
