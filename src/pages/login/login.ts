@@ -8,8 +8,12 @@ import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
 import './login.scss';
 
+interface ILoginProps extends Props {
+    onLogin?: (event: Event | undefined) => void
+}
+
 export default class LoginPage extends Block {
-    protected constructor(data: Props | Children = {}) {
+    protected constructor(data: ILoginProps | Children = {}) {
         super({
             data,
             onLogin: (event: Event | undefined) => {
@@ -58,7 +62,7 @@ export default class LoginPage extends Block {
                 label: "Авторизоваться",
                 link: "/main",
                 onClick: (e: Event | undefined): void => {
-                    this.props.onLogin(e as Event | undefined)
+                    this.props.onLogin(e)
                 }
             }),
             noAccButton: new Button({
