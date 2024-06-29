@@ -1,7 +1,8 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-const profileEditTemplate = require("./profileEdit.hbs?raw");
+// const profileEditTemplate = require("./profileEdit.hbs?raw");
+import profileEditTemplate from "./profileEdit.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";

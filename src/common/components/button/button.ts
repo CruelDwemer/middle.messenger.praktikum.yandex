@@ -1,7 +1,8 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-const buttonTemplate = require("./button.hbs?raw");
+// const buttonTemplate = require("./button.hbs?raw");
+import buttonTemplate from "./button.hbs?raw";
 import Block, { Props } from '../../core/Block';
 import './button.scss';
 

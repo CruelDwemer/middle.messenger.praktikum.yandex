@@ -1,7 +1,8 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-const inputTemplate = require("./input.hbs?raw");
+// const inputTemplate = require("./input.hbs?raw");
+import inputTemplate from "./input.hbs?raw";
 import Block, { Props } from "../../core/Block";
 import "./input.scss"
 

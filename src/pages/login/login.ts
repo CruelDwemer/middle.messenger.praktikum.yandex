@@ -1,7 +1,8 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-const loginTemplate = require("./login.hbs?raw");
+// const loginTemplate = require("./login.hbs?raw");
+import loginTemplate from "./login.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
@@ -56,7 +57,7 @@ export default class LoginPage extends Block {
                 classname: "filled",
                 label: "Авторизоваться",
                 link: "/main",
-                onClick: (e: Event | undefined) => {
+                onClick: (e: Event | undefined): void => {
                     this.props.onLogin(e as Event | undefined)
                 }
             }),
