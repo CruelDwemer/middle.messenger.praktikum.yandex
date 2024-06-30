@@ -1,0 +1,9 @@
+@import "src/common/styles/styles";
+
+.input-regular {
+  border-color: $grey;
+}
+
+.input-error {
+  border-color: $red;
+}

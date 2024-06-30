@@ -1,12 +1,42 @@
 <form class="profile-container">
     <div class="profile-item-avatar"></div>
-    {{> dataRowEdit title="Почта" name="email" }}
-    {{> dataRowEdit title="Логин" name="login" }}
-    {{> dataRowEdit title="Имя" name="first_name" }}
-    {{> dataRowEdit title="Фамилия" name="seond_name" }}
-    {{> dataRowEdit title="Имя в чате" name="display_name" }}
-    {{> dataRowEdit title="Телефон" name="phone" }}
+    <div class="profile-data-row">
+        <div>Почта</div>
+        <div>
+            {{{ emailInput }}}
+        </div>
+    </div>
+    <div class="profile-data-row">
+        <div>Логин</div>
+        <div>
+            {{{ loginInput }}}
+        </div>
+    </div>
+    <div class="profile-data-row">
+        <div>Имя</div>
+        <div>
+            {{{ firstNameInput }}}
+        </div>
+    </div>
+    <div class="profile-data-row">
+        <div>Фамилия</div>
+        <div>
+            {{{ secondNameInput }}}
+        </div>
+    </div>
+    <div class="profile-data-row">
+        <div>Имя в чате</div>
+        <div>
+            {{{ chatNameInput }}}
+        </div>
+    </div>
+    <div class="profile-data-row">
+        <div>Телефон</div>
+        <div>
+            {{{ phoneInput }}}
+        </div>
+    </div>
     <div class="profile-actions-block">
-        {{> button classname="filled" label="Сохранить" link="/profile" }}
+        {{{ saveButton }}}
     </div>
 </form>
