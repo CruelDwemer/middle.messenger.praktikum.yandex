@@ -13,7 +13,6 @@ import EventBus from './EventBus';
 * */
 import chat from "../components/chat/chat.hbs";
 import message from "../components/message/message.hbs";
-// import inputErrorLine from "../components/inputErrorLine/inputErrorLine.hbs";
 import menu from "../svg/menu.hbs";
 import attach from "../svg/attach.hbs";
 
@@ -28,7 +27,6 @@ Handlebars.registerPartial("chat", chat);
 Handlebars.registerPartial("menu", menu);
 Handlebars.registerPartial("message", message.bind(null, { text: messageText, time: messageTime }));
 Handlebars.registerPartial("attach", attach);
-// Handlebars.registerPartial("inputErrorLine", inputErrorLine);
 
 type EventsEnum = {
     [key in Uppercase<string>]: Lowercase<string>;
