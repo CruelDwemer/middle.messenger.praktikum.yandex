@@ -11,7 +11,7 @@ import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
 import onSubmit from "../../common/utils/formSubmit"
-import InputField from "../../common/components/inputField/inputField";
+import InputField, { InputFieldProps } from "../../common/components/inputField/inputField";
 
 class ProfileInput extends Input {
     constructor(props: Props) {
@@ -26,8 +26,9 @@ class ProfileInput extends Input {
     }
 }
 
+
 class ProfileInputField extends InputField {
-    constructor(props) {
+    constructor(props: InputFieldProps) {
         super({
             ...props,
             classname: "input-field-profile-edit",

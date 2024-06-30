@@ -105,7 +105,6 @@ abstract class Block {
         });
     }
 
-    // @ts-expect-error because
     private _removeEvents() {
         const { events = {} } = this.props as { events: Events };
 

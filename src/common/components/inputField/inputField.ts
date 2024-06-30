@@ -23,7 +23,7 @@ interface IRules {
     regexpError?: string
 }
 
-interface InputFieldProps extends Props{
+export interface InputFieldProps extends Props{
     name?: string,
     placeholder?: string,
     validationRules?: IRules,
