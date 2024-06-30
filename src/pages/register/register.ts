@@ -9,8 +9,8 @@
 import registerTemplate from "./register.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
-import Input from "../../common/components/input/input";
-import onSubmit from "../../common/utils/formSubmit"
+import Input from "../../common/components/inputField/inputField";
+import onSubmit from "../../common/utils/formSubmit";
 
 export default class RegisterPage extends Block {
     protected constructor(data: Props | Children = {}) {
@@ -21,7 +21,8 @@ export default class RegisterPage extends Block {
                 classname: "input-login",
                 placeholder: "Почта",
                 validationRules: {
-                    regexp: new RegExp(/^[a-zA-Z\d._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/)
+                    regexp: new RegExp(/^[a-zA-Z\d._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/),
+                    regexpError: "Неправильный формат email"
                 }
             }),
             loginInput: new Input({
@@ -31,7 +32,8 @@ export default class RegisterPage extends Block {
                 validationRules: {
                     minLength: 3,
                     maxLength: 20,
-                    regexp: new RegExp(/^[a-zA-Z][a-zA-Z0-9]*([_-]?[a-zA-Z0-9])?$/)
+                    regexp: new RegExp(/^[a-zA-Z][a-zA-Z0-9]*([_-]?[a-zA-Z0-9])?$/),
+                    regexpError: "Допустимые символы - латиница, цифры, '_', '-'"
                 }
             }),
             passwordInput: new Input({
@@ -42,7 +44,8 @@ export default class RegisterPage extends Block {
                 validationRules: {
                     minLength: 8,
                     maxLength: 40,
-                    regexp: new RegExp(/^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/)
+                    regexp: new RegExp(/^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/),
+                    regexpError: "Допустимые символы - латиница, обязательно хотя бы одна заглавная буква и цифра"
                 }
             }),
             firstNameInput: new Input({
@@ -50,7 +53,8 @@ export default class RegisterPage extends Block {
                 classname: "input-login",
                 placeholder: "Имя",
                 validationRules: {
-                    regexp: new RegExp(/^[A-Za-zА-Яа-я][A-Za-zА-Яа-я-]*$/)
+                    regexp: new RegExp(/^[A-Za-zА-Яа-я][A-Za-zА-Яа-я-]*$/),
+                    regexpError: "Допустимые символы - латиница или кириллица с заглавной буквы"
                 }
             }),
             secondNameInput: new Input({
@@ -58,7 +62,8 @@ export default class RegisterPage extends Block {
                 classname: "input-login",
                 placeholder: "Фамилия",
                 validationRules: {
-                    regexp: new RegExp(/^[A-Za-zА-Яа-я][A-Za-zА-Яа-я-]*$/)
+                    regexp: new RegExp(/^[A-Za-zА-Яа-я][A-Za-zА-Яа-я-]*$/),
+                    regexpError: "Допустимые символы - латиница или кириллица с заглавной буквы"
                 }
             }),
             phoneInput: new Input({
@@ -66,7 +71,8 @@ export default class RegisterPage extends Block {
                 classname: "input-password",
                 placeholder: "Телефон",
                 validationRules: {
-                    regexp: new RegExp(/^\+?\d{10,15}$/)
+                    regexp: new RegExp(/^\+?\d{10,15}$/),
+                    regexpError: "От 10 до 15 цифр, может начинаться с +"
                 }
             }),
             registrationButton: new Button({

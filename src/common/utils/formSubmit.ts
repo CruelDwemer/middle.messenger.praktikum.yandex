@@ -1,4 +1,4 @@
-import Input from "../components/input/input";
+import Input from "../components/inputField/inputField";
 import {Children} from "../core/Block";
 
 const onSubmit = (

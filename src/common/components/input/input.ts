@@ -11,6 +11,8 @@ import Block, { Props } from "../../core/Block";
 import "./input.scss"
 
 export interface IInput extends Block {
+    applyRegularStyle: () => void,
+    applyErrorStyle: () => void,
     value: () => string
 }
 
@@ -22,6 +24,7 @@ interface IRules {
 
 interface InputProps extends Props{
     validationRules?: IRules,
+    onBlur?: (event: Event | undefined) => void,
     type?: string
 }
 
@@ -31,71 +34,29 @@ export default class Input extends Block implements IInput {
             props.type = "text"
         }
         super(props);
+
         this.props.events = {
-            blur: (event: Event | undefined) => {
-                if(!event) {
-                    return
-                }
-                event.preventDefault();
-                this.validate()
-            }
+            blur: this.props.onBlur || (() => {})
         }
     }
 
     private _value() {
-        if(this.element instanceof HTMLInputElement) {
-            return this.element.value;
+        const input = this.element;
+        if(input && input instanceof HTMLInputElement) {
+            return input.value;
         }
         return "";
     }
 
     public value() {
-        if(!this.validate()) {
-            return "";
-        }
         return this._value();
     }
 
-    private _validate() {
-        let hasErrors = false;
-        const rules: IRules = this.props.validationRules as IRules;
-
-        if(rules) {
-            if("minLength" in rules && rules.minLength) {
-                if(this._value().length < rules.minLength) {
-                    hasErrors = true
-                }
-            }
-            if("maxLength" in rules && rules.maxLength) {
-                if(this._value().length > rules.maxLength) {
-                    hasErrors = true
-                }
-            }
-            if(rules.regexp) {
-                if(!rules.regexp.test(this._value())) {
-                    hasErrors = true
-                }
-            }
-        }
-
-        return !hasErrors
-    }
-
-    public validate() {
-        const isValid = this._validate();
-        if(isValid) {
-            this.applyRegularStyle()
-        } else {
-            this.applyErrorStyle()
-        }
-        return isValid
-    }
-
-    applyRegularStyle() {
+    public applyRegularStyle() {
         this.getContent()!.classList.remove("input-error")
     }
 
-    applyErrorStyle() {
+    public applyErrorStyle() {
         this.getContent()!.classList.add("input-error")
     }
 

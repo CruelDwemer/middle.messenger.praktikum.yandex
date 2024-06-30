@@ -103,7 +103,6 @@ abstract class Block {
         });
     }
 
-    // @ts-expect-error because
     private _removeEvents() {
         const { events = {} } = this.props as { events: Events };
 
@@ -172,6 +171,7 @@ abstract class Block {
 
         const newElement = fragment.firstElementChild as HTMLElement;
 
+        this._removeEvents()
         if(this._element) {
             this._element.replaceWith(newElement);
         }

@@ -9,7 +9,8 @@
 import loginTemplate from "./login.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
-import Input from "../../common/components/input/input";
+// import Input from "../../common/components/input/input";
+import InputField from "../../common/components/inputField/inputField";
 import './login.scss';
 import onLogin from "../../common/utils/formSubmit"
 
@@ -21,24 +22,26 @@ export default class LoginPage extends Block {
     protected constructor(data: ILoginProps | Children = {}) {
         super({
             data,
-            loginInput: new Input({
+            loginInput: new InputField({
                 name: "login",
                 classname: "input-login",
                 placeholder: "Логин",
                 validationRules: {
                     minLength: 3,
                     maxLength: 20,
-                    regexp: new RegExp(/^[a-zA-Z][a-zA-Z0-9]*([_-]?[a-zA-Z0-9])?$/)
+                    regexp: new RegExp(/^[a-zA-Z][a-zA-Z0-9]*([_-]?[a-zA-Z0-9])?$/),
+                    regexpError: "Допустимые символы - латиница, цифры, '_', '-'"
                 }
             }),
-            passwordInput: new Input({
+            passwordInput: new InputField({
                 name: "password",
                 classname: "input-password",
                 placeholder: "Пароль",
                 validationRules: {
                     minLength: 8,
                     maxLength: 40,
-                    regexp: new RegExp(/^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/)
+                    regexp: new RegExp(/^(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]/),
+                    regexpError: "Допустимые символы - латиница, обязательно хотя бы одна заглавная буква и цифра"
                 }
             }),
             authButton: new Button({
