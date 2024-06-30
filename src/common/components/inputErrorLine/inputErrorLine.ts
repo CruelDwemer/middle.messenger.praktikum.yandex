@@ -1,8 +1,8 @@
 import errorLineTemplate from "./inputErrorLine.hbs?raw";
-import Block from "../../core/Block";
+import Block, { Props } from "../../core/Block";
 import "./inputErrorLine.scss"
 
-interface IInputErrorLineProps {
+interface IInputErrorLineProps extends Props {
     error?: string
 }
 
