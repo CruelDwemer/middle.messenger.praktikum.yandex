@@ -2,19 +2,20 @@ import { v4 } from 'uuid';
 import Handlebars from 'handlebars';
 import EventBus from './EventBus';
 
-const chat = require("../components/chat/chat.hbs");
-const message = require("../components/message/message.hbs");
-const menu = require("../svg/menu.hbs");
-const attach = require("../svg/attach.hbs");
+// const chat = require("../components/chat/chat.hbs");
+// const message = require("../components/message/message.hbs");
+// const menu = require("../svg/menu.hbs");
+// const attach = require("../svg/attach.hbs");
 
 /*
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-// import chat from "../components/chat/chat.hbs";
-// import message from "../components/message/message.hbs";
-// import menu from "../svg/menu.hbs";
-// import attach from "../svg/attach.hbs";
+import chat from "../components/chat/chat.hbs";
+import message from "../components/message/message.hbs";
+// import inputErrorLine from "../components/inputErrorLine/inputErrorLine.hbs";
+import menu from "../svg/menu.hbs";
+import attach from "../svg/attach.hbs";
 
 const messageText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 const messageTime = "10:46";
@@ -27,6 +28,7 @@ Handlebars.registerPartial("chat", chat);
 Handlebars.registerPartial("menu", menu);
 Handlebars.registerPartial("message", message.bind(null, { text: messageText, time: messageTime }));
 Handlebars.registerPartial("attach", attach);
+// Handlebars.registerPartial("inputErrorLine", inputErrorLine);
 
 type EventsEnum = {
     [key in Uppercase<string>]: Lowercase<string>;
@@ -172,6 +174,7 @@ abstract class Block {
 
         const newElement = fragment.firstElementChild as HTMLElement;
 
+        this._removeEvents()
         if(this._element) {
             this._element.replaceWith(newElement);
         }

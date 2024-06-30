@@ -1,17 +1,17 @@
 /*
 *  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
 * */
-const mainTemplate = require("./main.hbs?raw");
+// const mainTemplate = require("./main.hbs?raw");
 /*
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-// import mainTemplate from "./main.hbs?raw";
+import mainTemplate from "./main.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
-import Input from "../../common/components/input/input";
 import './main.scss';
+import InputField from "../../common/components/inputField/inputField";
 
 const sendMessage = (
     event: Event | undefined,
@@ -25,7 +25,7 @@ const sendMessage = (
     let isValid = true;
     if(children) {
         Object.values(children).forEach(child => {
-            if(child instanceof Input && child.props.name === "message") {
+            if(child instanceof InputField && child.props.name === "message") {
                 if(!child.validate()) {
                     isValid = false
                 }
@@ -42,9 +42,10 @@ export default class MainPage extends Block {
     protected constructor(data: Props | Children = {}) {
         super({
             data,
-            messageInput: new Input({
+            messageInput: new InputField({
                 name: "message",
                 classname: "active-bottom-input",
+                inputClassname: "active-bottom-input",
                 placeholder: "Сообщение",
                 validationRules: {
                     minLength: 1
@@ -55,7 +56,7 @@ export default class MainPage extends Block {
                 label: "Профиль >",
                 link: "/profile"
             }),
-            searchInput: new Input({
+            searchInput: new InputField({
                 placeholder: "Поиск"
             }),
             sendButton: new SendButton({
