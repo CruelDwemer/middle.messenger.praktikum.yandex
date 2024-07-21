@@ -1,0 +1,12 @@
+{
+  "extends": "stylelint-config-standard",
+  "rules": {
+    "color-hex-length": "long",
+    "font-family-name-quotes": null,
+    "max-nesting-depth": 2,
+    "import-notation": "string"
+  },
+  "ignoreFiles": [
+    "dist/*"
+  ]
+}

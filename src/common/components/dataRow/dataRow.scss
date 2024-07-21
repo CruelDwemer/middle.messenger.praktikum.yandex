@@ -4,7 +4,7 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    min-width: 350px;
+    min-width: 500px;
     border-bottom: $thin-grey-line;
     margin-top: 10px;
 }
@@ -12,4 +12,8 @@
 .profile-data-input {
     border: none;
     text-align: end;
+}
+
+.profile-input-error {
+    color: $red
 }
