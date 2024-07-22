@@ -37,7 +37,7 @@ export type Props = Record<string | symbol, unknown>;
 export type Children = Record<string, Element | Block>;
 type Parent = Element | Block | undefined;
 
-abstract class Block {
+class Block {
     static EVENTS: EventsEnum = {
         INIT: 'init',
         FLOW_CDM: 'flow:component-did-mount',
