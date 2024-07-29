@@ -1,4 +1,4 @@
-import { set } from '../utils/object_utils';
+import { set } from '../utils/objectUtils';
 import EventBus from './EventBus';
 
 // eslint-disable-next-line no-shadow
@@ -45,6 +45,7 @@ class Store extends EventBus {
 
     public set(path: string, value: unknown): void {
         try {
+            console.log("Store set", this.state, path, value)
             set(this.state, path, value);
             this.emit(StoreEvents.Updated);
         } catch (e) {
@@ -74,4 +75,5 @@ class Store extends EventBus {
         }
     }
 }
+
 export default new Store();

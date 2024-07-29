@@ -5,7 +5,7 @@ const METHODS = {
     DELETE: 'DELETE',
 };
 
-type TOptionsData = Record<string, string | number>
+export type TOptionsData = Record<string, string | number | number[]> | FormData
 type TOptions = {
     headers?: Record<string, string>,
     data?: TOptionsData,
@@ -14,6 +14,8 @@ type TOptions = {
 }
 type HTTPMethod = (url: string, options?: TOptions) => Promise<unknown>
 type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<unknown | void>
+
+const baseUrl = 'https://ya-praktikum.tech/api/v2'
 
 function queryStringify(data: TOptionsData): string {
     if (typeof data !== 'object') {
@@ -26,23 +28,29 @@ function queryStringify(data: TOptionsData): string {
 }
 
 export default class HTTPTransport {
-    static get: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    baseUrl: string = '';
+
+    constructor(baseUrl: string) {
+        this.baseUrl = baseUrl;
+    }
+
+    get: HTTPMethod = (url: string = '', options: TOptions = {}) => (
         this.request(url, { ...options, method: METHODS.GET }, options.timeout)
     );
 
-    static post: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    post: HTTPMethod = (url: string = '', options: TOptions = {}) => (
         this.request(url, { ...options, method: METHODS.POST }, options.timeout)
     );
 
-    static put: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    put: HTTPMethod = (url: string = '', options: TOptions = {}) => (
         this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
     );
 
-    static delete: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    delete: HTTPMethod = (url: string = '', options: TOptions = {}) => (
         this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
     );
 
-    static request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<unknown | void> => {
+    request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<unknown | void> => {
         const { headers = {}, method, data } = options;
 
         return new Promise((resolve, reject) => {
@@ -54,13 +62,14 @@ export default class HTTPTransport {
 
             // eslint-disable-next-line no-undef
             const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
             const isGet = method === METHODS.GET;
 
             xhr.open(
                 method,
                 isGet && !!data
-                    ? `${url}${queryStringify(data)}`
-                    : url,
+                    ? `${baseUrl}${url}${queryStringify(data)}`
+                    : baseUrl + url,
             );
             Object.keys(headers).forEach((key) => {
                 xhr.setRequestHeader(key, headers[key]);
@@ -80,7 +89,8 @@ export default class HTTPTransport {
             if (isGet || !data) {
                 xhr.send();
             } else {
-                xhr.send(JSON.stringify(data));
+                const sendData = data instanceof FormData ? data : JSON.stringify(data);
+                xhr.send(sendData)
             }
         });
     };

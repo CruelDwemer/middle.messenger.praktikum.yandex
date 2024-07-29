@@ -11,6 +11,15 @@ export const MESSENGER = '/messenger';
 export const ERROR500 = '/error-500';
 export const ERROR404 = '/error-404';
 
+export enum PATH {
+    LOGIN = "/",
+    REGISTER = '/sign-up',
+    MAIN = "/messenger",
+    ERROR404 = "/error-404",
+    ERROR500 = "/error-500",
+    PROFILE = "/settings"
+}
+
 const rootBlockQuery = "#app"
 
 class Router {
@@ -47,8 +56,10 @@ class Router {
     }
 
     start(): void {
+        console.log("pathname", window.location.pathname)
         window.onpopstate = ((event: Event) => {
             const target = event?.currentTarget as Window;
+
             this._onRoute(target?.location.pathname);
         });
 
@@ -57,11 +68,11 @@ class Router {
 
     _onRoute(pathname: string): void {
         if (Store.getState().auth) {
-            if (pathname === AUTH || pathname === SIGNUP) {
+            if (pathname === PATH.LOGIN || pathname === PATH.REGISTER) {
                 pathname = MESSENGER;
                 this.history.pushState({}, '', MESSENGER);
             }
-        } else if (pathname !== AUTH && pathname !== SIGNUP) {
+        } else if (pathname !== PATH.LOGIN && pathname !== PATH.REGISTER) {
             pathname = AUTH;
             this.history.pushState({}, '', AUTH);
         }
@@ -79,6 +90,7 @@ class Router {
     }
 
     go(pathname: string): void {
+        console.log("Router go", pathname)
         this.history.pushState({}, '', pathname);
         this._onRoute(pathname);
     }

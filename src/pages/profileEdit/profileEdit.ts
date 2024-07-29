@@ -12,6 +12,7 @@ import Button from "../../common/components/button/button";
 import Input from "../../common/components/input/input";
 import onSubmit from "../../common/utils/formSubmit"
 import InputField, { InputFieldProps } from "../../common/components/inputField/inputField";
+import { PATH } from "../../common/core/Router";
 
 class ProfileInput extends Input {
     constructor(props: Props) {
@@ -106,7 +107,7 @@ export default class ProfileEditPage extends Block {
                 classname: "filled",
                 label: "Сохранить",
                 onClick: (e: Event | undefined) => {
-                    onSubmit(e, this.children, "/profile", "PROFILE DATA")
+                    onSubmit(e, this.children, PATH.PROFILE, "PROFILE DATA")
                 }
             })
         }

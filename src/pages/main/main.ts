@@ -12,6 +12,7 @@ import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
 import './main.scss';
 import InputField from "../../common/components/inputField/inputField";
+import Router, { PATH } from "../../common/core/Router";
 
 const sendMessage = (
     event: Event | undefined,
@@ -54,7 +55,7 @@ export default class MainPage extends Block {
             profileButton: new Button({
                 classname: "flat",
                 label: "Профиль >",
-                link: "/profile"
+                onClick: () => Router.go(PATH.PROFILE)
             }),
             searchInput: new InputField({
                 placeholder: "Поиск"

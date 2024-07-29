@@ -1,15 +1,16 @@
 <div class="profile-container">
     <div class="profile-item-avatar" ></div>
     <div class="profile-name">Иван</div>
-    {{> dataRow title="Почта" value="e@mail.com" }}
-    {{> dataRow title="Логин" value="login" }}
-    {{> dataRow title="Имя" value="Иван" }}
-    {{> dataRow title="Фамилия" value="Иванов" }}
-    {{> dataRow title="Имя в чате" value="username" }}
-    {{> dataRow title="Телефон" value="+* (***) *** - ** - **" }}
+    {{> dataRow title="Почта" value=user.email }}
+    {{> dataRow title="Логин" value=user.login }}
+    {{> dataRow title="Имя" value=user.first_name }}
+    {{> dataRow title="Фамилия" value=user.second_name }}
+    {{> dataRow title="Имя в чате" value=user.display_name }}
+    {{> dataRow title="Телефон" value=user.phone }}
     <div class="profile-actions-block">
         {{> button classname="flat" label="Изменить данные" link="/profile/edit" }}
         {{> button classname="flat" label="Изменить пароль" link="/profile" }}
-        {{> button classname="flat-red" label="Выйти" link="/login" }}
+        {{{ backButton }}}
+        {{{ logoutButton }}}
     </div>
 </div>

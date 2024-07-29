@@ -9,16 +9,19 @@
 import loginTemplate from "./login.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
-// import Input from "../../common/components/input/input";
+import connect from '../../common/utils/connect';
 import InputField from "../../common/components/inputField/inputField";
 import './login.scss';
-import onLogin from "../../common/utils/formSubmit"
+import onLogin from "../../common/utils/formSubmit";
+import Router, { PATH } from "../../common/core/Router";
+import AuthController from "../../common/controllers/AuthController";
+import {State} from "../../common/core/Store";
 
 interface ILoginProps extends Props {
     onLogin?: (event: Event | undefined) => void
 }
 
-export default class LoginPage extends Block {
+class LoginPage extends Block {
     protected constructor(data: ILoginProps | Children = {}) {
         super({
             data,
@@ -47,20 +50,26 @@ export default class LoginPage extends Block {
             authButton: new Button({
                 classname: "filled",
                 label: "Авторизоваться",
-                link: "/main",
                 onClick: (e: Event | undefined): void => {
-                    onLogin(e, this.children, "/main", "LOGIN DATA")
+                    onLogin(e, this.children, PATH.MAIN, "LOGIN DATA", AuthController.login.bind(AuthController))
                 }
             }),
             noAccButton: new Button({
                 classname: "flat",
                 label: "Нет аккаунта?",
-                link: "/register"
+                onClick: () => Router.go(PATH.REGISTER)
             })
         });
+        console.log("LoginPage", this)
+    }
+
+    static getStateToProps(state: State) {
+        return state;
     }
 
     protected render(): string {
         return loginTemplate;
     }
 }
+
+export default connect(LoginPage)

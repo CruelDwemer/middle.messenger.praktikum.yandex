@@ -1,6 +1,7 @@
 import { v4 } from 'uuid';
 import Handlebars from 'handlebars';
 import EventBus from './EventBus';
+import {State} from "./Store";
 
 // const chat = require("../components/chat/chat.hbs");
 // const message = require("../components/message/message.hbs");
@@ -13,6 +14,8 @@ import EventBus from './EventBus';
 * */
 import chat from "../components/chat/chat.hbs";
 import message from "../components/message/message.hbs";
+import dataRow from "../components/dataRow/dataRow.hbs";
+import button from "../components/button/button.hbs";
 import menu from "../svg/menu.hbs";
 import attach from "../svg/attach.hbs";
 
@@ -25,6 +28,8 @@ const messageTime = "10:46";
 * */
 Handlebars.registerPartial("chat", chat);
 Handlebars.registerPartial("menu", menu);
+Handlebars.registerPartial("dataRow", dataRow);
+Handlebars.registerPartial("button", button);
 Handlebars.registerPartial("message", message.bind(null, { text: messageText, time: messageTime }));
 Handlebars.registerPartial("attach", attach);
 
@@ -57,7 +62,7 @@ class Block {
     protected readonly eventBus: () => EventBus;
     private _element: HTMLElement | null = null;
 
-    protected constructor(propsWithChildren: Props | Children) {
+    protected constructor(propsWithChildren: (Props | Children)[] | (Props | Children)) {
         const eventBus: EventBus = new EventBus();
 
         const { props, children, parent } = Block.getChildrenAndProps(propsWithChildren);
@@ -250,6 +255,11 @@ class Block {
     hide() {
         this.getContent()!.style.display = 'none';
     }
+
+    getStateToProps(state: State) {
+        return state
+    }
+
 }
 
 export default Block;

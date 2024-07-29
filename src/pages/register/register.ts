@@ -11,6 +11,8 @@ import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Input from "../../common/components/inputField/inputField";
 import onSubmit from "../../common/utils/formSubmit";
+import Router, { PATH } from "../../common/core/Router";
+import AuthController from "../../common/controllers/AuthController";
 
 export default class RegisterPage extends Block {
     protected constructor(data: Props | Children = {}) {
@@ -78,15 +80,14 @@ export default class RegisterPage extends Block {
             registrationButton: new Button({
                 classname: "filled",
                 label: "Зарегистрироваться",
-                link: "/main",
                 onClick: (e: Event | undefined) => {
-                    onSubmit(e, this.children, "/main", "REGISTRATION DATA")
+                    onSubmit(e, this.children, PATH.MAIN, "REGISTRATION DATA", AuthController.createUser.bind(AuthController))
                 }
             }),
             loginButton: new Button({
                 classname: "flat",
                 label: "Войти",
-                link: "/login"
+                onClick: () => Router.go(PATH.LOGIN)
             })
         });
     }

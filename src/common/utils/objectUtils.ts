@@ -6,7 +6,7 @@
 /* eslint-disable no-plusplus */
 import Block from '../core/Block';
 
-type PlainObject<T = any> = {
+type PlainObject<T = unknown> = {
     [k in string]: T;
 };
 
@@ -58,7 +58,7 @@ export function render(query: string, block: Block): void {
 }
 
 
-type Indexed<T = any> = {
+type Indexed<T = unknown> = {
     [key in string]: T;
 };
 
@@ -92,11 +92,11 @@ export function set(object: Indexed | unknown, path: string, value: unknown): In
 
     const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
         [key]: acc,
-    }), value as any);
+    }), value as Indexed);
     return merge(object as Indexed, result);
 }
 
-export function searchObjInArray(array: Array<Record<string, string | number | unknown>>, key: string, value: string | number): Record<string, string | number> | undefined {
+export function searchObjInArray(array: Array<Record<string, string | number | unknown>>, key: string, value: string | number): Record<string, unknown> | unknown{
     for (let i = 0; i < array.length; i++) {
         const item = array[i];
         if (item[key] === value) {
@@ -106,8 +106,8 @@ export function searchObjInArray(array: Array<Record<string, string | number | u
     return undefined;
 }
 
-export function cloneDeep(obj: Record<string, unknown | any>): Record<string, unknown | any> {
-    return (function _cloneDeep(item: any): Record<string, unknown | any> {
+export function cloneDeep(obj: Record<string, unknown>): Record<string, unknown> | unknown {
+    return (function _cloneDeep(item: unknown): Record<string, unknown> | unknown {
         // Handle:
         // * null
         // * undefined
@@ -129,7 +129,7 @@ export function cloneDeep(obj: Record<string, unknown | any>): Record<string, un
         // Handle:
         // * Array
         if (item instanceof Array) {
-            const copy: any = [];
+            const copy: unknown = [];
 
             item.forEach((_, i) => (copy[i] = _cloneDeep(item[i])));
 
@@ -159,7 +159,7 @@ export function cloneDeep(obj: Record<string, unknown | any>): Record<string, un
         // Handle:
         // * Object
         if (item instanceof Object) {
-            const copy: any = {};
+            const copy: unknown = {};
 
             // Handle:
             // * Object.symbol

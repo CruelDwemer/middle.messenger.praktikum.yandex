@@ -1,12 +1,18 @@
 import Handlebars from "handlebars/runtime";
 // страницы
 import errorPage from "./pages/error/error.hbs";
-import profilePage from "./pages/profile/profile.hbs";
+// import profilePage from "./pages/profile/profile.hbs";
 // компоненты
 import button from "./common/components/button/button.hbs";
 import input from "./common/components/input/input.hbs";
 import dataRow from "./common/components/dataRow/dataRow.hbs";
 import dataRowEdit from "./common/components/dataRow/dataRowEdit.hbs";
+
+import router, {
+    PATH
+} from './common/core/Router';
+import Store from './common/core/Store';
+import AuthController from './common/controllers/AuthController';
 
 // стили
 /* eslint-disable  @typescript-eslint/no-unused-vars */
@@ -19,7 +25,7 @@ import profileStyle from "./pages/profile/profile.scss";
 
 import LoginPage from "./pages/login/login";
 import RegisterPage from "./pages/register/register";
-import ProfileEditPage from "./pages/profileEdit/profileEdit";
+import ProfilePage from "./pages/profile/profile";
 import MainPage from "./pages/main/main";
 
 Handlebars.registerPartial("button", button);
@@ -28,41 +34,53 @@ Handlebars.registerPartial("dataRow", dataRow);
 Handlebars.registerPartial("dataRowEdit", dataRowEdit);
 
 document.addEventListener("DOMContentLoaded", () => {
-    const app = document.querySelector("#app");
-    const path = window.location.pathname;
+    // const app = document.querySelector("#app");
+    // const path = window.location.pathname;
 
-    const loginScreen = new LoginPage();
-    const registerScreen = new RegisterPage();
-    const profileEditScreen = new ProfileEditPage();
-    const mainScreen = new MainPage();
+    // const loginScreen = new LoginPage();
+    // const registerScreen = new RegisterPage();
+    // const profileEditScreen = new ProfileEditPage();
+    // const mainScreen = new MainPage();
 
-    switch (path) {
-        case "/":
-        case "":
-            window.location.href = "/login";
-            break
-        case "/main":
-            app.append(mainScreen.getContent());
-            break
-        case "/login":
-            app.append(loginScreen.getContent());
-            break
-        case "/profile/edit":
-            app.append(profileEditScreen.getContent());
-            break
-        case "/profile":
-            app.innerHTML = profilePage();
-            break
-        case "/register":
-            app.append(registerScreen.getContent());
-            break
-        case "/404":
-            app.innerHTML = errorPage({ message: "Не найдено" });
-            break
-        case "/500":
-            app.innerHTML = errorPage({ message: "Ошибка сервера" });
-            break
-        default:
-            window.location.href = "/404";
-    }
+    AuthController.getUserInfo().then(() => {
+        router
+            .use(PATH.LOGIN, LoginPage)
+            .use(PATH.REGISTER, RegisterPage)
+            .use(PATH.PROFILE, ProfilePage)
+            .use(PATH.MAIN, MainPage)
+            .use(PATH.ERROR404, errorPage({ message: "Не найдено" }))
+            .use(PATH.ERROR500, errorPage({ message: "Ошибка сервера" }))
+            .start();
+        Store.set('getPage', '');
+    });
+
+    // switch (path) {
+    //     case "/":
+    //     case "":
+    //         window.location.href = "/login";
+    //         break
+    //     case "/main":
+    //         app.append(mainScreen.getContent());
+    //         break
+    //     case "/login":
+    //         app.append(loginScreen.getContent());
+    //         break
+    //     case "/profile/edit":
+    //         app.append(profileEditScreen.getContent());
+    //         break
+    //     case "/profile":
+    //         app.innerHTML = profilePage();
+    //         break
+    //     case "/register":
+    //         app.append(registerScreen.getContent());
+    //         break
+    //     case "/404":
+    //         app.innerHTML = errorPage({ message: "Не найдено" });
+    //         break
+    //     case "/500":
+    //         app.innerHTML = errorPage({ message: "Ошибка сервера" });
+    //         break
+    //     default:
+    //         window.location.href = "/404";
+    // }
 })
