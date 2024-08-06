@@ -5,11 +5,14 @@ import { State } from "../../common/core/Store";
 import Button from "../../common/components/button/button";
 import AuthController from "../../common/controllers/AuthController";
 import Router from "../../common/core/Router";
+import ProfileEditPage from "../profileEdit/profileEdit";
 
 class ProfilePage extends Block {
     protected constructor(data: Props | Children = {}) {
+        const editModal = new ProfileEditPage({data})
         super({
             data,
+            editModal,
             logoutButton: new Button({
                 classname: "flat-red",
                 label: "Выйти",
@@ -22,6 +25,13 @@ class ProfilePage extends Block {
                 label: "Назад",
                 onClick: () => {
                     Router.back()
+                }
+            }),
+            editButton: new Button({
+                classname: "flat",
+                label: "Изменить данные",
+                onClick: () => {
+                    editModal.show()
                 }
             })
         })

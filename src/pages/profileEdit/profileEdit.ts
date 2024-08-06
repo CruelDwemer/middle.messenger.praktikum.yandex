@@ -13,6 +13,9 @@ import Input from "../../common/components/input/input";
 import onSubmit from "../../common/utils/formSubmit"
 import InputField, { InputFieldProps } from "../../common/components/inputField/inputField";
 import { PATH } from "../../common/core/Router";
+import "./profileEdit.scss"
+import {State} from "../../common/core/Store";
+import connect from "../../common/utils/connect";
 
 class ProfileInput extends Input {
     constructor(props: Props) {
@@ -47,18 +50,19 @@ class ProfileInputField extends InputField {
     }
 }
 
-export default class ProfileEditPage extends Block {
+class ProfileEditPage extends Block {
     protected constructor(data: Props | Children = {}) {
+        const emailInput = new ProfileInputField({
+            name: "email",
+            placeholder: "Почта",
+            validationRules: {
+                regexp: new RegExp(/^[a-zA-Z\d._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/),
+                regexpError: "Неправильный формат email"
+            }
+        })
         const newProps: Props = {
             data,
-            emailInput: new ProfileInputField({
-                name: "email",
-                placeholder: "Почта",
-                validationRules: {
-                    regexp: new RegExp(/^[a-zA-Z\d._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/),
-                    regexpError: "Неправильный формат email"
-                }
-            }),
+            emailInput,
             loginInput: new ProfileInputField({
                 name: "login",
                 placeholder: "Логин",
@@ -109,12 +113,38 @@ export default class ProfileEditPage extends Block {
                 onClick: (e: Event | undefined) => {
                     onSubmit(e, this.children, PATH.PROFILE, "PROFILE DATA")
                 }
+            }),
+            closeButton: new Button({
+                classname: "flat-red",
+                label: "Закрыть",
+                onClick: () => {
+                    this.hide()
+                }
             })
         }
         super(newProps);
+    }
+
+    static getStateToProps(state: State) {
+        return { user: state.user }
+    }
+
+    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+        if(newProps.user) {
+            if(newProps.user.email) {
+                this.children.emailInput.setProps({ value: newProps.user.email })
+            }
+        }
+        return true
+    }
+
+    public show = () => {
+        this.getContent()!.style.display = 'flex';
     }
 
     protected render(): string {
         return profileEditTemplate;
     }
 }
+
+export default connect(ProfileEditPage)

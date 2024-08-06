@@ -4,6 +4,7 @@ import UsersApi from '../api/UsersApi';
 import Block from '../classes/Block';
 import { TOptionsData } from '../classes/HTTPTransport';
 import BaseController from './BaseController';
+import SearchUserItem from "../components/searchUserItem/searchUserItem";
 
 class UsersController extends BaseController {
     public async changeData(data: TOptionsData) {
@@ -41,13 +42,18 @@ class UsersController extends BaseController {
 
     public async searchUsers(self: Block, value: string) {
         if (!value) {
-            self.setProps({ items: null });
+            self.setProps({ items: null, results: [] });
             return;
         }
         try {
             const { status, response } = await UsersApi.searchUser(value);
             if (status === 200) {
-                self.setProps({ items: JSON.parse(response) });
+                const items = JSON.parse(response)
+                if(items) {
+                    const results = items.map(result => new SearchUserItem(result))
+                    self.setProps({ items, results });
+                }
+
             } else if (status === 500) {
                 this.router.go('/500');
             } else {

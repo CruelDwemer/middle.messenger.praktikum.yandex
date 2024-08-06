@@ -13,6 +13,12 @@ import SendButton from "../../common/components/sendButton/sendButton";
 import './main.scss';
 import InputField from "../../common/components/inputField/inputField";
 import Router, { PATH } from "../../common/core/Router";
+import ChatsController from "../../common/controllers/ChatsController";
+import Input from "../../common/components/inputField/inputField";
+import UsersController from "../../common/controllers/UsersController";
+import connect from '../../common/utils/connect';
+import {State} from "../../common/core/Store";
+import SearchUsersModal from "../../common/components/searchUsersModal/searchUsersModal";
 
 const sendMessage = (
     event: Event | undefined,
@@ -39,10 +45,34 @@ const sendMessage = (
     console.log(`Form is ${isValid ? "" : "not"} valid`)
 }
 
-export default class MainPage extends Block {
+class MainPage extends Block {
     protected constructor(data: Props | Children = {}) {
+        const modal = new SearchUsersModal(null);
+
+        const onSearchButtonClick = async () => {
+            const { children } = this;
+            if(children) {
+                const res: Input | undefined = Object.values(children)
+                    .find(child => child instanceof Input && child.props.name === "search") as Input | undefined
+                if(res && res.value()) {
+                    const options = await UsersController.searchUsers(modal, res.value())
+                    await console.log("options", options, this);
+                }
+            }
+        }
+
+        const searchButton = new Button({
+            classname: "filled",
+            label: "Искать",
+            onClick: async () => {
+                await onSearchButtonClick()
+                modal.show()
+            }
+        });
+
         super({
             data,
+            modal,
             messageInput: new InputField({
                 name: "message",
                 classname: "active-bottom-input",
@@ -58,8 +88,10 @@ export default class MainPage extends Block {
                 onClick: () => Router.go(PATH.PROFILE)
             }),
             searchInput: new InputField({
-                placeholder: "Поиск"
+                placeholder: "Поиск",
+                name: "search"
             }),
+            searchButton,
             sendButton: new SendButton({
                 width: "40px",
                 height: "40px",
@@ -70,7 +102,20 @@ export default class MainPage extends Block {
         });
     }
 
+    async componentDidMount() {
+        const result = await ChatsController.getChats();
+        if(result) {
+            console.log("chats", result)
+        }
+    }
+
+    static getStateToProps(state: State) {
+        return { chats: state.chats };
+    }
+
     protected render(): string {
         return mainTemplate;
     }
 }
+
+export default connect(MainPage)

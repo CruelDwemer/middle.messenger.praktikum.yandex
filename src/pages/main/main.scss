@@ -14,7 +14,7 @@
     justify-content: center;
     align-items: center;
     width: 80%;
-    border: #1a1a1a solid 1px;
+    border: $black solid 1px;
     height: 90%;
 }
 
@@ -25,7 +25,6 @@
     padding: 10px;
     min-width: 250px;
 }
-
 
 .chats-header {
     display: flex;
@@ -38,6 +37,8 @@
 }
 
 .chats-header-search {
+    display: flex;
+    flex-direction: row;
     margin-top: 5px;
 }
 

@@ -1,42 +1,45 @@
-<form class="profile-container">
-    <div class="profile-item-avatar"></div>
-    <div class="profile-data-row">
-        <div>Почта</div>
-        <div>
-            {{{ emailInput }}}
+<div class="modal-back">
+    <form class="profile-container profile-edit-container">
+        <div class="profile-item-avatar"></div>
+        <div class="profile-data-row">
+            <div>Почта</div>
+            <div>
+                {{{ emailInput }}}
+            </div>
         </div>
-    </div>
-    <div class="profile-data-row">
-        <div>Логин</div>
-        <div>
-            {{{ loginInput }}}
+        <div class="profile-data-row">
+            <div>Логин</div>
+            <div>
+                {{{ loginInput }}}
+            </div>
         </div>
-    </div>
-    <div class="profile-data-row">
-        <div>Имя</div>
-        <div>
-            {{{ firstNameInput }}}
+        <div class="profile-data-row">
+            <div>Имя</div>
+            <div>
+                {{{ firstNameInput }}}
+            </div>
         </div>
-    </div>
-    <div class="profile-data-row">
-        <div>Фамилия</div>
-        <div>
-            {{{ secondNameInput }}}
+        <div class="profile-data-row">
+            <div>Фамилия</div>
+            <div>
+                {{{ secondNameInput }}}
+            </div>
         </div>
-    </div>
-    <div class="profile-data-row">
-        <div>Имя в чате</div>
-        <div>
-            {{{ chatNameInput }}}
+        <div class="profile-data-row">
+            <div>Имя в чате</div>
+            <div>
+                {{{ chatNameInput }}}
+            </div>
         </div>
-    </div>
-    <div class="profile-data-row">
-        <div>Телефон</div>
-        <div>
-            {{{ phoneInput }}}
+        <div class="profile-data-row">
+            <div>Телефон</div>
+            <div>
+                {{{ phoneInput }}}
+            </div>
         </div>
-    </div>
-    <div class="profile-actions-block">
-        {{{ saveButton }}}
-    </div>
-</form>
+        <div class="profile-actions-block">
+            {{{ saveButton }}}
+            {{{ closeButton }}}
+        </div>
+    </form>
+</div>

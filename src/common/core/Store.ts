@@ -2,8 +2,8 @@ import { set } from '../utils/objectUtils';
 import EventBus from './EventBus';
 
 // eslint-disable-next-line no-shadow
-export enum StoreEvents {
-    Updated = 'updated',
+export enum STORE_EVENT {
+    UPDATED = 'updated',
 }
 export type Chat = Record<string, number | string | unknown>
 
@@ -24,6 +24,11 @@ export type State = {
 };
 
 class Store extends EventBus {
+    constructor() {
+        super();
+        this.on(STORE_EVENT.UPDATED, () => null);
+    }
+
     private state: State = {
         auth: false,
         user: null,
@@ -45,9 +50,8 @@ class Store extends EventBus {
 
     public set(path: string, value: unknown): void {
         try {
-            console.log("Store set", this.state, path, value)
             set(this.state, path, value);
-            this.emit(StoreEvents.Updated);
+            this.emit(STORE_EVENT.UPDATED);
         } catch (e) {
             console.log(e);
         }
@@ -69,7 +73,7 @@ class Store extends EventBus {
                     messages: null,
                 },
             };
-            this.emit(StoreEvents.Updated);
+            this.emit(STORE_EVENT.UPDATED);
         } catch (e) {
             console.log(e);
         }

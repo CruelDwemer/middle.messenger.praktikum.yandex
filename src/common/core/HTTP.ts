@@ -15,8 +15,6 @@ type TOptions = {
 type HTTPMethod = (url: string, options?: TOptions) => Promise<unknown>
 type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<unknown | void>
 
-const baseUrl = 'https://ya-praktikum.tech/api/v2'
-
 function queryStringify(data: TOptionsData): string {
     if (typeof data !== 'object') {
         throw new Error('Data must be object');
@@ -52,6 +50,7 @@ export default class HTTPTransport {
 
     request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<unknown | void> => {
         const { headers = {}, method, data } = options;
+        const { baseUrl } = this;
 
         return new Promise((resolve, reject) => {
             if (!method) {

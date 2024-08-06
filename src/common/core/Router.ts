@@ -56,7 +56,6 @@ class Router {
     }
 
     start(): void {
-        console.log("pathname", window.location.pathname)
         window.onpopstate = ((event: Event) => {
             const target = event?.currentTarget as Window;
 
@@ -90,7 +89,6 @@ class Router {
     }
 
     go(pathname: string): void {
-        console.log("Router go", pathname)
         this.history.pushState({}, '', pathname);
         this._onRoute(pathname);
     }

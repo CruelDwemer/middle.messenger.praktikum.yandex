@@ -126,6 +126,7 @@ class Block {
 
     private _init() {
         this.init();
+        this.eventBus().emit(Block.EVENTS.FLOW_CDM);
         this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
 
@@ -137,6 +138,10 @@ class Block {
 
     private _componentDidMount() {
         this.componentDidMount();
+        Object.values(this.children)
+            .forEach((child) => {
+                if(child instanceof Block) child.dispatchComponentDidMount();
+            });
     }
 
     componentDidMount() {
@@ -144,15 +149,11 @@ class Block {
 
     public dispatchComponentDidMount() {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
-
-        Object.values(this.children)
-            .forEach((child) => {
-                if(child instanceof Block) child.dispatchComponentDidMount();
-            });
     }
 
     private _componentDidUpdate(oldProps: Props, newProps: Props) {
         if(this.componentDidUpdate(oldProps, newProps)) {
+            console.log("cdu to render", this)
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
     }
@@ -163,7 +164,8 @@ class Block {
 
     public setProps = (nextProps: Props) => {
         if(nextProps) {
-            Object.assign(this.props, nextProps)
+            Object.assign(this.props, nextProps);
+            this.eventBus().emit(Block.EVENTS.FLOW_CDU, this.props as unknown, nextProps as unknown);
         }
     }
 

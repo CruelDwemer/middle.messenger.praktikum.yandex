@@ -13,7 +13,6 @@ class AuthController extends BaseController {
         }
         super();
         AuthController.__instance = this
-        console.log("AuthController constructor this", this)
     }
 
     public async createUser(data: TOptionsData): Promise<void> {
@@ -35,7 +34,6 @@ class AuthController extends BaseController {
     }
 
     public async login(data: TOptionsData): Promise<void> {
-        console.log("AuthController login", this)
         try {
             this.store.set('isLoading', true);
             const { status, response } = await authApi.login(data);
@@ -58,7 +56,6 @@ class AuthController extends BaseController {
         try {
             const { status, response } = await authApi.getUser();
             if (status === 200 && response) {
-                console.log("getUserInfo", response)
                 this.store.set('user', JSON.parse(response));
                 this.store.set('auth', true);
                 return true;
@@ -71,7 +68,6 @@ class AuthController extends BaseController {
     }
 
     public async logout(): Promise<void> {
-        console.log("logout", this)
         try {
             const { status, response } = await authApi.logout();
             if (status === 200) {

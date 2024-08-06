@@ -1,4 +1,5 @@
 <div class="profile-container">
+    {{{ editModal }}}
     <div class="profile-item-avatar" ></div>
     <div class="profile-name">Иван</div>
     {{> dataRow title="Почта" value=user.email }}
@@ -8,7 +9,8 @@
     {{> dataRow title="Имя в чате" value=user.display_name }}
     {{> dataRow title="Телефон" value=user.phone }}
     <div class="profile-actions-block">
-        {{> button classname="flat" label="Изменить данные" link="/profile/edit" }}
+        {{> button classname="flat" label="Изменить данные 0" link="/profile/edit" }}
+        {{{ editButton }}}
         {{> button classname="flat" label="Изменить пароль" link="/profile" }}
         {{{ backButton }}}
         {{{ logoutButton }}}

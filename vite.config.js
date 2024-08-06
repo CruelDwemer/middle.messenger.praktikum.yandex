@@ -21,5 +21,12 @@ export default defineConfig({
                     assetFileNames: `assets/[name].[ext]`,
                 }
         }
-    }
+    },
+    optimizeDeps: {
+        esbuildOptions: {
+            loader: {
+                ".hbs": "text",
+            },
+        },
+    },
 });
