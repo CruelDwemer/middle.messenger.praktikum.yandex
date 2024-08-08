@@ -11,34 +11,23 @@
                     {{{ searchButton }}}
                 </div>
             </div>
-            {{#each chats }}
-                <div class="chats-item">
-                    <div class="chats-item-avatar"></div>
-                    <div class="chats-item-body">
-                        <p class="chats-item-body-contact">{{ this.name }}</p>
-                        <p>{{ this.message }}</p>
-                    </div>
-                    <div class="chats-item-meta">
-                        <small>10:42</small>
-                        <div class="chats-item-meta-unread">2</div>
-                    </div>
-                </div>
-            {{else}}
-                Нет чатов
-            {{/each }}
+            {{{ chatList }}}
+            {{#if noResultsText}}
+                <div>{{ noResultsText }}</div>
+            {{/if}}
         </div>
         <div class="active">
             <div class="active-header">
                 <div class="chats-item-avatar"></div>
-                <div class="active-contact-name">Вадим</div>
-                <div class="active-menu">
-                    {{> menu width="40px" height="40px" }}
-                </div>
+                <div class="active-contact-name">{{ activeChatTitle }}</div>
+                {{#if activeChatTitle}}
+                    <div>{{{ deleteUser }}}</div>
+                {{/if}}
             </div>
             <div class="active-chat-area">
-                {{> message }}
-                {{> message }}
-                {{> message }}
+                {{#each messages }}
+                    {{> message text=this.content time=this.time name=this.user_id }}
+                {{/each}}
             </div>
             <div class="active-bottom">
                 <div>{{> attach width="40px" height="40px" }}</div>

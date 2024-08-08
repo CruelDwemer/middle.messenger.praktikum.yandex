@@ -4,10 +4,10 @@ import UsersApi from '../api/UsersApi';
 import Block from '../classes/Block';
 import { TOptionsData } from '../classes/HTTPTransport';
 import BaseController from './BaseController';
-import SearchUserItem from "../components/searchUserItem/searchUserItem";
 
 class UsersController extends BaseController {
-    public async changeData(data: TOptionsData) {
+    public changeData = async (data: TOptionsData) => {
+        console.log("UsersController this", {...this})
         try {
             const { status, response } = await UsersApi.changeData(data);
             if (status === 200) {
@@ -40,9 +40,9 @@ class UsersController extends BaseController {
         }
     }
 
-    public async searchUsers(self: Block, value: string) {
+    public searchUsers = async (self: Block, value: string) => {
         if (!value) {
-            self.setProps({ items: null, results: [] });
+            self.setProps({ items: null });
             return;
         }
         try {
@@ -50,8 +50,7 @@ class UsersController extends BaseController {
             if (status === 200) {
                 const items = JSON.parse(response)
                 if(items) {
-                    const results = items.map(result => new SearchUserItem(result))
-                    self.setProps({ items, results });
+                    self.setProps({ items });
                 }
 
             } else if (status === 500) {

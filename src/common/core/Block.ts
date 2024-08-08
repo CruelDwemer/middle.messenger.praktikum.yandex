@@ -18,9 +18,10 @@ import dataRow from "../components/dataRow/dataRow.hbs";
 import button from "../components/button/button.hbs";
 import menu from "../svg/menu.hbs";
 import attach from "../svg/attach.hbs";
+import {isEqual} from "../utils/objectUtils";
 
-const messageText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-const messageTime = "10:46";
+// const messageText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+// const messageTime = "10:46";
 
 /*
 *   Приходится регистрировать partials здесь
@@ -30,7 +31,7 @@ Handlebars.registerPartial("chat", chat);
 Handlebars.registerPartial("menu", menu);
 Handlebars.registerPartial("dataRow", dataRow);
 Handlebars.registerPartial("button", button);
-Handlebars.registerPartial("message", message.bind(null, { text: messageText, time: messageTime }));
+Handlebars.registerPartial("message", message);
 Handlebars.registerPartial("attach", attach);
 
 type EventsEnum = {
@@ -56,6 +57,7 @@ class Block {
 
     protected parent: Parent;
     public children: Children;
+    public lists: Children | Props;
 
     private _meta: { tagName: string, props?: Props } | null = null;
 
@@ -65,10 +67,11 @@ class Block {
     protected constructor(propsWithChildren: (Props | Children)[] | (Props | Children)) {
         const eventBus: EventBus = new EventBus();
 
-        const { props, children, parent } = Block.getChildrenAndProps(propsWithChildren);
+        const { props, children, lists, parent } = Block.getChildrenAndProps(propsWithChildren);
 
         this.parent = parent;
         this.children = children;
+        this.lists = lists;
         this.props = this._makePropsProxy(props);
 
         this.eventBus = () => eventBus;
@@ -79,9 +82,11 @@ class Block {
     }
 
     static getChildrenAndProps(childrenAndProps: Props | Children)
-        : { props: Props, children: Children, parent: Parent } {
+        : { props: Props, children: Children, parent: Parent, lists: Children | Props } {
         const props: Props = {};
         const children: Children = {};
+        const lists = {};
+
         let parent: Parent;
 
         Object.entries(childrenAndProps)
@@ -92,12 +97,14 @@ class Block {
                     } else {
                         children[key] = value;
                     }
+                } else if(Array.isArray(value)) {
+                    lists[key] = value;
                 } else {
                     props[key] = value;
                 }
             });
 
-        return { props, children, parent };
+        return { props, children, lists, parent };
     }
 
     private _addEvents() {
@@ -153,13 +160,12 @@ class Block {
 
     private _componentDidUpdate(oldProps: Props, newProps: Props) {
         if(this.componentDidUpdate(oldProps, newProps)) {
-            console.log("cdu to render", this)
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
     }
 
     protected componentDidUpdate(oldProps: Props, newProps: Props) {
-        return oldProps !== newProps;
+        return !isEqual(oldProps, newProps);
     }
 
     public setProps = (nextProps: Props) => {
@@ -190,6 +196,7 @@ class Block {
     /* eslint-disable  @typescript-eslint/no-explicit-any */
     protected compile(template: ((context: any) => string) | string, context: any) {
         const contextAndDummies = { ...context }
+        const _tmpId =  Math.floor(100000 + Math.random() * 900000);
 
         Object.entries(this.children).forEach(([name, component]) => {
             if(Array.isArray(component)) {
@@ -198,6 +205,11 @@ class Block {
                 contextAndDummies[name] = `<div data-id="${component.id}"></div>`
             }
         })
+
+        Object.entries(this.lists).forEach(([key]) => {
+            contextAndDummies[key] = `<div data-id="_list_${_tmpId}"></div>`;
+        });
+
         const html = Handlebars.compile(template)(contextAndDummies)
 
         const temp = document.createElement('template')
@@ -218,6 +230,19 @@ class Block {
                 replaceDummy(component as Block)
             }
         })
+
+        Object.entries(this.lists).forEach(([, child]) => {
+            const listCont = document.createElement('template');
+            child.forEach(item => {
+                if (item instanceof Block) {
+                    listCont.content.append(item.getContent());
+                } else {
+                    listCont.content.append(`${item}`);
+                }
+            });
+            const dummy = temp.content.querySelector(`[data-id="_list_${_tmpId}"]`);
+            dummy.replaceWith(listCont.content);
+        });
 
         return temp.content
     }

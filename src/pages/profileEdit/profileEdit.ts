@@ -16,6 +16,8 @@ import { PATH } from "../../common/core/Router";
 import "./profileEdit.scss"
 import {State} from "../../common/core/Store";
 import connect from "../../common/utils/connect";
+import {toCamelCase} from "../../common/utils/stringUtils";
+import UsersController from "../../common/controllers/UsersController";
 
 class ProfileInput extends Input {
     constructor(props: Props) {
@@ -48,6 +50,13 @@ class ProfileInputField extends InputField {
             })
         })
     }
+
+    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+        if(newProps.value) {
+            this.children.input.setProps({ value: newProps.value })
+        }
+        return true
+    }
 }
 
 class ProfileEditPage extends Block {
@@ -73,7 +82,7 @@ class ProfileEditPage extends Block {
                     regexpError: "Допустимые символы - латиница, цифры, '_', '-'"
                 }
             }),
-            chatNameInput: new ProfileInputField({
+            displayNameInput: new ProfileInputField({
                 name: "display_name",
                 placeholder: "Имя_в_чате",
                 validationRules: {
@@ -110,8 +119,9 @@ class ProfileEditPage extends Block {
             saveButton: new Button({
                 classname: "filled",
                 label: "Сохранить",
-                onClick: (e: Event | undefined) => {
-                    onSubmit(e, this.children, PATH.PROFILE, "PROFILE DATA")
+                onClick: async (e: Event | undefined) => {
+                    await onSubmit(e, this.children, PATH.PROFILE, "PROFILE DATA", UsersController.changeData)
+                    this.hide()
                 }
             }),
             closeButton: new Button({
@@ -131,9 +141,12 @@ class ProfileEditPage extends Block {
 
     protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
         if(newProps.user) {
-            if(newProps.user.email) {
-                this.children.emailInput.setProps({ value: newProps.user.email })
-            }
+            Object.keys(newProps.user).forEach(key => {
+                const targetName = `${toCamelCase(key)}Input`;
+                if(this.children[targetName]) {
+                    this.children[targetName].setProps({ value: newProps.user[key] })
+                }
+            })
         }
         return true
     }

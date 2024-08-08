@@ -6,7 +6,7 @@
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-import loginTemplate from "./login.hbs?raw";
+import { default as loginTemplate } from "./login.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import connect from '../../common/utils/connect';
@@ -60,7 +60,6 @@ class LoginPage extends Block {
                 onClick: () => Router.go(PATH.REGISTER)
             })
         });
-        console.log("LoginPage", this)
     }
 
     static getStateToProps(state: State) {

@@ -8,7 +8,7 @@ import BaseController from './BaseController';
 import MessageController from './MessageController';
 
 class ChatsController extends BaseController {
-    public async getChats(): Promise<void> {
+    public getChats = async (): Promise<void> => {
         try {
             if (this.router?._currentRoute?._pathname !== '/messenger') return;
             const { status, response } = await ChatsApi.getChats();
@@ -45,7 +45,7 @@ class ChatsController extends BaseController {
         }
     }
 
-    public async deleteChats(): Promise<void> {
+    public deleteChat = async (): Promise<void> => {
         try {
             const chatId = this?.store?.getState()?.currentChat?.chat?.id;
             if (typeof chatId !== 'number') return;
@@ -87,16 +87,12 @@ class ChatsController extends BaseController {
         return false;
     }
 
-    public async addNewChatUser(user: Record<string, string | number>): Promise<boolean | void> {
+    public addNewChatUser = async (user: Record<string, string | number>, addToCurrent?: boolean): Promise<boolean | void> => {
         const { display_name, login, id } = user;
         let chat = this?.store?.getState()?.currentChat?.chat?.id;
-        if (!confirm(`Вы хотите ${chat ? 'добавить в текущий чат ' : 'создать новый чат с '}${login}`)) {
-            return;
-        }
-        if (!chat) {
+        if (!addToCurrent) {
             const title = display_name ?? login;
             chat = await this.createChat(String(title));
-            return;
         }
         if (!chat) return;
         const result = await this.addUser(Number(chat), Number(id));

@@ -1,24 +1,12 @@
 <div class="modal-back">
     <div class="modal-paper">
         <p>Поиск пользователей</p>
-        <div>
-            1
-            <ul>
-                {{#if items}}
-                    {{#each items}}
-                        <li>{{ this.login }} - {{ this.first_name }} {{ this.second_name }} {{{ startChatButton }}}</li>
-                    {{/each}}
-                {{ else }}
-                    <p>Нет результатов</p>
-                {{/if}}
-            </ul>
-        </div>
-
-        <div>
-            2
+        <div class="modal-results-block">
             {{{ results }}}
+            {{#if noResultsText}}
+                <div>{{ noResultsText }}</div>
+            {{/if}}
         </div>
-
         {{{ closeButton }}}
     </div>
 </div>

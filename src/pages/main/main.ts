@@ -6,7 +6,7 @@
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-import mainTemplate from "./main.hbs?raw";
+import { default as mainTemplate } from "./main.hbs?raw";
 import Block, { Props, Children } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
@@ -19,6 +19,10 @@ import UsersController from "../../common/controllers/UsersController";
 import connect from '../../common/utils/connect';
 import {State} from "../../common/core/Store";
 import SearchUsersModal from "../../common/components/searchUsersModal/searchUsersModal";
+import ChatListItem from "../../common/components/chatListItem/chatListItem";
+import MessageController from "../../common/controllers/MessageController";
+
+const noResultsText = "Нет чатов";
 
 const sendMessage = (
     event: Event | undefined,
@@ -36,13 +40,15 @@ const sendMessage = (
                 if(!child.validate()) {
                     isValid = false
                 }
-                dataForms[child.props.name as string] = child.value()
+                dataForms[child.props.name as string] = child.value();
+                child.resetValue()
             }
         })
     }
-    console.log("MESSAGE")
-    console.table(dataForms);
-    console.log(`Form is ${isValid ? "" : "not"} valid`)
+
+    if(isValid) {
+        MessageController.sendMessage(dataForms)
+    }
 }
 
 class MainPage extends Block {
@@ -55,8 +61,7 @@ class MainPage extends Block {
                 const res: Input | undefined = Object.values(children)
                     .find(child => child instanceof Input && child.props.name === "search") as Input | undefined
                 if(res && res.value()) {
-                    const options = await UsersController.searchUsers(modal, res.value())
-                    await console.log("options", options, this);
+                    await UsersController.searchUsers(modal, res.value())
                 }
             }
         }
@@ -73,6 +78,8 @@ class MainPage extends Block {
         super({
             data,
             modal,
+            chatList: [],
+            activeChatTitle: "",
             messageInput: new InputField({
                 name: "message",
                 classname: "active-bottom-input",
@@ -98,19 +105,50 @@ class MainPage extends Block {
                 onClick: (e: Event | undefined): void => {
                     sendMessage(e, this.children)
                 }
-            })
+            }),
+            deleteUser: new Button({
+                classname: "flat-red",
+                label: "Удалить чат",
+                onClick: async () => {
+                    await ChatsController.deleteChat()
+                }
+            }),
+            // addUser: new Button({
+            //     classname: "flat-red",
+            //     label: "Добавить в чат",
+            //     onClick: async () => {}
+            // }),
+            noResultsText
         });
     }
 
     async componentDidMount() {
-        const result = await ChatsController.getChats();
-        if(result) {
-            console.log("chats", result)
+        await ChatsController.getChats();
+    }
+
+    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+        console.log(this.props.messages && [...this.props.messages])
+        if(newProps.chats) {
+            this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat));
+            if(this.lists.chatList.length) {
+                if(this.props.noResultsText) {
+                    this.setProps({ noResultsText: "" })
+                }
+            } else {
+                if(!this.props.noResultsText) {
+                    this.setProps({ noResultsText })
+                }
+            }
         }
+        return true
     }
 
     static getStateToProps(state: State) {
-        return { chats: state.chats };
+        return {
+            chats: state.chats,
+            messages: state.currentChat?.messages && [...state.currentChat.messages].reverse(),
+            activeChatTitle: state.currentChat?.chat?.title || ""
+        };
     }
 
     protected render(): string {

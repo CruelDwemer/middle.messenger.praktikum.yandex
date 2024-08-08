@@ -87,6 +87,13 @@ export default class InputField extends Block implements IInputField {
         return this._value();
     }
 
+    public resetValue() {
+        const input = this.input;
+        if(input.value()) {
+            input.setProps({ value: "" })
+        }
+    }
+
     private _validate() {
         let hasErrors = false;
         const rules: IRules = this.props.validationRules as IRules;

@@ -7,7 +7,6 @@ export enum STORE_EVENT {
 }
 export type Chat = Record<string, number | string | unknown>
 
-// export type State = Record<string, boolean | string | object | null>;
 export type State = {
     auth: boolean,
     user: null | Record<string, string | number>,
