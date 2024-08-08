@@ -8,7 +8,7 @@ import {State} from "../../core/Store";
 
 const noResultsText = "Нет результатов";
 
-class Modal extends Block {
+class SearchUsersModal extends Block {
     constructor(items = [], results: SearchUserItem[] = [], hasActiveChat: boolean = false) {
         const closeButton: Button = new Button({
             classname: "filled",
@@ -55,4 +55,4 @@ class Modal extends Block {
     }
 }
 
-export default connect(Modal)
+export default connect(SearchUsersModal)

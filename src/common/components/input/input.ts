@@ -23,6 +23,7 @@ interface IRules {
 }
 
 interface InputProps extends Props{
+    placeholder?: string,
     validationRules?: IRules,
     onBlur?: (event: Event | undefined) => void,
     type?: string
@@ -33,10 +34,14 @@ export default class Input extends Block implements IInput {
         if(!props.type) {
             props.type = "text"
         }
+        if(!props.placeholder) {
+            props.placeholder = ""
+        }
         super(props);
 
         this.props.events = {
-            blur: this.props.onBlur || (() => {})
+            blur: this.props.onBlur || (() => {}),
+            change: this.props.onChange || (() => {})
         }
     }
 

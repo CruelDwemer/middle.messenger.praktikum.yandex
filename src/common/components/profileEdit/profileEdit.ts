@@ -6,20 +6,20 @@
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-import profileEditTemplate from "./profileEdit.hbs?raw";
-import Block, { Props, Children } from '../../common/core/Block';
-import Button from "../../common/components/button/button";
-import Input from "../../common/components/input/input";
-import onSubmit from "../../common/utils/formSubmit"
-import InputField, { InputFieldProps } from "../../common/components/inputField/inputField";
-import { PATH } from "../../common/core/Router";
+import { default as profileEditTemplate } from "./profileEdit.hbs?raw";
+import Block, { Props, Children } from '../../core/Block';
+import Button from "../button/button";
+import Input from "../input/input";
+import onSubmit from "../../utils/formSubmit"
+import InputField, { InputFieldProps } from "../inputField/inputField";
+import { PATH } from "../../core/Router";
 import "./profileEdit.scss"
-import {State} from "../../common/core/Store";
-import connect from "../../common/utils/connect";
-import {toCamelCase} from "../../common/utils/stringUtils";
-import UsersController from "../../common/controllers/UsersController";
+import { State} from "../../core/Store";
+import connect from "../../utils/connect";
+import { toCamelCase } from "../../utils/stringUtils";
+import UsersController from "../../controllers/UsersController";
 
-class ProfileInput extends Input {
+export class ProfileInput extends Input {
     constructor(props: Props) {
         props.classname = "profile-data-input";
         super(props);
@@ -33,7 +33,7 @@ class ProfileInput extends Input {
 }
 
 
-class ProfileInputField extends InputField {
+export class ProfileInputField extends InputField {
     constructor(props: InputFieldProps) {
         super({
             ...props,
@@ -59,7 +59,7 @@ class ProfileInputField extends InputField {
     }
 }
 
-class ProfileEditPage extends Block {
+class ProfileEditModal extends Block {
     protected constructor(data: Props | Children = {}) {
         const emailInput = new ProfileInputField({
             name: "email",
@@ -160,4 +160,4 @@ class ProfileEditPage extends Block {
     }
 }
 
-export default connect(ProfileEditPage)
+export default connect(ProfileEditModal)

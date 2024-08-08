@@ -1,7 +1,10 @@
 <div class="profile-container">
     {{{ editModal }}}
-    <div class="profile-item-avatar" ></div>
-    <div class="profile-name">Иван</div>
+    {{{ changePasswordModal }}}
+    <div class="profile-item-avatar" style="background-image: {{avatarImg}}">
+        <img class="profile-avatar-image" src="{{avatarImg}}" alt="Аватар пользователя">
+    </div>
+    {{{ changeAvatar }}}
     {{> dataRow title="Почта" value=user.email }}
     {{> dataRow title="Логин" value=user.login }}
     {{> dataRow title="Имя" value=user.first_name }}
@@ -10,7 +13,7 @@
     {{> dataRow title="Телефон" value=user.phone }}
     <div class="profile-actions-block">
         {{{ editButton }}}
-        {{> button classname="flat" label="Изменить пароль" link="/profile" }}
+        {{{ changePasswordButton }}}
         {{{ backButton }}}
         {{{ logoutButton }}}
     </div>

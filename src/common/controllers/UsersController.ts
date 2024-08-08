@@ -7,7 +7,6 @@ import BaseController from './BaseController';
 
 class UsersController extends BaseController {
     public changeData = async (data: TOptionsData) => {
-        console.log("UsersController this", {...this})
         try {
             const { status, response } = await UsersApi.changeData(data);
             if (status === 200) {
@@ -23,7 +22,7 @@ class UsersController extends BaseController {
         }
     }
 
-    public async changePassword(data: TOptionsData) {
+    public changePassword = async (data: TOptionsData) => {
         try {
             const { status, response } = await UsersApi.changePassword(data);
             if (status === 200) {
@@ -64,7 +63,7 @@ class UsersController extends BaseController {
     }
 
     // eslint-disable-next-line no-undef
-    public async changeAvatar(file: FormData) {
+    public changeAvatar = async (file: FormData) => {
         try {
             const { status, response } = await UsersApi.changeAvatar(file);
             if (status === 200) {

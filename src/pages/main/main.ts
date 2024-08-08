@@ -113,11 +113,6 @@ class MainPage extends Block {
                     await ChatsController.deleteChat()
                 }
             }),
-            // addUser: new Button({
-            //     classname: "flat-red",
-            //     label: "Добавить в чат",
-            //     onClick: async () => {}
-            // }),
             noResultsText
         });
     }
@@ -127,7 +122,6 @@ class MainPage extends Block {
     }
 
     protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-        console.log(this.props.messages && [...this.props.messages])
         if(newProps.chats) {
             this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat));
             if(this.lists.chatList.length) {
