@@ -1,7 +1,4 @@
 import Handlebars from "handlebars/runtime";
-// страницы
-import errorPage from "./pages/error/error.hbs";
-// import profilePage from "./pages/profile/profile.hbs";
 // компоненты
 import button from "./common/components/button/button.hbs";
 import input from "./common/components/input/input.hbs";
@@ -15,72 +12,37 @@ import Store from './common/core/Store';
 import AuthController from './common/controllers/AuthController';
 
 // стили
-/* eslint-disable  @typescript-eslint/no-unused-vars */
-import messageStyles from "./common/components/message/message.scss";
-import chatStyles from "./common/components/chat/chat.scss";
-import dataRowStyles from "./common/components/dataRow/dataRow.scss";
-import styles from "./common/styles/styles.scss";
-import errorStyle from "./pages/error/error.scss";
-import profileStyle from "./pages/profile/profile.scss";
+import "./common/components/message/message.scss";
+import "./common/components/chat/chat.scss";
+import "./common/components/dataRow/dataRow.scss";
+import "./common/styles/styles.scss";
+import "./pages/error/error.scss";
+import "./pages/profile/profile.scss";
 
 import LoginPage from "./pages/login/login";
 import RegisterPage from "./pages/register/register";
 import ProfilePage from "./pages/profile/profile";
 import MainPage from "./pages/main/main";
+import ErrorPage from "./pages/error/error";
 
 Handlebars.registerPartial("button", button);
 Handlebars.registerPartial("input", input);
 Handlebars.registerPartial("dataRow", dataRow);
 Handlebars.registerPartial("dataRowEdit", dataRowEdit);
 
+const Error404Page = ErrorPage.bind(null, { message: "Не найдено" });
+const Error500Page = ErrorPage.bind(null, { message: "Ошибка сервера" });
+
 document.addEventListener("DOMContentLoaded", () => {
-    // const app = document.querySelector("#app");
-    // const path = window.location.pathname;
-
-    // const loginScreen = new LoginPage();
-    // const registerScreen = new RegisterPage();
-    // const profileEditScreen = new ProfileEditPage();
-    // const mainScreen = new MainPage();
-
     AuthController.getUserInfo().then(() => {
         router
             .use(PATH.LOGIN, LoginPage)
             .use(PATH.REGISTER, RegisterPage)
             .use(PATH.PROFILE, ProfilePage)
             .use(PATH.MAIN, MainPage)
-            .use(PATH.ERROR404, errorPage({ message: "Не найдено" }))
-            .use(PATH.ERROR500, errorPage({ message: "Ошибка сервера" }))
+            .use(PATH.ERROR404, Error404Page)
+            .use(PATH.ERROR500, Error500Page)
             .start();
         Store.set('getPage', '');
     });
-
-    // switch (path) {
-    //     case "/":
-    //     case "":
-    //         window.location.href = "/login";
-    //         break
-    //     case "/main":
-    //         app.append(mainScreen.getContent());
-    //         break
-    //     case "/login":
-    //         app.append(loginScreen.getContent());
-    //         break
-    //     case "/profile/edit":
-    //         app.append(profileEditScreen.getContent());
-    //         break
-    //     case "/profile":
-    //         app.innerHTML = profilePage();
-    //         break
-    //     case "/register":
-    //         app.append(registerScreen.getContent());
-    //         break
-    //     case "/404":
-    //         app.innerHTML = errorPage({ message: "Не найдено" });
-    //         break
-    //     case "/500":
-    //         app.innerHTML = errorPage({ message: "Ошибка сервера" });
-    //         break
-    //     default:
-    //         window.location.href = "/404";
-    // }
 })

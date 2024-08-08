@@ -1,15 +1,7 @@
 /* eslint-disable no-undef */
-// import { rootBlockQuery } from '../utils/config';
 import Block from './Block';
 import Route from './Route';
 import Store from './Store';
-
-export const AUTH = '/';
-export const SIGNUP = '/sign-up';
-export const SETTINGS = '/settings';
-export const MESSENGER = '/messenger';
-export const ERROR500 = '/error-500';
-export const ERROR404 = '/error-404';
 
 export enum PATH {
     LOGIN = "/",
@@ -68,15 +60,15 @@ class Router {
     _onRoute(pathname: string): void {
         if (Store.getState().auth) {
             if (pathname === PATH.LOGIN || pathname === PATH.REGISTER) {
-                pathname = MESSENGER;
-                this.history.pushState({}, '', MESSENGER);
+                pathname = PATH.MAIN;
+                this.history.pushState({}, '', PATH.MAIN);
             }
         } else if (pathname !== PATH.LOGIN && pathname !== PATH.REGISTER) {
-            pathname = AUTH;
-            this.history.pushState({}, '', AUTH);
+            pathname = PATH.LOGIN;
+            this.history.pushState({}, '', PATH.LOGIN);
         }
 
-        const route: Route | undefined = this.getRoute(pathname) ?? this.getRoute(ERROR404);
+        const route: Route | undefined = this.getRoute(pathname) ?? this.getRoute(PATH.ERROR404);
         if (!route) {
             return;
         }

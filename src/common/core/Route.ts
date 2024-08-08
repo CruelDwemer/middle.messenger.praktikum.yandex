@@ -1,4 +1,4 @@
-import { isEqual, render } from '../utils/objectUtils';
+import { render } from '../utils/objectUtils';
 import Block from './Block';
 import Store from './Store';
 
@@ -27,13 +27,12 @@ export default class Route {
 
     leave(): void {
         if (this._block) {
-            // console.log(this._block);
             this._block.hide();
         }
     }
 
     match(pathname: string): boolean {
-        return isEqual(pathname, this._pathname);
+        return pathname === this._pathname;
     }
 
     render(): void {
