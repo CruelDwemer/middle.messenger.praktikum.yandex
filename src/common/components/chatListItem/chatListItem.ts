@@ -1,6 +1,5 @@
 import { default as chatListItemTemplate } from "./chatListItem.hbs?raw";
 import Block  from "../../core/Block";
-import "./chatListItem.scss";
 import connect from "../../utils/connect";
 import Store, { State } from "../../core/Store";
 import MessageController from "../../controllers/MessageController";

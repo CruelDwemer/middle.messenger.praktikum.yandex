@@ -6,7 +6,7 @@
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-import buttonTemplate from "./button.hbs?raw";
+import { default as buttonTemplate } from "./button.hbs?raw";
 import Block, { Props } from '../../core/Block';
 import './button.scss';
 
