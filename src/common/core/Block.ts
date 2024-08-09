@@ -2,26 +2,17 @@ import { v4 } from 'uuid';
 import Handlebars from 'handlebars';
 import EventBus from './EventBus';
 import {State} from "./Store";
-
-// const chat = require("../components/chat/chat.hbs");
-// const message = require("../components/message/message.hbs");
-// const menu = require("../svg/menu.hbs");
-// const attach = require("../svg/attach.hbs");
-
 /*
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-import chat from "../components/chat/chat.hbs";
-import message from "../components/message/message.hbs";
-import dataRow from "../components/dataRow/dataRow.hbs";
-import button from "../components/button/button.hbs";
-import menu from "../svg/menu.hbs";
-import attach from "../svg/attach.hbs";
+import { default as chat } from "../components/chat/chat.hbs";
+import { default as message } from "../components/message/message.hbs";
+import { default as dataRow } from "../components/dataRow/dataRow.hbs";
+import { default as button } from "../components/button/button.hbs";
+import { default as menu } from "../svg/menu.hbs";
+import { default as attach } from "../svg/attach.hbs";
 import {isEqual} from "../utils/objectUtils";
-
-// const messageText = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-// const messageTime = "10:46";
 
 /*
 *   Приходится регистрировать partials здесь
@@ -65,7 +56,7 @@ class Block {
     protected readonly eventBus: () => EventBus;
     private _element: HTMLElement | null = null;
 
-    protected constructor(propsWithChildren: PropsWithChildrenType) {
+    protected constructor(propsWithChildren: {[p: string]: unknown} | ArrayLike<unknown>) {
         const eventBus: EventBus = new EventBus();
 
         const { props, children, lists, parent } = Block.getChildrenAndProps(propsWithChildren);
