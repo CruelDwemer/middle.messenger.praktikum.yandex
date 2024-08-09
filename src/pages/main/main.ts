@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as mainTemplate } from "./main.hbs?raw";
-import Block, { Children, PropsWithChildrenType } from '../../common/core/Block';
+import Block, {Children, PropsWithChildrenType} from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
 import './main.scss';
@@ -51,18 +51,15 @@ const sendMessage = (
     }
 }
 
-interface IMainLists {
-    chatList: ChatListItem[]
-}
-
-interface IMainPageProps extends PropsWithChildrenType {
+interface IMainPageProps {
     chats: IChat[],
     messages: IChat[],
     activeChatTitle: string
 }
+type ExtendedProps = PropsWithChildrenType & IMainPageProps
 
 class MainPage extends Block {
-    lists: IMainLists = {
+    lists = {
         chatList: []
     }
     protected constructor(data: IMainPageProps) {
@@ -135,7 +132,7 @@ class MainPage extends Block {
     }
 
     /* eslint-disable  @typescript-eslint/no-unused-vars */
-    protected componentDidUpdate(_: IMainPageProps, newProps: IMainPageProps): boolean {
+    protected componentDidUpdate(_: ExtendedProps, newProps: ExtendedProps): boolean {
         if(newProps.chats) {
             this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat));
             if(this.lists.chatList.length) {
@@ -164,4 +161,4 @@ class MainPage extends Block {
     }
 }
 
-export default connect<MainPage>(MainPage)
+export default connect<MainPage, IMainPageProps>(MainPage)

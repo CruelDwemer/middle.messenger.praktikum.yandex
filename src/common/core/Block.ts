@@ -41,7 +41,7 @@ type EventsEnum = {
 type Events = Record<string, EventListenerOrEventListenerObject>;
 export type Props = Record<string | symbol, unknown>;
 export type Children = Record<string, Element | Block>;
-export type Lists = Record<string, Element[] | Block[] | unknown[]>;
+export type Lists = Record<string, typeof Element[] | typeof Block[] | unknown[]>;
 type Parent = Element | Block | undefined;
 
 export type PropsWithChildrenType = (Props | Children | Lists)

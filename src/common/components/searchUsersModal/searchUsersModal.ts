@@ -1,5 +1,5 @@
 import { default as searchUsersModalTemplate } from "./searchUsersModal.hbs?raw";
-import Block from "../../core/Block";
+import Block, {PropsWithChildrenType} from "../../core/Block";
 import "./searchUsersModal.scss"
 import Button from "../button/button";
 import SearchUserItem from "../searchUserItem/searchUserItem";
@@ -8,18 +8,13 @@ import { State } from "../../core/Store";
 import { ISearchUsersResult } from "../../controllers/UsersController";
 
 const noResultsText = "Нет результатов";
-//
-// interface ISearchUsersModal extends Block {
-//     lists: {
-//         results: SearchUserItem[]
-//     }
-// }
 
 interface ISearchUsersModalProps {
     items: ISearchUsersResult[] | null,
     results: SearchUserItem[],
     hasActiveChat: boolean
 }
+type ExtendedProps = ISearchUsersModalProps & PropsWithChildrenType
 
 class SearchUsersModal extends Block {
     public lists: {
@@ -37,6 +32,7 @@ class SearchUsersModal extends Block {
                 this.hide()
             }
         })
+
         super({
             items,
             closeButton,
@@ -47,7 +43,7 @@ class SearchUsersModal extends Block {
     }
 
     /* eslint-disable  @typescript-eslint/no-unused-vars */
-    protected componentDidUpdate(oldProps: ISearchUsersModalProps, newProps: ISearchUsersModalProps): boolean {
+    protected componentDidUpdate(_: ExtendedProps, newProps: ExtendedProps): boolean {
         if(newProps.items) {
             this.lists.results = newProps.items.map(item => (
                 new SearchUserItem(item, this.hide.bind(this), newProps.hasActiveChat))
@@ -78,4 +74,4 @@ class SearchUsersModal extends Block {
     }
 }
 
-export default connect(SearchUsersModal)
+export default connect<SearchUsersModal, ISearchUsersModalProps | null>(SearchUsersModal)

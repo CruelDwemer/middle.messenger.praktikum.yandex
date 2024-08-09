@@ -50,7 +50,7 @@ export class ProfileInputField extends InputField {
         })
     }
 
-    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    protected componentDidUpdate(_: Props, newProps: Props): boolean {
         if(newProps.value && this.children.input instanceof Block) {
             this.children.input.setProps({ value: newProps.value })
         }
@@ -143,7 +143,7 @@ class ProfileEditModal extends Block {
     }
 
     /* eslint-disable  @typescript-eslint/no-unused-vars */
-    protected componentDidUpdate(oldProps: IProfileEditModalProps, newProps: IProfileEditModalProps): boolean {
+    protected componentDidUpdate(_: IProfileEditModalProps, newProps: IProfileEditModalProps): boolean {
         if(newProps.user) {
             Object.keys(newProps.user).forEach(key => {
                 const targetName = `${toCamelCase(key)}Input`;
