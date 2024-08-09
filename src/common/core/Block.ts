@@ -285,7 +285,7 @@ class Block {
         this.getContent()!.style.display = 'none';
     }
 
-    static getStateToProps(state: State) {
+    static getStateToProps(state: State): Partial<State> | Record<string, unknown> {
         return state
     }
 
