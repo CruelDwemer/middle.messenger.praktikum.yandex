@@ -165,4 +165,4 @@ class ProfileEditModal extends Block {
     }
 }
 
-export default connect(ProfileEditModal)
+export default connect<ProfileEditModal, undefined>(ProfileEditModal)

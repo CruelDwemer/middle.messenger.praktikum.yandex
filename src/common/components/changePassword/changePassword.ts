@@ -75,4 +75,4 @@ class ChangePasswordModal extends Block {
     }
 }
 
-export default connect(ChangePasswordModal)
+export default connect<ChangePasswordModal, undefined>(ChangePasswordModal)
