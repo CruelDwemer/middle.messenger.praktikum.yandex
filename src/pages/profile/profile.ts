@@ -77,4 +77,4 @@ class ProfilePage extends Block {
     }
 }
 
-export default connect(ProfilePage as typeof Block)
+export default connect<ProfilePage>(ProfilePage)

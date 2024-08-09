@@ -1,12 +1,12 @@
 import { default as chatListItemTemplate } from "./chatListItem.hbs?raw";
-import Block from "../../core/Block";
+import Block, {PropsWithChildrenType} from "../../core/Block";
 import connect from "../../utils/connect";
 import Store, { State } from "../../core/Store";
 import MessageController from "../../controllers/MessageController";
 import { cloneDeep } from "../../utils/objectUtils";
 import { getTimeString } from "../../utils/stringUtils";
 
-interface IChatlListItemProps {
+interface IChatlListItemProps extends PropsWithChildrenType {
     last_message: {
         time: string,
         content: string

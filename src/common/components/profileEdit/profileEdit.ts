@@ -7,14 +7,14 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as profileEditTemplate } from "./profileEdit.hbs?raw";
-import Block, {Props, PropsWithChildrenType} from '../../core/Block';
+import Block, { Props, PropsWithChildrenType } from '../../core/Block';
 import Button from "../button/button";
 import Input from "../input/input";
 import onSubmit from "../../utils/formSubmit"
 import InputField, { InputFieldProps } from "../inputField/inputField";
 import { PATH } from "../../core/Router";
 import "./profileEdit.scss"
-import { State} from "../../core/Store";
+import { IUser, State } from "../../core/Store";
 import connect from "../../utils/connect";
 import { toCamelCase } from "../../utils/stringUtils";
 import UsersController from "../../controllers/UsersController";
@@ -31,7 +31,6 @@ export class ProfileInput extends Input {
         this.getContent()!.classList.add("profile-input-error")
     }
 }
-
 
 export class ProfileInputField extends InputField {
     constructor(props: InputFieldProps) {
@@ -59,10 +58,12 @@ export class ProfileInputField extends InputField {
     }
 }
 
-type ProfileEditModalPropsType = PropsWithChildrenType & { user: State["user"] }
+interface IProfileEditModalProps extends PropsWithChildrenType {
+    user: IUser
+}
 
 class ProfileEditModal extends Block {
-    protected constructor(data: ProfileEditModalPropsType) {
+    protected constructor(data: IProfileEditModalProps) {
         const emailInput = new ProfileInputField({
             name: "email",
             placeholder: "Почта",
@@ -142,7 +143,7 @@ class ProfileEditModal extends Block {
     }
 
     /* eslint-disable  @typescript-eslint/no-unused-vars */
-    protected componentDidUpdate(oldProps: ProfileEditModalPropsType, newProps: ProfileEditModalPropsType): boolean {
+    protected componentDidUpdate(oldProps: IProfileEditModalProps, newProps: IProfileEditModalProps): boolean {
         if(newProps.user) {
             Object.keys(newProps.user).forEach(key => {
                 const targetName = `${toCamelCase(key)}Input`;

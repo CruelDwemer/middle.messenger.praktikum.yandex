@@ -137,7 +137,7 @@ class MainPage extends Block {
     /* eslint-disable  @typescript-eslint/no-unused-vars */
     protected componentDidUpdate(oldProps: IMainPageProps, newProps: IMainPageProps): boolean {
         if(newProps.chats) {
-            this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat)) as ChatListItem[];
+            this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat)) as typeof ChatListItem[];
             if(this.lists.chatList.length) {
                 if(this.props.noResultsText) {
                     this.setProps({ noResultsText: "" })

@@ -41,9 +41,10 @@ type EventsEnum = {
 type Events = Record<string, EventListenerOrEventListenerObject>;
 export type Props = Record<string | symbol, unknown>;
 export type Children = Record<string, Element | Block>;
+export type Lists = Record<string, Element[] | Block[] | unknown[]>;
 type Parent = Element | Block | undefined;
 
-export type PropsWithChildrenType = (Props | Children)[] | (Props | Children)
+export type PropsWithChildrenType = (Props | Children | Lists)
 
 class Block {
     static EVENTS: EventsEnum = {
@@ -59,7 +60,7 @@ class Block {
 
     protected parent: Parent;
     public children: Children;
-    public lists: Record<string | symbol, Element | Block | unknown>;
+    public lists: Lists;
 
     private _meta: { tagName: string, props?: Props } | null = null;
 
@@ -83,8 +84,8 @@ class Block {
         eventBus.emit(Block.EVENTS.INIT);
     }
 
-    static getChildrenAndProps(childrenAndProps: Props | Children)
-        : { props: Props, children: Children, parent: Parent, lists: Children | Props } {
+    static getChildrenAndProps(childrenAndProps: PropsWithChildrenType)
+        : { props: Props, children: Children, parent: Parent, lists: Lists } {
         const props: Props = {};
         const children: Children = {};
         const lists = {};
