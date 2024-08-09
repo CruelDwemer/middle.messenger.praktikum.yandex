@@ -1,5 +1,5 @@
 import { default as profileTemplate } from "./profile.hbs?raw";
-import Block from "../../common/core/Block";
+import Block, {PropsWithChildrenType} from "../../common/core/Block";
 import connect from "../../common/utils/connect";
 import { State } from "../../common/core/Store";
 import Button from "../../common/components/button/button";
@@ -76,4 +76,4 @@ class ProfilePage extends Block {
     }
 }
 
-export default connect<ProfilePage>(ProfilePage)
+export default connect<ProfilePage, PropsWithChildrenType>(ProfilePage)

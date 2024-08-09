@@ -63,7 +63,7 @@ interface IProfileEditModalProps extends PropsWithChildrenType {
 }
 
 class ProfileEditModal extends Block {
-    protected constructor(data: IProfileEditModalProps) {
+    protected constructor() {
         const emailInput = new ProfileInputField({
             name: "email",
             placeholder: "Почта",
@@ -73,7 +73,6 @@ class ProfileEditModal extends Block {
             }
         })
         const newProps: Props = {
-            data,
             emailInput,
             loginInput: new ProfileInputField({
                 name: "login",
@@ -165,4 +164,4 @@ class ProfileEditModal extends Block {
     }
 }
 
-export default connect<ProfileEditModal, undefined>(ProfileEditModal)
+export default connect<ProfileEditModal, IProfileEditModalProps>(ProfileEditModal)
