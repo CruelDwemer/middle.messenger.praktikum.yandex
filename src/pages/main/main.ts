@@ -60,7 +60,7 @@ type ExtendedProps = PropsWithChildrenType & IMainPageProps
 
 class MainPage extends Block {
     lists = {
-        chatList: [] as typeof ChatListItem[]
+        chatList: [] as (new (props: IChat & PropsWithChildrenType) => ChatListItem)[]
     }
     protected constructor(data: IMainPageProps) {
         const modal = new SearchUsersModal(null);
@@ -161,4 +161,4 @@ class MainPage extends Block {
     }
 }
 
-export default connect<MainPage, ExtendedProps>(MainPage)
+export default connect<MainPage, IMainPageProps>(MainPage)

@@ -1,5 +1,5 @@
 import { default as chatListItemTemplate } from "./chatListItem.hbs?raw";
-import Block, {PropsWithChildrenType} from "../../core/Block";
+import Block from "../../core/Block";
 import connect from "../../utils/connect";
 import Store, { State, IChat } from "../../core/Store";
 import MessageController from "../../controllers/MessageController";
@@ -43,4 +43,4 @@ class ChatListItem extends Block {
     }
 }
 
-export default connect<ChatListItem, IChat & PropsWithChildrenType>(ChatListItem)
+export default connect<ChatListItem, IChat>(ChatListItem)

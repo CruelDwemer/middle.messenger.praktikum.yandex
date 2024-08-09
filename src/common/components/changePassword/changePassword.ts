@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as changePasswordTemplate } from "./changePassword.hbs?raw";
-import Block, { Props, PropsWithChildrenType } from '../../core/Block';
+import Block, { Props } from '../../core/Block';
 import Button from "../button/button";
 import onSubmit from "../../utils/formSubmit";
 import { PATH } from "../../core/Router";
@@ -17,7 +17,7 @@ import UsersController from "../../controllers/UsersController";
 import { ProfileInputField } from "../profileEdit/profileEdit";
 
 class ChangePasswordModal extends Block {
-    protected constructor(data: PropsWithChildrenType = {}) {
+    protected constructor() {
         const oldPassword = new ProfileInputField({
             name: "oldPassword",
             placeholder: "Старый пароль",
@@ -41,7 +41,6 @@ class ChangePasswordModal extends Block {
         })
 
         const newProps: Props = {
-            data,
             oldPassword,
             newPassword,
             saveButton: new Button({

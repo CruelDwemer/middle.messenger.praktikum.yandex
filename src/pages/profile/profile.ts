@@ -1,5 +1,5 @@
 import { default as profileTemplate } from "./profile.hbs?raw";
-import Block, { Children, Props } from "../../common/core/Block";
+import Block from "../../common/core/Block";
 import connect from "../../common/utils/connect";
 import { State } from "../../common/core/Store";
 import Button from "../../common/components/button/button";
@@ -12,9 +12,9 @@ import UsersController from "../../common/controllers/UsersController";
 import { resourcesUrl } from "../../common/api/config";
 
 class ProfilePage extends Block {
-    protected constructor(data: Props | Children = {}) {
-        const editModal = new ProfileEditPage({ data })
-        const changePasswordModal = new ChangePasswordModal({ data })
+    protected constructor() {
+        const editModal = new ProfileEditPage()
+        const changePasswordModal = new ChangePasswordModal()
         async function changeAvatar(e: Event) {
             const data = new FormData();
             const elem = e.target as HTMLInputElement;
@@ -24,14 +24,13 @@ class ProfilePage extends Block {
             await UsersController.changeAvatar(data);
         }
         super({
-            data,
             editModal,
             changePasswordModal,
             logoutButton: new Button({
                 classname: "flat-red",
                 label: "Выйти",
-                onClick: () => {
-                    AuthController.logout();
+                onClick: async () => {
+                    await AuthController.logout();
                 }
             }),
             backButton: new Button({
