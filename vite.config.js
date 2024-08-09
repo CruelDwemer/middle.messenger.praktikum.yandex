@@ -26,6 +26,7 @@ export default defineConfig({
         esbuildOptions: {
             loader: {
                 ".hbs": "text",
+                ".hbs?raw": "text"
             },
         },
     },

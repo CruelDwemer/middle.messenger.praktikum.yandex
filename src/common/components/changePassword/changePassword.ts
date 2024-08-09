@@ -63,7 +63,7 @@ class ChangePasswordModal extends Block {
         super(newProps);
     }
 
-    override getStateToProps(state: State) {
+    static getStateToProps(state: State) {
         return { user: state.user }
     }
 

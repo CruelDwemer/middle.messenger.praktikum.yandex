@@ -6,7 +6,7 @@ export enum STORE_EVENT {
     UPDATED = 'updated',
 }
 
-export type User = {
+export interface IUser {
     first_name: string,
     second_name: string,
     display_name: string | null,
@@ -14,32 +14,34 @@ export type User = {
     avatar: string | null
 }
 
-export type Chat = {
+export interface IChat {
     id: number,
     title: string,
     avatar: string | null,
     created_by: number,
     unread_count: number,
-    last_message: {
-        user: User,
-        time: string,
-        content: string,
-        id: number
-    } | null
+    last_message: IMessage | null
+}
+
+export interface IMessage {
+    user: IUser,
+    time: string,
+    content: string,
+    id: number
 }
 
 export type State = {
     auth: boolean,
-    user: User | null,
+    user: IUser | null,
     isLoading: false,
     getPage: string,
-    chats: Array<Chat>,
+    chats: IChat[],
     currentChat: {
         isLoading: boolean,
         isLoadingOldMsg: boolean,
         scroll: number,
-        chat: null | Chat,
-        messages: Array<Chat> | null,
+        chat: null | IChat,
+        messages: IMessage[] | null,
     },
 };
 

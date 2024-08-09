@@ -65,7 +65,7 @@ class ProfilePage extends Block {
         })
     }
 
-    override getStateToProps(state: State) {
+    static getStateToProps(state: State) {
         return {
             user: state.user,
             avatarImg: state.user?.avatar ? resourcesUrl + state.user.avatar : "",

@@ -69,7 +69,7 @@ class SearchUsersModal extends Block {
         this.getContent()!.style.display = 'flex';
     }
 
-    override getStateToProps(state: State) {
+    static getStateToProps(state: State) {
         return { hasActiveChat: !!state.currentChat?.chat }
     }
 

@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as mainTemplate } from "./main.hbs?raw";
-import Block, {Props, Children} from '../../common/core/Block';
+import Block, {Props, Children, PropsWithChildrenType} from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
 import './main.scss';
@@ -17,7 +17,7 @@ import ChatsController from "../../common/controllers/ChatsController";
 import Input from "../../common/components/inputField/inputField";
 import UsersController from "../../common/controllers/UsersController";
 import connect from '../../common/utils/connect';
-import {State} from "../../common/core/Store";
+import { IChat, State } from "../../common/core/Store";
 import SearchUsersModal from "../../common/components/searchUsersModal/searchUsersModal";
 import ChatListItem from "../../common/components/chatListItem/chatListItem";
 import MessageController from "../../common/controllers/MessageController";
@@ -51,12 +51,21 @@ const sendMessage = (
     }
 }
 
-// interface IMainPageProps extends PropsWithChildrenType {
-//     chats:
-// }
+interface IMainLists {
+    chatList: ChatListItem[]
+}
+
+interface IMainPageProps extends PropsWithChildrenType {
+    chats: IChat[],
+    messages: IChat[],
+    activeChatTitle: string
+}
 
 class MainPage extends Block {
-    protected constructor(data: Props | Children = {}) {
+    lists: IMainLists = {
+        chatList: []
+    }
+    protected constructor(data: IMainPageProps) {
         const modal = new SearchUsersModal(null);
 
         const onSearchButtonClick = async () => {
@@ -126,9 +135,9 @@ class MainPage extends Block {
     }
 
     /* eslint-disable  @typescript-eslint/no-unused-vars */
-    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    protected componentDidUpdate(oldProps: IMainPageProps, newProps: IMainPageProps): boolean {
         if(newProps.chats) {
-            this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat));
+            this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat)) as ChatListItem[];
             if(this.lists.chatList.length) {
                 if(this.props.noResultsText) {
                     this.setProps({ noResultsText: "" })
@@ -142,7 +151,7 @@ class MainPage extends Block {
         return true
     }
 
-    override getStateToProps(state: State) {
+    static getStateToProps(state: State) {
         return {
             chats: state.chats,
             messages: state.currentChat?.messages && [...state.currentChat.messages].reverse(),
@@ -155,4 +164,4 @@ class MainPage extends Block {
     }
 }
 
-export default connect(MainPage as typeof Block)
+export default connect<MainPage>(MainPage)
