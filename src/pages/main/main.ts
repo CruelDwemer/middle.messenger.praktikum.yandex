@@ -161,4 +161,4 @@ class MainPage extends Block {
     }
 }
 
-export default connect<typeof MainPage, IMainPageProps>(MainPage)
+export default connect<MainPage, IMainPageProps>(MainPage)

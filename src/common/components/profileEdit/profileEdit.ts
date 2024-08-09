@@ -155,7 +155,7 @@ class ProfileEditModal extends Block {
         return true
     }
 
-    public show = () => {
+    override show = () => {
         this.getContent()!.style.display = 'flex';
     }
 
@@ -164,4 +164,4 @@ class ProfileEditModal extends Block {
     }
 }
 
-export default connect<typeof ProfileEditModal, undefined>(ProfileEditModal)
+export default connect<ProfileEditModal, undefined>(ProfileEditModal)

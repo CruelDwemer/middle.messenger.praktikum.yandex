@@ -13,7 +13,7 @@ import { resourcesUrl } from "../../common/api/config";
 
 class ProfilePage extends Block {
     protected constructor() {
-        const editModal = new ProfileEditPage();
+        const editModal  = new ProfileEditPage() as Block;
         const changePasswordModal = new ChangePasswordModal();
 
         async function changeAvatar(e: Event) {
@@ -78,4 +78,4 @@ class ProfilePage extends Block {
     }
 }
 
-export default connect<typeof ProfilePage, undefined>(ProfilePage)
+export default connect<ProfilePage, undefined>(ProfilePage)

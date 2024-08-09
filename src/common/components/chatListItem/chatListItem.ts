@@ -43,4 +43,4 @@ class ChatListItem extends Block {
     }
 }
 
-export default connect<typeof ChatListItem, IChat>(ChatListItem)
+export default connect<ChatListItem, IChat>(ChatListItem)
