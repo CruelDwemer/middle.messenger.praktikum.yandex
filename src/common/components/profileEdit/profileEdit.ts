@@ -6,14 +6,20 @@
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-import profileEditTemplate from "./profileEdit.hbs?raw";
-import Block, { Props, Children } from '../../common/core/Block';
-import Button from "../../common/components/button/button";
-import Input from "../../common/components/input/input";
-import onSubmit from "../../common/utils/formSubmit"
-import InputField, { InputFieldProps } from "../../common/components/inputField/inputField";
+import { default as profileEditTemplate } from "./profileEdit.hbs?raw";
+import Block, { Props, PropsWithChildrenType } from '../../core/Block';
+import Button from "../button/button";
+import Input from "../input/input";
+import onSubmit from "../../utils/formSubmit"
+import InputField, { InputFieldProps } from "../inputField/inputField";
+import { PATH } from "../../core/Router";
+import "./profileEdit.scss"
+import { IUser, State } from "../../core/Store";
+import connect from "../../utils/connect";
+import { toCamelCase } from "../../utils/stringUtils";
+import UsersController from "../../controllers/UsersController";
 
-class ProfileInput extends Input {
+export class ProfileInput extends Input {
     constructor(props: Props) {
         props.classname = "profile-data-input";
         super(props);
@@ -26,8 +32,7 @@ class ProfileInput extends Input {
     }
 }
 
-
-class ProfileInputField extends InputField {
+export class ProfileInputField extends InputField {
     constructor(props: InputFieldProps) {
         super({
             ...props,
@@ -44,20 +49,32 @@ class ProfileInputField extends InputField {
             })
         })
     }
+
+    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+        if(newProps.value && this.children.input instanceof Block) {
+            this.children.input.setProps({ value: newProps.value })
+        }
+        return true
+    }
 }
 
-export default class ProfileEditPage extends Block {
-    protected constructor(data: Props | Children = {}) {
+interface IProfileEditModalProps extends PropsWithChildrenType {
+    user: IUser
+}
+
+class ProfileEditModal extends Block {
+    protected constructor(data: IProfileEditModalProps) {
+        const emailInput = new ProfileInputField({
+            name: "email",
+            placeholder: "Почта",
+            validationRules: {
+                regexp: new RegExp(/^[a-zA-Z\d._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/),
+                regexpError: "Неправильный формат email"
+            }
+        })
         const newProps: Props = {
             data,
-            emailInput: new ProfileInputField({
-                name: "email",
-                placeholder: "Почта",
-                validationRules: {
-                    regexp: new RegExp(/^[a-zA-Z\d._%+-]+@[a-zA-Z]+\.[a-zA-Z]{2,}$/),
-                    regexpError: "Неправильный формат email"
-                }
-            }),
+            emailInput,
             loginInput: new ProfileInputField({
                 name: "login",
                 placeholder: "Логин",
@@ -68,7 +85,7 @@ export default class ProfileEditPage extends Block {
                     regexpError: "Допустимые символы - латиница, цифры, '_', '-'"
                 }
             }),
-            chatNameInput: new ProfileInputField({
+            displayNameInput: new ProfileInputField({
                 name: "display_name",
                 placeholder: "Имя_в_чате",
                 validationRules: {
@@ -105,15 +122,47 @@ export default class ProfileEditPage extends Block {
             saveButton: new Button({
                 classname: "filled",
                 label: "Сохранить",
-                onClick: (e: Event | undefined) => {
-                    onSubmit(e, this.children, "/profile", "PROFILE DATA")
+                onClick: async (e: Event | undefined) => {
+                    await onSubmit(e, this.children, PATH.PROFILE, "PROFILE DATA", UsersController.changeData)
+                    this.hide()
+                }
+            }),
+            closeButton: new Button({
+                classname: "flat-red",
+                label: "Закрыть",
+                onClick: () => {
+                    this.hide()
                 }
             })
         }
         super(newProps);
     }
 
+    static getStateToProps(state: State) {
+        return { user: state.user }
+    }
+
+    /* eslint-disable  @typescript-eslint/no-unused-vars */
+    protected componentDidUpdate(oldProps: IProfileEditModalProps, newProps: IProfileEditModalProps): boolean {
+        if(newProps.user) {
+            Object.keys(newProps.user).forEach(key => {
+                const targetName = `${toCamelCase(key)}Input`;
+                const target = this.children[targetName];
+                if(target && target instanceof Block) {
+                    target.setProps({ value: newProps.user![key] || ""})
+                }
+            })
+        }
+        return true
+    }
+
+    public show = () => {
+        this.getContent()!.style.display = 'flex';
+    }
+
     protected render(): string {
         return profileEditTemplate;
     }
 }
+
+export default connect(ProfileEditModal)

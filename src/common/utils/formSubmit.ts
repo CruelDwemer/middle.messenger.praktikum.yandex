@@ -1,16 +1,18 @@
 import Input from "../components/inputField/inputField";
 import {Children} from "../core/Block";
+import Router from "../core/Router";
 
 const onSubmit = (
     event: Event | undefined,
     children: Children,
     navigateTo: string,
-    dataFormHeader: string
+    dataFormHeader: string,
+    controller?: (data: Record<string, string | number>) => void
 ) => {
     if (!event) return;
     event.preventDefault();
 
-    const dataForms: Record<string, string | false> = {};
+    const dataForms: Record<string, string | number> = {};
 
     let isValid = true;
     if(children) {
@@ -26,8 +28,13 @@ const onSubmit = (
 
     console.log(dataFormHeader);
     console.table(dataForms);
+
     if(isValid) {
-        window.location.href = navigateTo
+        if(controller) {
+            controller(dataForms)
+        } else {
+            Router.go(navigateTo)
+        }
     }
 }
 
