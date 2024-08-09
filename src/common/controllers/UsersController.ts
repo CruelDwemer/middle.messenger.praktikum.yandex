@@ -74,7 +74,7 @@ class UsersController extends BaseController {
     }
 
     // eslint-disable-next-line no-undef
-    public changeAvatar = async (file: typeof FormData) => {
+    public changeAvatar = async (file: FormData) => {
         try {
             const { status, response } = await UsersApi.changeAvatar(file);
             if (status === 200) {

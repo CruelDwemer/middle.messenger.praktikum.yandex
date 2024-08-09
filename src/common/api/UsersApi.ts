@@ -14,9 +14,9 @@ class UsersApi extends BaseAPI {
     }
 
     // eslint-disable-next-line no-undef
-    public changeAvatar(data: typeof FormData): Promise<{ status: number, response: string }> {
+    public changeAvatar(data: FormData): Promise<{ status: number, response: string }> {
         return this.http.put('/profile/avatar', {
-            data
+            data: data as TOptionsData
         });
     }
 
