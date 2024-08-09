@@ -13,8 +13,8 @@ import { resourcesUrl } from "../../common/api/config";
 
 class ProfilePage extends Block {
     protected constructor() {
-        const editModal = new ProfileEditPage()
-        const changePasswordModal = new ChangePasswordModal()
+        const editModal = new ProfileEditPage(undefined)
+        const changePasswordModal = new ChangePasswordModal(undefined)
         async function changeAvatar(e: Event) {
             const data = new FormData();
             const elem = e.target as HTMLInputElement;
