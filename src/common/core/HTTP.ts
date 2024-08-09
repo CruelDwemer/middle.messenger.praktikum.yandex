@@ -12,8 +12,8 @@ type TOptions = {
     method?: string,
     timeout?: number
 }
-type HTTPMethod = (url: string, options?: TOptions) => Promise<unknown>
-type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<unknown | void>
+type HTTPMethod = (url: string, options?: TOptions) => Promise<{ status: number, response: string }>
+type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<{ status: number, response: string } | void>
 
 function queryStringify(data: TOptionsData): string {
     if (typeof data !== 'object') {
@@ -48,7 +48,7 @@ export default class HTTPTransport {
         this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
     );
 
-    request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<unknown | void> => {
+    request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<{ status: number, response: string } | void> => {
         const { headers = {}, method, data } = options;
         const { baseUrl } = this;
 
