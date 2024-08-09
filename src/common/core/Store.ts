@@ -5,11 +5,32 @@ import EventBus from './EventBus';
 export enum STORE_EVENT {
     UPDATED = 'updated',
 }
-export type Chat = Record<string, number | string | unknown>
+
+export type User = {
+    first_name: string,
+    second_name: string,
+    display_name: string | null,
+    login: string,
+    avatar: string | null
+}
+
+export type Chat = {
+    id: number,
+    title: string,
+    avatar: string | null,
+    created_by: number,
+    unread_count: number,
+    last_message: {
+        user: User,
+        time: string,
+        content: string,
+        id: number
+    } | null
+}
 
 export type State = {
     auth: boolean,
-    user: null | Record<string, string | number>,
+    user: User | null,
     isLoading: false,
     getPage: string,
     chats: Array<Chat>,

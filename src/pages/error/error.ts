@@ -3,8 +3,12 @@ import Block from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import Router from "../../common/core/Router";
 
+interface IErrorPageProps {
+    message: string
+}
+
 class ErrorPage extends Block {
-    constructor(props) {
+    constructor(props: IErrorPageProps) {
         super({
             message: props.message,
             backButton: new Button({

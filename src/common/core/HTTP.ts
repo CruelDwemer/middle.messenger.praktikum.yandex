@@ -5,7 +5,7 @@ const METHODS = {
     DELETE: 'DELETE',
 };
 
-export type TOptionsData = Record<string, string | number | number[]> | FormData
+export type TOptionsData = Record<string, string | number | number[]> | typeof FormData
 type TOptions = {
     headers?: Record<string, string>,
     data?: TOptionsData,

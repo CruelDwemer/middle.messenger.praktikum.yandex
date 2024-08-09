@@ -43,6 +43,8 @@ export type Props = Record<string | symbol, unknown>;
 export type Children = Record<string, Element | Block>;
 type Parent = Element | Block | undefined;
 
+export type PropsWithChildrenType = (Props | Children)[] | (Props | Children)
+
 class Block {
     static EVENTS: EventsEnum = {
         INIT: 'init',
@@ -57,14 +59,14 @@ class Block {
 
     protected parent: Parent;
     public children: Children;
-    public lists: Children | Props;
+    public lists: Record<string | symbol, Element | Block | unknown>;
 
     private _meta: { tagName: string, props?: Props } | null = null;
 
     protected readonly eventBus: () => EventBus;
     private _element: HTMLElement | null = null;
 
-    protected constructor(propsWithChildren: (Props | Children)[] | (Props | Children)) {
+    protected constructor(propsWithChildren: PropsWithChildrenType) {
         const eventBus: EventBus = new EventBus();
 
         const { props, children, lists, parent } = Block.getChildrenAndProps(propsWithChildren);
@@ -283,7 +285,7 @@ class Block {
         this.getContent()!.style.display = 'none';
     }
 
-    getStateToProps(state: State) {
+    static getStateToProps(state: State) {
         return state
     }
 

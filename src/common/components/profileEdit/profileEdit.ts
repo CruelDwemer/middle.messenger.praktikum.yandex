@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as profileEditTemplate } from "./profileEdit.hbs?raw";
-import Block, { Props, Children } from '../../core/Block';
+import Block, {Props, PropsWithChildrenType} from '../../core/Block';
 import Button from "../button/button";
 import Input from "../input/input";
 import onSubmit from "../../utils/formSubmit"
@@ -52,15 +52,17 @@ export class ProfileInputField extends InputField {
     }
 
     protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
-        if(newProps.value) {
+        if(newProps.value && this.children.input instanceof Block) {
             this.children.input.setProps({ value: newProps.value })
         }
         return true
     }
 }
 
+type ProfileEditModalPropsType = PropsWithChildrenType & { user: State["user"] }
+
 class ProfileEditModal extends Block {
-    protected constructor(data: Props | Children = {}) {
+    protected constructor(data: ProfileEditModalPropsType) {
         const emailInput = new ProfileInputField({
             name: "email",
             placeholder: "Почта",
@@ -139,12 +141,14 @@ class ProfileEditModal extends Block {
         return { user: state.user }
     }
 
-    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    /* eslint-disable  @typescript-eslint/no-unused-vars */
+    protected componentDidUpdate(oldProps: ProfileEditModalPropsType, newProps: ProfileEditModalPropsType): boolean {
         if(newProps.user) {
             Object.keys(newProps.user).forEach(key => {
                 const targetName = `${toCamelCase(key)}Input`;
-                if(this.children[targetName]) {
-                    this.children[targetName].setProps({ value: newProps.user[key] })
+                const target = this.children[targetName];
+                if(target && target instanceof Block) {
+                    target.setProps({ value: newProps.user![key] || ""})
                 }
             })
         }

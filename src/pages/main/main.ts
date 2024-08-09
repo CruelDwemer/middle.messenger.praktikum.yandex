@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as mainTemplate } from "./main.hbs?raw";
-import Block, { Props, Children } from '../../common/core/Block';
+import Block, {Props, Children} from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
 import './main.scss';
@@ -50,6 +50,10 @@ const sendMessage = (
         MessageController.sendMessage(dataForms)
     }
 }
+
+// interface IMainPageProps extends PropsWithChildrenType {
+//     chats:
+// }
 
 class MainPage extends Block {
     protected constructor(data: Props | Children = {}) {
@@ -121,6 +125,7 @@ class MainPage extends Block {
         await ChatsController.getChats();
     }
 
+    /* eslint-disable  @typescript-eslint/no-unused-vars */
     protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
         if(newProps.chats) {
             this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat));
@@ -137,7 +142,7 @@ class MainPage extends Block {
         return true
     }
 
-    static getStateToProps(state: State) {
+    override getStateToProps(state: State) {
         return {
             chats: state.chats,
             messages: state.currentChat?.messages && [...state.currentChat.messages].reverse(),
@@ -150,4 +155,4 @@ class MainPage extends Block {
     }
 }
 
-export default connect(MainPage)
+export default connect(MainPage as typeof Block)

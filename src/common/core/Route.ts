@@ -40,6 +40,9 @@ export default class Route {
             return;
         }
         this._block = new this._blockClass();
+        if(!this._block) {
+            return
+        }
         render(this._props.rootQuery, this._block);
         Store.set('', '');
     }

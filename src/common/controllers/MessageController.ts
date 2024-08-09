@@ -4,7 +4,6 @@
 /* eslint-disable no-undef */
 import { wssBaseUrl } from "../api/config";
 import Store from "../core/Store";
-// import { activeDialog } from "../pages/chat/chat";
 import ChatsApi from "../api/ChatsApi";
 import { searchObjInArray } from "../utils/objectUtils";
 import router from "../core/Router";
@@ -27,7 +26,7 @@ class MessageController {
 
     private _chatId: number | string | undefined;
 
-    private _token: string;
+    private _token?: string;
 
     private _ping: NodeJS.Timeout | undefined;
 
@@ -98,7 +97,7 @@ class MessageController {
     }
 
     private _addEvents() {
-        this.socket?.addEventListener(this.EVENTS.OPEN, this._handleOpen);
+        this.socket?.addEventListener(this.EVENTS.OPEN, this._handleOpen as EventListener);
         this.socket?.addEventListener(this.EVENTS.MESSAGE, this._handleMassage);
         this.socket?.addEventListener(this.EVENTS.ERROR, this._handleError);
         this.socket?.addEventListener(this.EVENTS.CLOSE, this._handleClose);

@@ -5,6 +5,17 @@ import Block from '../classes/Block';
 import { TOptionsData } from '../classes/HTTPTransport';
 import BaseController from './BaseController';
 
+export interface ISearchUsersResult {
+    "id": number,
+    "first_name": string,
+    "second_name": string,
+    "display_name": string | null,
+    "phone": string,
+    "login": string,
+    "avatar": string | null,
+    "email": string
+}
+
 class UsersController extends BaseController {
     public changeData = async (data: TOptionsData) => {
         try {
@@ -39,7 +50,7 @@ class UsersController extends BaseController {
         }
     }
 
-    public searchUsers = async (self: Block, value: string) => {
+    public searchUsers = async (self: typeof Block, value: string) => {
         if (!value) {
             self.setProps({ items: null });
             return;
@@ -63,7 +74,7 @@ class UsersController extends BaseController {
     }
 
     // eslint-disable-next-line no-undef
-    public changeAvatar = async (file: FormData) => {
+    public changeAvatar = async (file: typeof FormData) => {
         try {
             const { status, response } = await UsersApi.changeAvatar(file);
             if (status === 200) {

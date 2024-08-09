@@ -33,7 +33,7 @@ export function isEqual(lhs: PlainObject | string, rhs: PlainObject | string) {
         for (const [key, value] of Object.entries(lhs)) {
             const rightValue = rhs[key];
             if (isArrayOrObject(value) && isArrayOrObject(rightValue)) {
-                if (isEqual(value, rightValue)) {
+                if (isEqual(value as PlainObject, rightValue as PlainObject)) {
                     continue;
                 }
                 return false;
@@ -129,7 +129,7 @@ export function cloneDeep(obj: Record<string, unknown>): Record<string, unknown>
         // Handle:
         // * Array
         if (item instanceof Array) {
-            const copy: unknown = [];
+            const copy: unknown[] = [];
 
             item.forEach((_, i) => (copy[i] = _cloneDeep(item[i])));
 
@@ -159,15 +159,15 @@ export function cloneDeep(obj: Record<string, unknown>): Record<string, unknown>
         // Handle:
         // * Object
         if (item instanceof Object) {
-            const copy: unknown = {};
+            const copy = {};
 
             // Handle:
             // * Object.symbol
-            Object.getOwnPropertySymbols(item).forEach((s) => (copy[s] = _cloneDeep(item[s])));
+            Object.getOwnPropertySymbols(item).forEach((s: symbol) => (copy[s] = _cloneDeep(item[s])));
 
             // Handle:
             // * Object.name (other)
-            Object.keys(item).forEach((k) => (copy[k] = _cloneDeep(item[k])));
+            Object.keys(item).forEach((k: string) => (copy[k] = _cloneDeep(item[k])));
 
             return copy;
         }

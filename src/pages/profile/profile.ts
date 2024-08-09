@@ -10,19 +10,18 @@ import ChangePasswordModal from "../../common/components/changePassword/changePa
 import Input from "../../common/components/input/input";
 import UsersController from "../../common/controllers/UsersController";
 import { resourcesUrl } from "../../common/api/config";
-// import InputField from "../../common/components/inputField/inputField";
 
 class ProfilePage extends Block {
     protected constructor(data: Props | Children = {}) {
         const editModal = new ProfileEditPage({ data })
         const changePasswordModal = new ChangePasswordModal({ data })
-        function changeAvatar(e: Event) {
+        async function changeAvatar(e: Event) {
             const data = new FormData();
             const elem = e.target as HTMLInputElement;
-            if (elem.files && elem.files[0]) {
-                data.append('avatar', elem.files[0]);
+            if (elem.files && elem.files![0]) {
+                data.append('avatar', elem.files![0]);
             }
-            UsersController.changeAvatar(data);
+            await UsersController.changeAvatar(data);
         }
         super({
             data,
@@ -66,10 +65,10 @@ class ProfilePage extends Block {
         })
     }
 
-    static getStateToProps(state: State) {
+    override getStateToProps(state: State) {
         return {
             user: state.user,
-            avatarImg: resourcesUrl + state.user.avatar,
+            avatarImg: state.user?.avatar ? resourcesUrl + state.user.avatar : "",
         }
     }
 
@@ -78,4 +77,4 @@ class ProfilePage extends Block {
     }
 }
 
-export default connect(ProfilePage)
+export default connect(ProfilePage as typeof Block)

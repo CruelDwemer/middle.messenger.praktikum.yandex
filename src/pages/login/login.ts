@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as loginTemplate } from "./login.hbs?raw";
-import Block, { Props, Children } from '../../common/core/Block';
+import Block, { Children, PropsWithChildrenType } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import connect from '../../common/utils/connect';
 import InputField from "../../common/components/inputField/inputField";
@@ -17,7 +17,7 @@ import Router, { PATH } from "../../common/core/Router";
 import AuthController from "../../common/controllers/AuthController";
 import {State} from "../../common/core/Store";
 
-interface ILoginProps extends Props {
+interface ILoginProps extends PropsWithChildrenType {
     onLogin?: (event: Event | undefined) => void
 }
 

@@ -1,15 +1,35 @@
 import { default as searchUsersModalTemplate } from "./searchUsersModal.hbs?raw";
-import Block, { Props }  from "../../core/Block";
+import Block from "../../core/Block";
 import "./searchUsersModal.scss"
 import Button from "../button/button";
 import SearchUserItem from "../searchUserItem/searchUserItem";
 import connect from "../../utils/connect";
-import {State} from "../../core/Store";
+import { State } from "../../core/Store";
+import { ISearchUsersResult } from "../../controllers/UsersController";
 
 const noResultsText = "Нет результатов";
+//
+// interface ISearchUsersModal extends Block {
+//     lists: {
+//         results: SearchUserItem[]
+//     }
+// }
+
+interface ISearchUsersModalProps {
+    items: ISearchUsersResult[] | null,
+    results: SearchUserItem[],
+    hasActiveChat: boolean
+}
 
 class SearchUsersModal extends Block {
-    constructor(items = [], results: SearchUserItem[] = [], hasActiveChat: boolean = false) {
+    public lists: {
+        results: SearchUserItem[]
+    }
+    constructor(props: ISearchUsersModalProps | null) {
+        const items = props?.items || null;
+        const results = props?.results || [];
+        const hasActiveChat = props?.hasActiveChat || false;
+
         const closeButton: Button = new Button({
             classname: "filled",
             label: "Закрыть",
@@ -23,12 +43,15 @@ class SearchUsersModal extends Block {
             results,
             noResultsText,
             hasActiveChat
-        });
+        })
     }
 
-    protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+    /* eslint-disable  @typescript-eslint/no-unused-vars */
+    protected componentDidUpdate(oldProps: ISearchUsersModalProps, newProps: ISearchUsersModalProps): boolean {
         if(newProps.items) {
-            this.lists.results = newProps.items.map(item => new SearchUserItem(item, this.hide.bind(this), this.props.hasActiveChat));
+            this.lists.results = newProps.items.map(item => (
+                new SearchUserItem(item, this.hide.bind(this), newProps.hasActiveChat))
+            );
             if(this.lists.results.length) {
                 if(this.props.noResultsText) {
                     this.setProps({ noResultsText: "" })
@@ -46,7 +69,7 @@ class SearchUsersModal extends Block {
         this.getContent()!.style.display = 'flex';
     }
 
-    static getStateToProps(state: State) {
+    override getStateToProps(state: State) {
         return { hasActiveChat: !!state.currentChat?.chat }
     }
 

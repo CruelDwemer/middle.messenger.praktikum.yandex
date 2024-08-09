@@ -16,14 +16,10 @@ const rootBlockQuery = "#app"
 
 class Router {
     public routes: Array<Route>;
-
     // eslint-disable-next-line no-undef
     public history: History;
-
     public _currentRoute: Route | null;
-
     _rootQuery: string;
-
     // eslint-disable-next-line no-use-before-define
     static __instance: Router;
 
