@@ -249,8 +249,8 @@ class Block {
         return temp.content
     }
 
-    protected render(): string {
-        return '';
+    protected render(): DocumentFragment {
+        return '' as DocumentFragment;
     }
 
     getContent() {
@@ -285,7 +285,7 @@ class Block {
         this.getContent()!.style.display = 'none';
     }
 
-    static getStateToProps(state: State): Partial<State> | Record<string, unknown> {
+    getStateToProps(state: State): Partial<State> | Record<string, unknown> {
         return state
     }
 
