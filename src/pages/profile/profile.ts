@@ -13,16 +13,18 @@ import { resourcesUrl } from "../../common/api/config";
 
 class ProfilePage extends Block {
     protected constructor() {
-        const editModal = new ProfileEditPage(undefined)
-        const changePasswordModal = new ChangePasswordModal(undefined)
+        const editModal = new ProfileEditPage(undefined);
+        const changePasswordModal = new ChangePasswordModal(undefined);
+
         async function changeAvatar(e: Event) {
             const data = new FormData();
             const elem = e.target as HTMLInputElement;
             if (elem.files && elem.files![0]) {
                 data.append('avatar', elem.files![0]);
             }
-            await UsersController.changeAvatar(data);
+            await UsersController.changeAvatar(data as FormData);
         }
+
         super({
             editModal,
             changePasswordModal,

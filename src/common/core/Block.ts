@@ -276,11 +276,11 @@ class Block {
         } as ProxyHandler<Props>);
     }
 
-    show() {
+    public show() {
         this.getContent()!.style.display = 'block';
     }
 
-    hide() {
+    public hide() {
         this.getContent()!.style.display = 'none';
     }
 
