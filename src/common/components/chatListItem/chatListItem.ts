@@ -6,7 +6,7 @@ import MessageController from "../../controllers/MessageController";
 import { cloneDeep } from "../../utils/objectUtils";
 import { getTimeString } from "../../utils/stringUtils";
 
-interface IChatlListItemProps extends PropsWithChildrenType {
+interface IChatListItemProps extends PropsWithChildrenType {
     last_message: {
         time: string,
         content: string
@@ -14,7 +14,7 @@ interface IChatlListItemProps extends PropsWithChildrenType {
 }
 
 class ChatListItem extends Block {
-    constructor(props: IChatlListItemProps) {
+    constructor(props: IChatListItemProps) {
         const time = props.last_message ?
             getTimeString(props.last_message.time) :
             "";
@@ -50,4 +50,4 @@ class ChatListItem extends Block {
     }
 }
 
-export default connect(ChatListItem)
+export default connect<ChatListItem>(ChatListItem)

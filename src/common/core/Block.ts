@@ -55,9 +55,7 @@ class Block {
     };
 
     public id: string = v4();
-
     public props: Props;
-
     protected parent: Parent;
     public children: Children;
     public lists: Lists;
@@ -161,17 +159,17 @@ class Block {
         this.eventBus().emit(Block.EVENTS.FLOW_CDM);
     }
 
-    private _componentDidUpdate(oldProps: Props, newProps: Props) {
+    private _componentDidUpdate(oldProps: PropsWithChildrenType, newProps: PropsWithChildrenType) {
         if(this.componentDidUpdate(oldProps, newProps)) {
             this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
         }
     }
 
-    protected componentDidUpdate(oldProps: Props, newProps: Props) {
+    protected componentDidUpdate(oldProps: PropsWithChildrenType, newProps: PropsWithChildrenType) {
         return !isEqual(oldProps, newProps);
     }
 
-    public setProps = (nextProps: Props) => {
+    public setProps = (nextProps: PropsWithChildrenType) => {
         if(nextProps) {
             Object.assign(this.props, nextProps);
             this.eventBus().emit(Block.EVENTS.FLOW_CDU, this.props as unknown, nextProps as unknown);
@@ -258,7 +256,7 @@ class Block {
         return this.element;
     }
 
-    _makePropsProxy(props: Props) {
+    _makePropsProxy(props: PropsWithChildrenType) {
         /* eslint-disable  @typescript-eslint/no-this-alias */
         const self = this;
         return new Proxy(props, {
