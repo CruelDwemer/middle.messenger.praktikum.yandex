@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as changePasswordTemplate } from "./changePassword.hbs?raw";
-import Block, { Props } from '../../core/Block';
+import Block, {Props, PropsWithChildrenType} from '../../core/Block';
 import Button from "../button/button";
 import onSubmit from "../../utils/formSubmit";
 import { PATH } from "../../core/Router";
@@ -75,4 +75,4 @@ class ChangePasswordModal extends Block {
     }
 }
 
-export default connect<ChangePasswordModal, undefined>(ChangePasswordModal)
+export default connect<ChangePasswordModal, PropsWithChildrenType>(ChangePasswordModal)

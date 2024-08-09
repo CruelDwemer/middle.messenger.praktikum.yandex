@@ -44,7 +44,7 @@ export type Children = Record<string, Element | Block>;
 export type Lists = Record<string, typeof Element[] | typeof Block[] | unknown[]> | unknown;
 type Parent = Element | Block | undefined;
 
-export type PropsWithChildrenType = (Props | Children | Lists)
+export type PropsWithChildrenType = Record<string | symbol, Props | Children | Lists | unknown>
 
 class Block {
     static EVENTS: EventsEnum = {
@@ -90,7 +90,7 @@ class Block {
 
         let parent: Parent;
 
-        Object.entries(childrenAndProps)
+        Object.entries(childrenAndProps as {[p: string]: unknown} | ArrayLike<unknown>)
             .forEach(([key, value]: [string, unknown]) => {
                 if(value instanceof Block || value instanceof Element) {
                     if(key === 'parent') {

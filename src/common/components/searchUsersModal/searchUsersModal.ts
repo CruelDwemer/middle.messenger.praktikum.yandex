@@ -74,4 +74,4 @@ class SearchUsersModal extends Block {
     }
 }
 
-export default connect<SearchUsersModal, ISearchUsersModalProps | null>(SearchUsersModal)
+export default connect<SearchUsersModal, ExtendedProps>(SearchUsersModal)
