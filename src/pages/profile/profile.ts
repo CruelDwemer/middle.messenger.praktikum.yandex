@@ -76,4 +76,4 @@ class ProfilePage extends Block {
     }
 }
 
-export default connect<ProfilePage, PropsWithChildrenType>(ProfilePage)
+export default connect<typeof ProfilePage, undefined>(ProfilePage)
