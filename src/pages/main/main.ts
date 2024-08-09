@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as mainTemplate } from "./main.hbs?raw";
-import Block, {Props, Children, PropsWithChildrenType} from '../../common/core/Block';
+import Block, { Children, PropsWithChildrenType } from '../../common/core/Block';
 import Button from "../../common/components/button/button";
 import SendButton from "../../common/components/sendButton/sendButton";
 import './main.scss';
