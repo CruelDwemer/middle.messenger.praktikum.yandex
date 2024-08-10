@@ -62,7 +62,7 @@ type Indexed<T = unknown> = {
   [key in string]: T;
 };
 
-function merge(lhs: Indexed, rhs: Indexed): Indexed {
+function merge(lhs: Indexed<T>, rhs: Indexed<T>): Indexed<T> {
   // eslint-disable-next-line no-restricted-syntax
   for (const p in rhs) {
     if (!rhs.hasOwnProperty(p)) {
@@ -70,7 +70,7 @@ function merge(lhs: Indexed, rhs: Indexed): Indexed {
     }
     try {
       if (rhs[p].constructor === Object) {
-        rhs[p] = merge(lhs[p] as Indexed, rhs[p] as Indexed);
+        rhs[p] = merge(lhs[p] as Indexed<T>, rhs[p] as Indexed<T>);
       } else {
         lhs[p] = rhs[p];
       }
@@ -90,13 +90,13 @@ export function set(object: unknown, path: string, value: unknown): unknown {
     throw new Error('path must be string');
   }
 
-  const result = path.split('.').reduceRight<Indexed>((acc, key) => ({
+  const result = path.split('.').reduceRight<Indexed<T>>((acc, key) => ({
     [key]: acc,
-  }), value as Indexed);
-  return merge(object as Indexed, result);
+  }), value as Indexed<T>);
+  return merge(object as Indexed<T>, result);
 }
 
-export function cloneDeep(obj: Record<string, unknown>): unknown {
+export function cloneDeep(obj: unknown): unknown {
   return (function cloneDeepF(item: unknown): unknown {
     // Handle:
     // * null
@@ -149,15 +149,19 @@ export function cloneDeep(obj: Record<string, unknown>): unknown {
     // Handle:
     // * Object
     if (item instanceof Object) {
-      const copy = {};
+      const copy: Record<symbol | string, unknown> = {};
 
       // Handle:
       // * Object.symbol
-      Object.getOwnPropertySymbols(item).forEach((s: symbol) => (copy[s] = cloneDeepF(item[s] as unknown)));
+      Object
+        .getOwnPropertySymbols(item as Record<symbol, unknown>)
+        .forEach((s: symbol) => (copy[s] = cloneDeepF((item as Record<symbol, unknown>)[s])));
 
       // Handle:
       // * Object.name (other)
-      Object.keys(item).forEach((k: string) => (copy[k] = cloneDeepF(item[k] as unknown)));
+      Object
+        .keys(item as Record<string, unknown>)
+        .forEach((k: string) => (copy[k] = cloneDeepF((item as Record<string, unknown>)[k])));
 
       return copy;
     }
@@ -169,10 +173,11 @@ export function cloneDeep(obj: Record<string, unknown>): unknown {
   }(obj));
 }
 
-export function searchObjInArray<T = Array<Record<string, unknown>>>(array: T, key: string, value: string | number): unknown {
+type RecordType = Record<string, unknown>;
+export function searchObjInArray<T extends RecordType[]>(array: T, key: string, value: string | number): unknown {
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
-    if (item[key] === value) {
+    if (`${key}` in item && item[key] === value) {
       return cloneDeep(item);
     }
   }

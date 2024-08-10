@@ -30,7 +30,7 @@ class ChatListBlock extends Block {
   /* eslint-disable  @typescript-eslint/no-unused-vars */
   protected componentDidUpdate(_: IChatListBlockProps, newProps: IChatListBlockProps): boolean {
     if (newProps.chats) {
-      this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat));
+      this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat)) as [];
       if (this.lists.chatList.length) {
         if (this.props.noResultsText) {
           this.setProps({ noResultsText: '' });

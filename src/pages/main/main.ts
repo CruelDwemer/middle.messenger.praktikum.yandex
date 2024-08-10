@@ -43,7 +43,7 @@ const sendMessage = (
 
 class MainPage extends Block {
   constructor() {
-    const modal = new SearchUsersModal() as Block;
+    const modal = new SearchUsersModal({}) as Block;
 
     const onSearchButtonClick = async () => {
       const { children } = this;
@@ -68,7 +68,7 @@ class MainPage extends Block {
     super({
       messages: null,
       modal,
-      chatListBlock: new ChatListBlock(),
+      chatListBlock: new ChatListBlock({}),
       activeChatTitle: '',
       messageInput: new InputField({
         name: 'message',
