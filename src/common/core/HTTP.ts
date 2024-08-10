@@ -1,96 +1,96 @@
 const METHODS = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE',
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
 };
 
-export type TOptionsData = Record<string, string | number | number[]> | FormData
+export type TOptionsData = Record<string, string | number | number[]> | FormData;
 type TOptions = {
-    headers?: Record<string, string>,
-    data?: TOptionsData,
-    method?: string,
-    timeout?: number
-}
-type HTTPMethod = (url: string, options?: TOptions) => Promise<{ status: number, response: string }>
-type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<{ status: number, response: string } | void>
+  headers?: Record<string, string>,
+  data?: TOptionsData,
+  method?: string,
+  timeout?: number
+};
+type HTTPMethod = (url: string, options?: TOptions) => Promise<{ status: number, response: string }>;
+type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<{ status: number, response: string } | void>;
 
 function queryStringify(data: TOptionsData): string {
-    if (typeof data !== 'object') {
-        throw new Error('Data must be object');
-    }
+  if (typeof data !== 'object') {
+    throw new Error('Data must be object');
+  }
 
-    const keys = Object.keys(data);
-    return keys
-        .reduce((result, key, index) => `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`, '?');
+  const keys = Object.keys(data);
+  return keys
+    .reduce((result, key, index) => `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`, '?');
 }
 
 export default class HTTPTransport {
-    baseUrl: string = '';
+  baseUrl: string = '';
 
-    constructor(baseUrl: string) {
-        this.baseUrl = baseUrl;
-    }
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
 
-    get: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.GET }, options.timeout)
-    );
+  get: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    this.request(url, { ...options, method: METHODS.GET }, options.timeout)
+  );
 
-    post: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.POST }, options.timeout)
-    );
+  post: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    this.request(url, { ...options, method: METHODS.POST }, options.timeout)
+  );
 
-    put: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
-    );
+  put: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
+  );
 
-    delete: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
-    );
+  delete: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+    this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
+  );
 
-    request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<{ status: number, response: string } | void> => {
-        const { headers = {}, method, data } = options;
-        const { baseUrl } = this;
+  request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<{ status: number, response: string } | void> => {
+    const { headers = {}, method, data } = options;
+    const { baseUrl } = this;
 
-        return new Promise((resolve, reject) => {
-            if (!method) {
-                // eslint-disable-next-line prefer-promise-reject-errors
-                reject('No method');
-                return;
-            }
+    return new Promise((resolve, reject) => {
+      if (!method) {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject('No method');
+        return;
+      }
 
-            // eslint-disable-next-line no-undef
-            const xhr = new XMLHttpRequest();
-            xhr.withCredentials = true;
-            const isGet = method === METHODS.GET;
+      // eslint-disable-next-line no-undef
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      const isGet = method === METHODS.GET;
 
-            xhr.open(
-                method,
-                isGet && !!data
-                    ? `${baseUrl}${url}${queryStringify(data)}`
-                    : baseUrl + url,
-            );
-            Object.keys(headers).forEach((key) => {
-                xhr.setRequestHeader(key, headers[key]);
-            });
+      xhr.open(
+        method,
+        isGet && !!data
+          ? `${baseUrl}${url}${queryStringify(data)}`
+          : baseUrl + url,
+      );
+      Object.keys(headers).forEach((key) => {
+        xhr.setRequestHeader(key, headers[key]);
+      });
 
-            // eslint-disable-next-line func-names
-            xhr.onload = function () {
-                resolve(xhr);
-            };
+      // eslint-disable-next-line func-names
+      xhr.onload = function () {
+        resolve(xhr);
+      };
 
-            xhr.onabort = reject;
-            xhr.onerror = reject;
+      xhr.onabort = reject;
+      xhr.onerror = reject;
 
-            xhr.timeout = timeout;
-            xhr.ontimeout = reject;
+      xhr.timeout = timeout;
+      xhr.ontimeout = reject;
 
-            if (isGet || !data) {
-                xhr.send();
-            } else {
-                const sendData = data instanceof FormData ? data : JSON.stringify(data);
-                xhr.send(sendData)
-            }
-        });
-    };
+      if (isGet || !data) {
+        xhr.send();
+      } else {
+        const sendData = data instanceof FormData ? data : JSON.stringify(data);
+        xhr.send(sendData);
+      }
+    });
+  };
 }

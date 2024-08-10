@@ -1,164 +1,124 @@
-/*
-*  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
-* */
-// const mainTemplate = require("./main.hbs?raw");
-/*
-*  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
-*  поэтому локально используется import при сборке
-* */
-import { default as mainTemplate } from "./main.hbs?raw";
-import Block, {Children, PropsWithChildrenType} from '../../common/core/Block';
-import Button from "../../common/components/button/button";
-import SendButton from "../../common/components/sendButton/sendButton";
+import { default as mainTemplate } from './main.hbs?raw';
+import Block, { Children } from '../../common/core/Block';
+import Button from '../../common/components/button/button';
+import SendButton from '../../common/components/sendButton/sendButton';
 import './main.scss';
-import InputField from "../../common/components/inputField/inputField";
-import Router, { PATH } from "../../common/core/Router";
-import ChatsController from "../../common/controllers/ChatsController";
-import Input from "../../common/components/inputField/inputField";
-import UsersController from "../../common/controllers/UsersController";
+import InputField from '../../common/components/inputField/inputField';
+import Router, { PATH } from '../../common/core/Router';
+import ChatsController from '../../common/controllers/ChatsController';
+import Input from '../../common/components/inputField/inputField';
+import UsersController from '../../common/controllers/UsersController';
 import connect from '../../common/utils/connect';
-import { IChat, State } from "../../common/core/Store";
-import SearchUsersModal from "../../common/components/searchUsersModal/searchUsersModal";
-import ChatListItem from "../../common/components/chatListItem/chatListItem";
-import MessageController from "../../common/controllers/MessageController";
-
-const noResultsText = "Нет чатов";
+import { IChat, State } from '../../common/core/Store';
+import SearchUsersModal from '../../common/components/searchUsersModal/searchUsersModal';
+import MessageController from '../../common/controllers/MessageController';
+import ChatListBlock from '../../common/components/chatListBlock/chatListBlock';
 
 const sendMessage = (
-    event: Event | undefined,
-    children: Children,
+  event: Event | undefined,
+  children: Children,
 ) => {
-    if (!event) return;
-    event.preventDefault();
+  if (!event) return;
+  event.preventDefault();
 
-    const dataForms: Record<string, string | false> = {};
+  const dataForms: Record<string, string | false> = {};
 
-    let isValid = true;
-    if(children) {
-        Object.values(children).forEach(child => {
-            if(child instanceof InputField && child.props.name === "message") {
-                if(!child.validate()) {
-                    isValid = false
-                }
-                dataForms[child.props.name as string] = child.value();
-                child.resetValue()
-            }
-        })
-    }
+  let isValid = true;
+  if (children) {
+    Object.values(children).forEach(child => {
+      if (child instanceof InputField && child.props.name === 'message') {
+        if (!child.validate()) {
+          isValid = false;
+        }
+        dataForms[child.props.name as string] = child.value();
+        child.resetValue();
+      }
+    });
+  }
 
-    if(isValid) {
-        MessageController.sendMessage(dataForms)
-    }
-}
+  if (isValid) {
+    MessageController.sendMessage(dataForms);
+  }
+};
 
 interface IMainPageProps {
-    chats: IChat[],
-    messages: IChat[],
-    activeChatTitle: string
+  messages: IChat[],
+  activeChatTitle: string
 }
-type ExtendedProps = PropsWithChildrenType & IMainPageProps
 
 class MainPage extends Block {
-    lists = {
-        chatList: [] as (new (props: IChat & PropsWithChildrenType) => typeof ChatListItem)[]
-    }
-    protected constructor(data: IMainPageProps) {
-        const modal = new SearchUsersModal(null);
+  protected constructor() {
+    const modal = new SearchUsersModal(null);
 
-        const onSearchButtonClick = async () => {
-            const { children } = this;
-            if(children) {
-                const res: Input | undefined = Object.values(children)
-                    .find(child => child instanceof Input && child.props.name === "search") as Input | undefined
-                if(res && res.value()) {
-                    await UsersController.searchUsers(modal, res.value())
-                }
-            }
+    const onSearchButtonClick = async () => {
+      const { children } = this;
+      if (children) {
+        const res: Input | undefined = Object.values(children)
+          .find(child => child instanceof Input && child.props.name === 'search') as Input | undefined;
+        if (res && res.value()) {
+          await UsersController.searchUsers(modal, res.value());
         }
+      }
+    };
 
-        const searchButton = new Button({
-            classname: "filled",
-            label: "Искать",
-            onClick: async () => {
-                await onSearchButtonClick()
-                modal.show()
-            }
-        });
+    const searchButton = new Button({
+      classname: 'filled',
+      label: 'Искать',
+      onClick: async () => {
+        await onSearchButtonClick();
+        modal.show();
+      },
+    });
 
-        super({
-            data,
-            modal,
-            chatList: [],
-            activeChatTitle: "",
-            messageInput: new InputField({
-                name: "message",
-                classname: "active-bottom-input",
-                inputClassname: "active-bottom-input",
-                placeholder: "Сообщение",
-                validationRules: {
-                    minLength: 1
-                }
-            }),
-            profileButton: new Button({
-                classname: "flat",
-                label: "Профиль >",
-                onClick: () => Router.go(PATH.PROFILE)
-            }),
-            searchInput: new InputField({
-                placeholder: "Поиск",
-                name: "search"
-            }),
-            searchButton,
-            sendButton: new SendButton({
-                width: "40px",
-                height: "40px",
-                onClick: (e: Event | undefined): void => {
-                    sendMessage(e, this.children)
-                }
-            }),
-            deleteUser: new Button({
-                classname: "flat-red",
-                label: "Удалить чат",
-                onClick: async () => {
-                    await ChatsController.deleteChat()
-                }
-            }),
-            noResultsText
-        });
-    }
+    super({
+      messages: null,
+      modal,
+      chatListBlock: new ChatListBlock(),
+      activeChatTitle: '',
+      messageInput: new InputField({
+        name: 'message',
+        classname: 'active-bottom-input',
+        inputClassname: 'active-bottom-input',
+        placeholder: 'Сообщение',
+        validationRules: {
+          minLength: 1,
+        },
+      }),
+      profileButton: new Button({
+        classname: 'flat',
+        label: 'Профиль >',
+        onClick: () => Router.go(PATH.PROFILE),
+      }),
+      searchInput: new InputField({
+        placeholder: 'Поиск',
+        name: 'search',
+      }),
+      searchButton,
+      sendButton: new SendButton({
+        width: '40px',
+        height: '40px',
+        onClick: (e: Event | undefined): void => {
+          sendMessage(e, this.children);
+        },
+      }),
+      deleteUser: new Button({
+        classname: 'flat-red',
+        label: 'Удалить чат',
+        onClick: ChatsController.deleteChat,
+      }),
+    });
+  }
 
-    async componentDidMount() {
-        await ChatsController.getChats();
-    }
+  static getStateToProps(state: State) {
+    return {
+      messages: state.currentChat?.messages && [...state.currentChat.messages].reverse(),
+      activeChatTitle: state.currentChat?.chat?.title || '',
+    };
+  }
 
-    /* eslint-disable  @typescript-eslint/no-unused-vars */
-    protected componentDidUpdate(_: ExtendedProps, newProps: ExtendedProps): boolean {
-        if(newProps.chats) {
-            this.lists.chatList = newProps.chats.map(chat => new ChatListItem(chat));
-            if(this.lists.chatList.length) {
-                if(this.props.noResultsText) {
-                    this.setProps({ noResultsText: "" })
-                }
-            } else {
-                if(!this.props.noResultsText) {
-                    this.setProps({ noResultsText })
-                }
-            }
-        }
-        return true
-    }
-
-    static getStateToProps(state: State) {
-        return {
-            chats: state.chats,
-            messages: state.currentChat?.messages && [...state.currentChat.messages].reverse(),
-            activeChatTitle: state.currentChat?.chat?.title || ""
-        };
-    }
-
-    protected render(): string {
-        return mainTemplate;
-    }
+  protected render(): string {
+    return mainTemplate;
+  }
 }
 
-export default connect<MainPage, IMainPageProps>(MainPage)
+export default connect<MainPage, IMainPageProps>(MainPage);

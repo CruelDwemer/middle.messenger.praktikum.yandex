@@ -3,47 +3,47 @@ import Block from './Block';
 import Store from './Store';
 
 export default class Route {
-    _pathname: string;
+  _pathname: string;
 
-    _blockClass: typeof Block | null;
+  _blockClass: typeof Block | null;
 
-    _block: Block | null;
+  _block: Block | null;
 
-    _props: Record<string, string>;
+  _props: Record<string, string>;
 
-    constructor(pathname: string, view: typeof Block, props: Record<string, string>) {
-        this._pathname = pathname;
-        this._blockClass = view;
-        this._block = null;
-        this._props = props;
+  constructor(pathname: string, view: typeof Block, props: Record<string, string>) {
+    this._pathname = pathname;
+    this._blockClass = view;
+    this._block = null;
+    this._props = props;
+  }
+
+  navigate(pathname: string): void {
+    if (this.match(pathname)) {
+      this._pathname = pathname;
+      this.render();
     }
+  }
 
-    navigate(pathname: string): void {
-        if (this.match(pathname)) {
-            this._pathname = pathname;
-            this.render();
-        }
+  leave(): void {
+    if (this._block) {
+      this._block.hide();
     }
+  }
 
-    leave(): void {
-        if (this._block) {
-            this._block.hide();
-        }
-    }
+  match(pathname: string): boolean {
+    return pathname === this._pathname;
+  }
 
-    match(pathname: string): boolean {
-        return pathname === this._pathname;
+  render(): void {
+    if (!this._blockClass) {
+      return;
     }
-
-    render(): void {
-        if (!this._blockClass) {
-            return;
-        }
-        this._block = new this._blockClass();
-        if(!this._block) {
-            return
-        }
-        render(this._props.rootQuery, this._block);
-        Store.set('', '');
+    this._block = new this._blockClass();
+    if (!this._block) {
+      return;
     }
+    render(this._props.rootQuery, this._block);
+    Store.set('', '');
+  }
 }
