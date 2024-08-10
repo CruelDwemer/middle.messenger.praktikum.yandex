@@ -9,7 +9,7 @@ import ChatsController from '../../common/controllers/ChatsController';
 import Input from '../../common/components/inputField/inputField';
 import UsersController from '../../common/controllers/UsersController';
 import connect from '../../common/utils/connect';
-import { IChat, State } from '../../common/core/Store';
+import { State } from '../../common/core/Store';
 import SearchUsersModal from '../../common/components/searchUsersModal/searchUsersModal';
 import MessageController from '../../common/controllers/MessageController';
 import ChatListBlock from '../../common/components/chatListBlock/chatListBlock';
@@ -41,14 +41,9 @@ const sendMessage = (
   }
 };
 
-interface IMainPageProps {
-  messages: IChat[],
-  activeChatTitle: string
-}
-
 class MainPage extends Block {
-  protected constructor() {
-    const modal = new SearchUsersModal(null);
+  constructor() {
+    const modal = new SearchUsersModal() as Block;
 
     const onSearchButtonClick = async () => {
       const { children } = this;
@@ -121,4 +116,4 @@ class MainPage extends Block {
   }
 }
 
-export default connect<MainPage, IMainPageProps>(MainPage);
+export default connect(MainPage);

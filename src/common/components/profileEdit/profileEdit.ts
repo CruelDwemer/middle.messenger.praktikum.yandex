@@ -7,7 +7,7 @@
 *  поэтому локально используется import при сборке
 * */
 import { default as profileEditTemplate } from './profileEdit.hbs?raw';
-import Block, { Props, PropsWithChildrenType } from '../../core/Block';
+import Block, { Props, BlockDataType } from '../../core/Block';
 import Button from '../button/button';
 import Input from '../input/input';
 import onSubmit from '../../utils/formSubmit';
@@ -60,12 +60,12 @@ export class ProfileInputField extends InputField {
   }
 }
 
-interface IProfileEditModalProps extends PropsWithChildrenType {
+interface IProfileEditModalProps extends BlockDataType {
   user: IUser
 }
 
 class ProfileEditModal extends Block {
-  protected constructor() {
+  constructor() {
     const emailInput = new ProfileInputField({
       name: 'email',
       placeholder: 'Почта',
@@ -146,11 +146,13 @@ class ProfileEditModal extends Block {
   /* eslint-disable  @typescript-eslint/no-unused-vars */
   protected componentDidUpdate(_: IProfileEditModalProps, newProps: IProfileEditModalProps): boolean {
     if (newProps.user) {
-      Object.keys(newProps.user).forEach(key => {
-        const targetName = `${toCamelCase(key)}Input`;
-        const target = this.children[targetName];
-        if (target && target instanceof Block) {
-          target.setProps({ value: newProps.user[key] || '' });
+      Object.keys(newProps.user).forEach((key: keyof IUser) => {
+        if (key && newProps.user[key] as string | number) {
+          const targetName = `${toCamelCase(key as string)}Input`;
+          const target = this.children[targetName];
+          if (target && target instanceof Block) {
+            target.setProps({ value: newProps.user[key] });
+          }
         }
       });
     }
@@ -166,4 +168,4 @@ class ProfileEditModal extends Block {
   }
 }
 
-export default connect<ProfileEditModal, undefined>(ProfileEditModal);
+export default connect(ProfileEditModal);

@@ -16,17 +16,15 @@ export enum PATH {
 const rootBlockQuery = '#app';
 
 class Router {
-  public routes: Array<Route>;
+  public routes: Array<Route> = [];
 
-  // eslint-disable-next-line no-undef
-  public history: History;
+  public history: History = window.history;
 
-  public _currentRoute: Route | null;
+  public _currentRoute: Route | null = null;
 
-  _rootQuery: string;
+  _rootQuery: string = '';
 
-  // eslint-disable-next-line no-use-before-define
-  static __instance: Router;
+  static __instance: Router | null = null;
 
   constructor(rootQuery: string = '') {
     if (Router.__instance) {

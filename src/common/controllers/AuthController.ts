@@ -18,16 +18,19 @@ class AuthController extends BaseController {
 
   public createUser = async (data: TOptionsData): Promise<void> => {
     try {
-      const { status, response } = await authApi.createUser(data);
-      if (status === 200) {
-        const isOK = await this.getUserInfo();
-        if (isOK) {
-          this.router.go(PATH.MAIN);
+      const res = await authApi.createUser(data);
+      if (res) {
+        const { status, response } = res;
+        if (status === 200) {
+          const isOK = await this.getUserInfo();
+          if (isOK) {
+            this.router.go(PATH.MAIN);
+          }
+        } else if (status === 500) {
+          this.router.go(PATH.ERROR500);
+        } else {
+          alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
         }
-      } else if (status === 500) {
-        this.router.go(PATH.ERROR500);
-      } else {
-        alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
       }
     } catch (e) {
       console.log(e);
@@ -37,29 +40,36 @@ class AuthController extends BaseController {
   public async login(data: TOptionsData): Promise<void> {
     try {
       this.store.set('isLoading', true);
-      const { status, response } = await authApi.login(data);
-      if (status === 200) {
-        this.store.set('auth', true);
-        this.router.go(PATH.MAIN);
-        await this.getUserInfo();
-        this.store.set('isLoading', false);
-      } else if (status === 500) {
-        this.router.go(PATH.ERROR500);
-      } else {
-        alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+      const res = await authApi.login(data);
+      if (res) {
+        const { status, response } = res;
+        if (status === 200) {
+          this.store.set('auth', true);
+          this.router.go(PATH.MAIN);
+          await this.getUserInfo();
+          this.store.set('isLoading', false);
+        } else if (status === 500) {
+          this.router.go(PATH.ERROR500);
+        } else {
+          alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+        }
       }
     } catch (e) {
       console.log(e);
     }
   }
 
-  public async getUserInfo(): Promise<boolean> {
+  public async getUserInfo(): Promise<boolean | undefined> {
     try {
-      const { status, response } = await authApi.getUser();
-      if (status === 200 && response) {
-        this.store.set('user', JSON.parse(response));
-        this.store.set('auth', true);
-        return true;
+      const res = await authApi.getUser();
+      if (res) {
+        const { status, response } = res;
+        if (status === 200 && response) {
+          this.store.set('user', JSON.parse(response));
+          this.store.set('auth', true);
+          return true;
+        }
+        return false;
       }
       return false;
     } catch (e) {
@@ -70,14 +80,17 @@ class AuthController extends BaseController {
 
   public async logout(): Promise<void> {
     try {
-      const { status, response } = await authApi.logout();
-      if (status === 200) {
-        this.store.setResetState();
-        this.router.go('/');
-      } else if (status === 500) {
-        this.router.go(PATH.ERROR500);
-      } else {
-        alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+      const res = await authApi.logout();
+      if (res) {
+        const { status, response } = res;
+        if (status === 200) {
+          this.store.setResetState();
+          this.router.go('/');
+        } else if (status === 500) {
+          this.router.go(PATH.ERROR500);
+        } else {
+          alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+        }
       }
     } catch (e) {
       console.log(e);

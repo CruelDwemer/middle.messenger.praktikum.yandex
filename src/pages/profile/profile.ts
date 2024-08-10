@@ -12,7 +12,7 @@ import UsersController from '../../common/controllers/UsersController';
 import { resourcesUrl } from '../../common/api/config';
 
 class ProfilePage extends Block {
-  protected constructor() {
+  constructor() {
     const editModal  = new ProfileEditPage() as Block;
     const changePasswordModal = new ChangePasswordModal();
 
@@ -78,4 +78,4 @@ class ProfilePage extends Block {
   }
 }
 
-export default connect<ProfilePage, undefined>(ProfilePage);
+export default connect(ProfilePage);

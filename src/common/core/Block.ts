@@ -6,7 +6,7 @@ import { State } from './Store';
 *  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
 *  поэтому локально используется import при сборке
 * */
-import { default as chat } from '../components/chat/chat.hbs';
+import chat from '../components/chat/chat.hbs';
 import { default as message } from '../components/message/message.hbs';
 import { default as dataRow } from '../components/dataRow/dataRow.hbs';
 import { default as button } from '../components/button/button.hbs';
@@ -35,7 +35,11 @@ export type Children = Record<string, Element | Block>;
 export type Lists = Record<string, typeof Element[] | typeof Block[] | unknown[]>;
 type Parent = Element | Block | undefined;
 
-export type PropsWithChildrenType = Record<string | symbol, Props | Children | Lists  >;
+type FunctionType =
+    ((event: Event | undefined) => void) | undefined;
+export type PropsWithChildrenType = Record<string | symbol, Props | Children | Lists | FunctionType >;
+// export type BlockDataType = { [p: string]: unknown | ArrayLike<unknown> | FunctionType };
+export type BlockDataType = { [p: string]: unknown };
 
 class Block {
   static EVENTS: EventsEnum = {
@@ -61,7 +65,7 @@ class Block {
 
   private _element: HTMLElement | null = null;
 
-  protected constructor(propsWithChildren: { [p: string]: unknown } | ArrayLike<unknown>) {
+  constructor(propsWithChildren: BlockDataType) {
     const eventBus: EventBus = new EventBus();
 
     const { props, children, lists, parent } = Block.getChildrenAndProps(propsWithChildren);
@@ -78,11 +82,11 @@ class Block {
     eventBus.emit(Block.EVENTS.INIT);
   }
 
-  static getChildrenAndProps(childrenAndProps: PropsWithChildrenType)
+  static getChildrenAndProps(childrenAndProps: BlockDataType)
     : { props: Props, children: Children, parent: Parent, lists: Lists } {
     const props: Props = {};
     const children: Children = {};
-    const lists = {};
+    const lists: Lists = {};
 
     let parent: Parent;
 
@@ -155,17 +159,17 @@ class Block {
     this.eventBus().emit(Block.EVENTS.FLOW_CDM);
   }
 
-  private _componentDidUpdate(oldProps: PropsWithChildrenType, newProps: PropsWithChildrenType) {
+  private _componentDidUpdate(oldProps: BlockDataType, newProps: BlockDataType) {
     if (this.componentDidUpdate(oldProps, newProps)) {
       this.eventBus().emit(Block.EVENTS.FLOW_RENDER);
     }
   }
 
-  protected componentDidUpdate(oldProps: PropsWithChildrenType, newProps: PropsWithChildrenType) {
+  protected componentDidUpdate(oldProps: BlockDataType, newProps: BlockDataType) {
     return !isEqual(oldProps, newProps);
   }
 
-  public setProps = (nextProps: PropsWithChildrenType) => {
+  public setProps = (nextProps: BlockDataType) => {
     if (nextProps) {
       Object.assign(this.props, nextProps);
       this.eventBus().emit(Block.EVENTS.FLOW_CDU, this.props as unknown, nextProps as unknown);
@@ -231,15 +235,20 @@ class Block {
     Object.entries(this.lists).forEach(([, child]) => {
       const listCont = document.createElement('template');
       child.forEach(item => {
-        if (item instanceof Block) {
-          listCont.content.append(item.getContent());
-        } else {
-          listCont.content.append(`${item.toString()}`);
+        if (item) {
+          if (item instanceof Block) {
+            listCont.content.append(item.getContent() as Node);
+          } else {
+            /* eslint-disable @typescript-eslint/no-base-to-string */
+            listCont.content.append(`${item.toString()}`);
+          }
         }
       });
 
       const dummy = temp.content.querySelector(`[data-id="_list_${tmpId}"]`);
-      dummy.replaceWith(listCont.content);
+      if (dummy) {
+        dummy.replaceWith(listCont.content);
+      }
     });
 
     return temp.content;
@@ -253,7 +262,7 @@ class Block {
     return this.element;
   }
 
-  _makePropsProxy(props: PropsWithChildrenType) {
+  _makePropsProxy(props: BlockDataType) {
     /* eslint-disable  @typescript-eslint/no-this-alias */
     const self = this;
     return new Proxy(props, {

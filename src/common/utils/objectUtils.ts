@@ -153,20 +153,23 @@ export function cloneDeep(obj: Record<string, unknown>): unknown {
 
       // Handle:
       // * Object.symbol
-      Object.getOwnPropertySymbols(item).forEach((s: symbol) => (copy[s] = cloneDeepF(item[s])));
+      Object.getOwnPropertySymbols(item).forEach((s: symbol) => (copy[s] = cloneDeepF(item[s] as unknown)));
 
       // Handle:
       // * Object.name (other)
-      Object.keys(item).forEach((k: string) => (copy[k] = cloneDeepF(item[k])));
+      Object.keys(item).forEach((k: string) => (copy[k] = cloneDeepF(item[k] as unknown)));
 
       return copy;
     }
-
-    throw new Error(`Unable to copy object: ${item.toString()}`);
+    //
+    // if(item && "toString" in item) {
+    //   throw new Error(`Unable to copy object: ${item!.toString()}`);
+    // }
+    return undefined;
   }(obj));
 }
 
-export function searchObjInArray(array: Array<Record<string, unknown>>, key: string, value: string | number): unknown {
+export function searchObjInArray<T = Array<Record<string, unknown>>>(array: T, key: string, value: string | number): unknown {
   for (let i = 0; i < array.length; i++) {
     const item = array[i];
     if (item[key] === value) {

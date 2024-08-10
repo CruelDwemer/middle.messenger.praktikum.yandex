@@ -1,5 +1,5 @@
 import { default as mainTemplate } from './chatListBlock.hbs?raw';
-import Block, { PropsWithChildrenType } from '../../core/Block';
+import Block, { BlockDataType } from '../../core/Block';
 import ChatsController from '../../controllers/ChatsController';
 import connect from '../../utils/connect';
 import { IChat, State } from '../../core/Store';
@@ -7,7 +7,7 @@ import ChatListItem from '../chatListItem/chatListItem';
 
 const noResultsText = 'Нет чатов';
 
-interface IChatListBlockProps extends PropsWithChildrenType {
+interface IChatListBlockProps extends BlockDataType {
   chats: IChat[]
 }
 
@@ -16,7 +16,7 @@ class ChatListBlock extends Block {
     chatList: [] as (new (props: IChat) => typeof ChatListItem)[],
   };
 
-  protected constructor() {
+  constructor() {
     super({
       chatList: [],
       noResultsText,
@@ -55,4 +55,4 @@ class ChatListBlock extends Block {
   }
 }
 
-export default connect<ChatListBlock, undefined>(ChatListBlock);
+export default connect(ChatListBlock);

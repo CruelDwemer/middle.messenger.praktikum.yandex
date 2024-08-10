@@ -1,12 +1,14 @@
 import { set } from '../utils/objectUtils';
 import EventBus from './EventBus';
+import { BlockDataType } from './Block';
 
 // eslint-disable-next-line no-shadow
 export enum StoreEvent {
   UPDATED = 'updated',
 }
 
-export interface IUser {
+export interface IUser extends Record<string, string | number | null> {
+  id: number,
   first_name: string,
   second_name: string,
   display_name: string | null,
@@ -14,7 +16,7 @@ export interface IUser {
   avatar: string | null
 }
 
-export interface IChat {
+export interface IChat extends BlockDataType {
   id: number,
   title: string,
   avatar: string | null,
@@ -23,7 +25,7 @@ export interface IChat {
   last_message: IMessage | null
 }
 
-export interface IMessage {
+export interface IMessage extends BlockDataType {
   user: IUser,
   time: string,
   content: string,

@@ -19,7 +19,9 @@ type ExtendedProps = ISearchUsersModalProps & PropsWithChildrenType;
 class SearchUsersModal extends Block {
   public lists: {
     results: SearchUserItem[]
-  };
+  } = {
+      results: [],
+    };
 
   constructor() {
     const closeButton: Button = new Button({
@@ -68,4 +70,4 @@ class SearchUsersModal extends Block {
   }
 }
 
-export default connect<SearchUsersModal, ISearchUsersModalProps | null>(SearchUsersModal);
+export default connect(SearchUsersModal);

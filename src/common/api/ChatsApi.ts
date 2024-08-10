@@ -1,18 +1,18 @@
-import HTTP, { TOptionsData } from '../core/HTTP';
+import HTTP, { TOptionsData, HTTPResponse } from '../core/HTTP';
 import BaseAPI from './BaseApi';
 
 class ChatsApi extends BaseAPI {
   public http = new HTTP(`${this.baseUrl}/chats`);
 
-  public getChats(): Promise<{ status: number, response: string }> {
+  public getChats(): HTTPResponse {
     return this.http.get('/');
   }
 
-  public getToken(id: number): Promise<{ status: number, response: string }> {
+  public getToken(id: number): HTTPResponse {
     return this.http.post(`/token/${id}`);
   }
 
-  public createChat(title: string): Promise<{ status: number, response: string }> {
+  public createChat(title: string): HTTPResponse {
     return this.http.post('/', {
       data: { title },
       headers: {
@@ -21,7 +21,7 @@ class ChatsApi extends BaseAPI {
     });
   }
 
-  public addUsers(chatId: number, users: Array<number>): Promise<{ status: number, response: string }> {
+  public addUsers(chatId: number, users: Array<number>): HTTPResponse {
     return this.http.put('/users', {
       data: { chatId, users },
       headers: {
@@ -30,7 +30,7 @@ class ChatsApi extends BaseAPI {
     });
   }
 
-  public deleteChat(data: TOptionsData): Promise<{ status: number, response: string }> {
+  public deleteChat(data: TOptionsData): HTTPResponse {
     return this.http.delete('/', {
       data,
       headers: {
@@ -39,7 +39,7 @@ class ChatsApi extends BaseAPI {
     });
   }
 
-  public deleteUsers(data: TOptionsData): Promise<{ status: number, response: string }> {
+  public deleteUsers(data: TOptionsData): HTTPResponse {
     return this.http.delete('/users', {
       data,
       headers: {

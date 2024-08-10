@@ -39,7 +39,7 @@ export default class Route {
     if (!this._blockClass) {
       return;
     }
-    this._block = new this._blockClass();
+    this._block = new this._blockClass({});
     if (!this._block) {
       return;
     }

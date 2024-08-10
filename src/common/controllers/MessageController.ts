@@ -3,14 +3,24 @@
 /* eslint-disable class-methods-use-this */
 /* eslint-disable no-undef */
 import { wssBaseUrl } from '../api/config';
-import Store from '../core/Store';
+import Store, { IChat, State } from '../core/Store';
 import ChatsApi from '../api/ChatsApi';
 import { searchObjInArray } from '../utils/objectUtils';
 import router from '../core/Router';
 import handleError from '../utils/handleError';
 
+interface WssMessageEvent extends Event {
+  message?: string
+}
+interface WssCloseEvent extends Event {
+  wasClean?: boolean,
+  code?: number | string,
+  reason?: string
+}
+// type WssListener = (e: WssEvent) => void
+
 class MessageController {
-  public EVENTS: Record<string, string> = {
+  public EVENTS: Record<string, keyof WebSocketEventMap> = {
     OPEN: 'open',
     MESSAGE: 'message',
     ERROR: 'error',
@@ -73,7 +83,7 @@ class MessageController {
 
   public changeCurrentChat(id: number | undefined | string): void {
     if (!id) return;
-    const chat = searchObjInArray(Store.getState().chats, 'id', Number(id));
+    const chat = searchObjInArray<State['chats']>(Store.getState().chats, 'id', Number(id)) as IChat;
     if (chat && chat?.id !== Store?.getState()?.currentChat?.chat?.id) {
       Store.set('currentChat.isLoading', true);
       Store.set('currentChat.chat', chat);
@@ -84,28 +94,31 @@ class MessageController {
   }
 
   private _addEvents() {
-    this.socket?.addEventListener(this.EVENTS.OPEN, this._handleOpen);
-    this.socket?.addEventListener(this.EVENTS.MESSAGE, this._handleMessage);
-    this.socket?.addEventListener(this.EVENTS.ERROR, this._handleError);
-    this.socket?.addEventListener(this.EVENTS.CLOSE, this._handleClose);
+    this.socket?.addEventListener(this.EVENTS.OPEN, this._handleOpen as EventListener);
+    this.socket?.addEventListener(this.EVENTS.MESSAGE, this._handleMessage as EventListener);
+    this.socket?.addEventListener(this.EVENTS.ERROR, this._handleError as EventListener);
+    this.socket?.addEventListener(this.EVENTS.CLOSE, this._handleClose as EventListener);
   }
 
   private _removeEvents() {
-    this.socket?.removeEventListener(this.EVENTS.OPEN, this._handleOpen);
-    this.socket?.removeEventListener(this.EVENTS.MESSAGE, this._handleMessage);
-    this.socket?.removeEventListener(this.EVENTS.ERROR, this._handleError);
-    this.socket?.removeEventListener(this.EVENTS.CLOSE, this._handleClose);
+    this.socket?.removeEventListener(this.EVENTS.OPEN, this._handleOpen as EventListener);
+    this.socket?.removeEventListener(this.EVENTS.MESSAGE, this._handleMessage as EventListener);
+    this.socket?.removeEventListener(this.EVENTS.ERROR, this._handleError as EventListener);
+    this.socket?.removeEventListener(this.EVENTS.CLOSE, this._handleClose as EventListener);
   }
 
   private getToken = async (chatID: number) => {
     try {
-      const { status, response } = await ChatsApi.getToken(chatID);
-      if (status === 200) {
-        return JSON.parse(response).token;
-      } if (status === 500) {
-        router.go('/500');
-      } else {
-        alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+      const res = await ChatsApi.getToken(chatID);
+      if (res) {
+        const { status, response } = res;
+        if (status === 200) {
+          return JSON.parse(response).token;
+        } if (status === 500) {
+          router.go('/500');
+        } else {
+          alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+        }
       }
     } catch (e) {
       console.log(e);
@@ -146,8 +159,10 @@ class MessageController {
     }
   };
 
-  private _handleError = (e: { message: string }) => {
-    console.log('Ошибка', e.message);
+  private _handleError = (e: WssMessageEvent) => {
+    if (e.message) {
+      console.log('Ошибка', e.message);
+    }
     this.disconnect();
   };
 
@@ -173,17 +188,21 @@ class MessageController {
     }));
   };
 
-  private _handleClose = (e: unknown) => {
-    if (e.wasClean) {
+  private _handleClose = ({
+    wasClean = false,
+    code = '',
+    reason = '',
+  }: WssCloseEvent) => {
+    if (wasClean) {
       console.log('Соединение закрыто чисто');
     } else {
       console.log('Обрыв соединения');
     }
 
-    console.log(`Код: ${e.code} | Причина: ${e.reason}`);
+    console.log(`Код: ${code} | Причина: ${reason}`);
 
     this.disconnect();
-    if (e.code === 1006) {
+    if (code === 1006) {
       this._reconnect();
     }
   };

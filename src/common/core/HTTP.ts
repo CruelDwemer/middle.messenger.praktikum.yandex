@@ -5,24 +5,30 @@ const METHODS = {
   DELETE: 'DELETE',
 };
 
-export type TOptionsData = Record<string, string | number | number[]> | FormData;
-type TOptions = {
+export type KeyValueData = Record<string, string | number | number[]>;
+export type TOptionsData<T = KeyValueData> = T | KeyValueData | FormData;
+interface TOptions <T = TOptionsData> {
   headers?: Record<string, string>,
-  data?: TOptionsData,
+  data?: T,
   method?: string,
   timeout?: number
-};
-type HTTPMethod = (url: string, options?: TOptions) => Promise<{ status: number, response: string }>;
-type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<{ status: number, response: string } | void>;
+}
+// type HTTPMethod = (url: string, options?: TOptions) => Promise<{ status: number, response: string }>;
+export type HTTPResponse = Promise<{ status: number, response: string } | void>;
+export type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => HTTPResponse;
 
 function queryStringify(data: TOptionsData): string {
   if (typeof data !== 'object') {
     throw new Error('Data must be object');
   }
 
+  if (data instanceof FormData) {
+    throw new Error('Data must not be FormData');
+  }
+
   const keys = Object.keys(data);
   return keys
-    .reduce((result, key, index) => `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`, '?');
+    .reduce((result, key, index) => `${result}${key}=${data[key].toString()}${index < keys.length - 1 ? '&' : ''}`, '?');
 }
 
 export default class HTTPTransport {
@@ -32,23 +38,23 @@ export default class HTTPTransport {
     this.baseUrl = baseUrl;
   }
 
-  get: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+  get: HTTPRequest = (url: string = '', options: TOptions = {}) => (
     this.request(url, { ...options, method: METHODS.GET }, options.timeout)
   );
 
-  post: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+  post: HTTPRequest = (url: string = '', options: TOptions = {}) => (
     this.request(url, { ...options, method: METHODS.POST }, options.timeout)
   );
 
-  put: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+  put: HTTPRequest = (url: string = '', options: TOptions = {}) => (
     this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
   );
 
-  delete: HTTPMethod = (url: string = '', options: TOptions = {}) => (
+  delete: HTTPRequest = (url: string = '', options: TOptions = {}) => (
     this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
   );
 
-  request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<{ status: number, response: string } | void> => {
+  request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000) => {
     const { headers = {}, method, data } = options;
     const { baseUrl } = this;
 

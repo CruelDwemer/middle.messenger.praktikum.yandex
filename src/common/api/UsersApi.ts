@@ -1,10 +1,10 @@
-import HTTP, { TOptionsData } from '../core/HTTP';
+import HTTP, { TOptionsData, HTTPResponse } from '../core/HTTP';
 import BaseAPI from './BaseApi';
 
 class UsersApi extends BaseAPI {
   public http = new HTTP(`${this.baseUrl}/user`);
 
-  public changeData(data: TOptionsData): Promise<{ status: number, response: string }> {
+  public changeData(data: TOptionsData): HTTPResponse {
     return this.http.put('/profile', {
       data,
       headers: {
@@ -14,13 +14,13 @@ class UsersApi extends BaseAPI {
   }
 
   // eslint-disable-next-line no-undef
-  public changeAvatar(data: FormData): Promise<{ status: number, response: string }> {
+  public changeAvatar(data: FormData): HTTPResponse {
     return this.http.put('/profile/avatar', {
       data: data as TOptionsData,
     });
   }
 
-  public changePassword(data: TOptionsData): Promise<{ status: number, response: string }> {
+  public changePassword(data: TOptionsData): HTTPResponse {
     return this.http.put('/password', {
       data,
       headers: {
@@ -29,11 +29,11 @@ class UsersApi extends BaseAPI {
     });
   }
 
-  public getUser(id: number): Promise<{ status: number, response: string }> {
+  public getUser(id: number): HTTPResponse {
     return this.http.get(`/user/${id}`);
   }
 
-  public searchUser(login: string): Promise<{ status: number, response: string }> {
+  public searchUser(login: string): HTTPResponse {
     return this.http.post('/search', {
       data: { login },
       headers: {

@@ -1,5 +1,5 @@
 import { default as loginTemplate } from './login.hbs?raw';
-import Block, { Children, PropsWithChildrenType } from '../../common/core/Block';
+import Block, { Children, BlockDataType } from '../../common/core/Block';
 import Button from '../../common/components/button/button';
 import connect from '../../common/utils/connect';
 import InputField from '../../common/components/inputField/inputField';
@@ -10,12 +10,12 @@ import AuthController from '../../common/controllers/AuthController';
 import { State } from '../../common/core/Store';
 import handleError from '../../common/utils/handleError';
 
-interface ILoginProps extends PropsWithChildrenType {
+interface ILoginProps extends BlockDataType {
   onLogin?: (event: Event | undefined) => void
 }
 
 class LoginPage extends Block {
-  protected constructor(data: ILoginProps | Children = {}) {
+  constructor(data: ILoginProps | Children = {}) {
     super({
       data,
       loginInput: new InputField({

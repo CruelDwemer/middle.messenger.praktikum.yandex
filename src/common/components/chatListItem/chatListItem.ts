@@ -8,8 +8,7 @@ import { getTimeString } from '../../utils/stringUtils';
 import handleError from '../../utils/handleError';
 
 class ChatListItem extends Block {
-  constructor(props: IChat) {
-    props = props[0];
+  public constructor(props: IChat) {
     const time = props.last_message ?
       getTimeString(props.last_message.time) :
       '';
@@ -47,4 +46,4 @@ class ChatListItem extends Block {
   }
 }
 
-export default connect<ChatListItem, IChat>(ChatListItem);
+export default connect(ChatListItem);

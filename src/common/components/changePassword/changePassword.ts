@@ -17,7 +17,7 @@ import UsersController from '../../controllers/UsersController';
 import { ProfileInputField } from '../profileEdit/profileEdit';
 
 class ChangePasswordModal extends Block {
-  protected constructor() {
+  constructor() {
     const oldPassword = new ProfileInputField({
       name: 'oldPassword',
       placeholder: 'Старый пароль',
@@ -75,4 +75,4 @@ class ChangePasswordModal extends Block {
   }
 }
 
-export default connect<ChangePasswordModal, undefined>(ChangePasswordModal);
+export default connect(ChangePasswordModal);
