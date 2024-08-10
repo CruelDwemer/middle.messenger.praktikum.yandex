@@ -17,7 +17,6 @@ interface WssCloseEvent extends Event {
   code?: number | string,
   reason?: string
 }
-// type WssListener = (e: WssEvent) => void
 
 class MessageController {
   public EVENTS: Record<string, keyof WebSocketEventMap> = {

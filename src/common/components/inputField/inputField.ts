@@ -1,11 +1,3 @@
-/*
-*  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
-* */
-// const inputTemplate = require("./input.hbs?raw");
-/*
-*  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
-*  поэтому локально используется import при сборке
-* */
 import inputFieldTemplate from './inputField.hbs?raw';
 import Block, { Props } from '../../core/Block';
 import './inputField.scss';

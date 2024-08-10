@@ -13,7 +13,7 @@ interface TOptions <T = TOptionsData> {
   method?: string,
   timeout?: number
 }
-// type HTTPMethod = (url: string, options?: TOptions) => Promise<{ status: number, response: string }>;
+
 export type HTTPResponse = Promise<{ status: number, response: string } | void>;
 export type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => HTTPResponse;
 
