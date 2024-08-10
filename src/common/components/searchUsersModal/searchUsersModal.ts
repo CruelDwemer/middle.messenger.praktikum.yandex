@@ -41,9 +41,7 @@ class SearchUsersModal extends Block {
 
   protected componentDidUpdate(_: ExtendedProps, newProps: ExtendedProps): boolean {
     if (newProps.items) {
-      this.lists.results = newProps.items.map(item => (
-        new SearchUserItem(item, this.hide.bind(this), newProps.hasActiveChat)),
-      );
+      this.lists.results = newProps.items.map(item => (new SearchUserItem(item, this.hide.bind(this), this.props.hasActiveChat as boolean)));
       if (this.lists.results.length) {
         if (this.props.noResultsText) {
           this.setProps({ noResultsText: '' });

@@ -7,19 +7,7 @@ https://www.figma.com/file/jF5fFFzgGOxQeB4CmKWTiE/Chat_external_link?type=design
 
 - **Проект доступен по ссылке**
 
-https://bmike-messenger.netlify.app/
-
-Страницы:
-
-логин - https://bmike-messenger.netlify.app/login
-
-регистрация - https://bmike-messenger.netlify.app/register
-
-основная - https://bmike-messenger.netlify.app/main
-
-профиль - https://bmike-messenger.netlify.app/profile
-
-редактирование данных профиля - https://bmike-messenger.netlify.app/profile/edit
+https://deploy--bmike-messenger.netlify.app/
 
 - **Команды**
 
@@ -28,3 +16,11 @@ https://bmike-messenger.netlify.app/
 билд - `npm run build`
 
 запуск - `npm run start`
+
+Примечание:
+
+Для создания нового чата нужно в поисковом окне ввести имя пользователя и нажать кнопку "искать".
+В списке найденных нажать в строке нужного пользователя на кнопку "Начать чат".
+
+Для добавления пользователя в уже существующий чат, необходимо выбрать этот чат,
+после чеого при поиске пользователя появится кнопка "добавить в текущий чат".
