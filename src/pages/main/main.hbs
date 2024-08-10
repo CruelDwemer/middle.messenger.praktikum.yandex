@@ -1,4 +1,5 @@
 <div class="main-container">
+    {{{ modal }}}
     <div class="main-paper">
         <div class="chats">
             <div class="chats-header">
@@ -7,24 +8,22 @@
                 </div>
                 <div class="chats-header-search">
                     {{{ searchInput }}}
+                    {{{ searchButton }}}
                 </div>
             </div>
-            {{> chat }}
-            {{> chat }}
-            {{> chat }}
+            {{{ chatListBlock }}}
         </div>
         <div class="active">
             <div class="active-header">
-                <div class="chats-item-avatar"></div>
-                <div class="active-contact-name">Вадим</div>
-                <div class="active-menu">
-                    {{> menu width="40px" height="40px" }}
-                </div>
+                <div class="active-contact-name">{{ activeChatTitle }}</div>
+                {{#if activeChatTitle}}
+                    <div>{{{ deleteUser }}}</div>
+                {{/if}}
             </div>
             <div class="active-chat-area">
-                {{> message }}
-                {{> message }}
-                {{> message }}
+                {{#each messages }}
+                    {{> message text=this.content time=this.time name=this.user_id }}
+                {{/each}}
             </div>
             <div class="active-bottom">
                 <div>{{> attach width="40px" height="40px" }}</div>
