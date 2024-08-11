@@ -25,7 +25,7 @@ import ProfilePage from './pages/profile/profile';
 import MainPage from './pages/main/main';
 import ErrorPage from './pages/error/error';
 import handleError from './common/utils/handleError';
-import COMMON from "./common/actions/commonActions";
+import COMMON from './common/actions/commonActions';
 
 Handlebars.registerPartial('button', button);
 Handlebars.registerPartial('input', input);
