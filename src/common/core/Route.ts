@@ -1,6 +1,7 @@
 import { render } from '../utils/objectUtils';
 import Block from './Block';
 import Store from './Store';
+import COMMON from '../actions/commonActions';
 
 export default class Route {
   _pathname: string;
@@ -44,6 +45,6 @@ export default class Route {
       return;
     }
     render(this._props.rootQuery, this._block);
-    Store.set('', '');
+    Store.set(COMMON.VOID, '');
   }
 }
