@@ -1,11 +1,3 @@
-/*
-*  сделано через require, чтобы обойти ошибку "cannot find module 'hbs?raw' or its corresponding type declarations"
-* */
-// const profileEditTemplate = require("./profileEdit.hbs?raw");
-/*
-*  ниже закомментировано, так как локально возникает ошибка "Uncaught ReferenceError: require is not defined"
-*  поэтому локально используется import при сборке
-* */
 import { default as profileEditTemplate } from './profileEdit.hbs?raw';
 import Block, { Props, BlockDataType } from '../../core/Block';
 import Button from '../button/button';

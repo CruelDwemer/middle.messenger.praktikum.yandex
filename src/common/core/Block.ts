@@ -38,7 +38,6 @@ type Parent = Element | Block | undefined;
 type FunctionType =
     ((event: Event | undefined) => void) | undefined;
 export type PropsWithChildrenType = Record<string | symbol, Props | Children | Lists | FunctionType >;
-// export type BlockDataType = { [p: string]: unknown | ArrayLike<unknown> | FunctionType };
 export type BlockDataType = { [p: string]: unknown };
 
 class Block {

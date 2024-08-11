@@ -4,6 +4,7 @@ import authApi from '../api/AuthApi';
 import { TOptionsData } from '../core/HTTP';
 import { PATH } from '../core/Router';
 import BaseController from './BaseController';
+import COMMON from '../actions/commonActions';
 
 class AuthController extends BaseController {
   static __instance: AuthController;
@@ -39,15 +40,15 @@ class AuthController extends BaseController {
 
   public async login(data: TOptionsData): Promise<void> {
     try {
-      this.store.set('isLoading', true);
+      this.store.set(COMMON.IS_LOADING, true);
       const res = await authApi.login(data);
       if (res) {
         const { status, response } = res;
         if (status === 200) {
-          this.store.set('auth', true);
+          this.store.set(COMMON.AUTH, true);
           this.router.go(PATH.MAIN);
           await this.getUserInfo();
-          this.store.set('isLoading', false);
+          this.store.set(COMMON.IS_LOADING, false);
         } else if (status === 500) {
           this.router.go(PATH.ERROR500);
         } else {
@@ -65,8 +66,8 @@ class AuthController extends BaseController {
       if (res) {
         const { status, response } = res;
         if (status === 200 && response) {
-          this.store.set('user', JSON.parse(response));
-          this.store.set('auth', true);
+          this.store.set(COMMON.USER, JSON.parse(response));
+          this.store.set(COMMON.AUTH, true);
           return true;
         }
         return false;

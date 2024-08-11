@@ -7,6 +7,8 @@ import Store from '../core/Store';
 import BaseController from './BaseController';
 import MessageController from './MessageController';
 import handleError from '../utils/handleError';
+import Block from '../core/Block';
+import COMMON from '../actions/commonActions';
 
 class ChatsController extends BaseController {
   public getChats = async (): Promise<void> => {
@@ -16,7 +18,7 @@ class ChatsController extends BaseController {
       if (res) {
         const { status, response } = res;
         if (status === 200) {
-          Store.set('chats', JSON.parse(response));
+          Store.set(COMMON.CHATS, JSON.parse(response));
         } else if (status === 500) {
           this.router.go('/500');
         } else {
@@ -62,7 +64,7 @@ class ChatsController extends BaseController {
         const { status, response } = res;
         if (status === 200) {
           this.getChats().catch(handleError);
-          this.store.set('currentChat', {
+          this.store.set(COMMON.CURRENT_CHAT, {
             isLoading: false,
             isLoadingOldMsg: false,
             scroll: 0,
@@ -112,6 +114,59 @@ class ChatsController extends BaseController {
     }
     if (!chat) return;
     return this.addUser(Number(chat), Number(id));
+  };
+
+  public getChatUsers = async (self: Block) => {
+    try {
+      const chatId = this?.store?.getState()?.currentChat?.chat?.id;
+      const userId = this?.store?.getState()?.user?.id;
+      if (typeof chatId !== 'number') return;
+      const res = await ChatsApi.getChatUsers(chatId);
+      if (res) {
+        const { status, response } = res;
+        if (status === 200) {
+          let items = JSON.parse(response);
+          if (items) {
+            if (userId) {
+              items = items.filter(({ id }: { id: number }) => id !== userId);
+            }
+            self.setProps({ items });
+          }
+        } else if (status === 500) {
+          this.router.go('/500');
+        } else {
+          alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+        }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  public deleteChatUser = async (userId: number) => {
+    try {
+      const chatId = this?.store?.getState()?.currentChat?.chat?.id;
+      if (typeof chatId !== 'number') return false;
+      const res = await ChatsApi.deleteUsers({
+        users: [userId],
+        chatId,
+      });
+      if (res) {
+        const { status, response } = res;
+        if (status === 200) {
+          return true;
+        } if (status === 500) {
+          this.router.go('/500');
+          return false;
+        }
+        alert(JSON.parse(response).reason ?? 'Ошибочный запрос');
+        return false;
+      }
+      return false;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   };
 }
 

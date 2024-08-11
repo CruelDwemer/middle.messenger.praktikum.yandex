@@ -6,6 +6,7 @@ import MessageController from '../../controllers/MessageController';
 import { cloneDeep } from '../../utils/objectUtils';
 import { getTimeString } from '../../utils/stringUtils';
 import handleError from '../../utils/handleError';
+import COMMON from '../../actions/commonActions';
 
 class ChatListItem extends Block {
   public constructor(props: IChat) {
@@ -29,7 +30,7 @@ class ChatListItem extends Block {
         if (Store.getState().currentChat) {
           MessageController.disconnect();
         }
-        Store.set('currentChat', {
+        Store.set(COMMON.CURRENT_CHAT, {
           chat: cloneDeep({ ...props }),
         });
         MessageController.connect().catch(handleError);

@@ -8,6 +8,10 @@ class ChatsApi extends BaseAPI {
     return this.http.get('/');
   }
 
+  public getChatUsers(id: number): HTTPResponse {
+    return this.http.get(`/${id}/users`);
+  }
+
   public getToken(id: number): HTTPResponse {
     return this.http.post(`/token/${id}`);
   }

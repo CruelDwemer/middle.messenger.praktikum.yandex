@@ -10,7 +10,6 @@ const app = express();
 app.use(express.static(path.join(__dirname, 'dist')));
 
 const PORT = 3000;
-// respond with "hello world" when a GET request is made to the homepage
 app.get('*', function (req, res) {
   res.sendFile(path.join(path.join(__dirname, 'dist'), 'index.html'));
 });
@@ -18,5 +17,4 @@ app.get('*', function (req, res) {
 app.listen(PORT, (err) => {
   if (err) console.log('Ошибка при запуске сервера');
   console.log(`Приложение успешно запущено на - ${PORT}!`);
-  // open(`http://localhost:${PORT}`);
 });

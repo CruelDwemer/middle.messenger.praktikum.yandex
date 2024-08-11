@@ -25,6 +25,7 @@ import ProfilePage from './pages/profile/profile';
 import MainPage from './pages/main/main';
 import ErrorPage from './pages/error/error';
 import handleError from './common/utils/handleError';
+import COMMON from './common/actions/commonActions';
 
 Handlebars.registerPartial('button', button);
 Handlebars.registerPartial('input', input);
@@ -44,6 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
       .use(PATH.ERROR404, Error404Page)
       .use(PATH.ERROR500, Error500Page)
       .start();
-    Store.set('getPage', '');
+    Store.set(COMMON.GET_PAGE, '');
   }).catch(handleError);
 });

@@ -165,10 +165,6 @@ export function cloneDeep(obj: unknown): unknown {
 
       return copy;
     }
-    //
-    // if(item && "toString" in item) {
-    //   throw new Error(`Unable to copy object: ${item!.toString()}`);
-    // }
     return undefined;
   }(obj));
 }

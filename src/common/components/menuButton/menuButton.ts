@@ -1,11 +1,11 @@
-import sendButtonTemplate from './sendButton.hbs?raw';
+import { default as menuButtonTemplate } from './menuButton.hbs?raw';
 import Block, { Props } from '../../core/Block';
 
 interface ButtonProps extends Props {
-  onClick?: (e: Event | undefined) => void
+  onClick?: (e: Event | undefined) => void | Promise<void>
 }
 
-export default class SendButton extends Block {
+export default class MenuButton extends Block {
   constructor(props: ButtonProps) {
     super(props);
     this.props.events = {
@@ -14,6 +14,6 @@ export default class SendButton extends Block {
   }
 
   protected render(): string {
-    return sendButtonTemplate;
+    return menuButtonTemplate;
   }
 }

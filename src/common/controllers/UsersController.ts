@@ -4,6 +4,7 @@ import UsersApi from '../api/UsersApi';
 import Block from '../core/Block';
 import { TOptionsData } from '../core/HTTP';
 import BaseController from './BaseController';
+import COMMON from '../actions/commonActions';
 
 export interface ISearchUsersResult extends Record<string, string | null | number> {
   'id': number,
@@ -24,7 +25,7 @@ class UsersController extends BaseController {
         const { status, response } = res;
         if (status === 200) {
           alert('Изменения в профиль внесены!');
-          this.store.set('user', JSON.parse(response));
+          this.store.set(COMMON.USER, JSON.parse(response));
         } else if (status === 500) {
           this.router.go('/500');
         } else {
@@ -44,7 +45,7 @@ class UsersController extends BaseController {
         if (status === 200) {
           // eslint-disable-next-line no-alert, no-undef
           alert('Пароль изменен!');
-          this.store.set('', '');
+          this.store.set(COMMON.VOID, '');
         } else if (status === 500) {
           this.router.go('/500');
         } else {
@@ -89,7 +90,7 @@ class UsersController extends BaseController {
       if (res) {
         const { status, response } = res;
         if (status === 200) {
-          this.store.set('user', JSON.parse(response));
+          this.store.set(COMMON.USER, JSON.parse(response));
         } else if (status === 500) {
           this.router.go('/500');
         } else {

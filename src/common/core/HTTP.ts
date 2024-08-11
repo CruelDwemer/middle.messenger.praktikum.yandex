@@ -13,7 +13,7 @@ interface TOptions <T = TOptionsData> {
   method?: string,
   timeout?: number
 }
-// type HTTPMethod = (url: string, options?: TOptions) => Promise<{ status: number, response: string }>;
+
 export type HTTPResponse = Promise<{ status: number, response: string } | void>;
 export type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => HTTPResponse;
 
@@ -38,23 +38,23 @@ export default class HTTPTransport {
     this.baseUrl = baseUrl;
   }
 
-  get: HTTPRequest = (url: string = '', options: TOptions = {}) => (
+  get: HTTPRequest = (url, options = {}) => (
     this.request(url, { ...options, method: METHODS.GET }, options.timeout)
   );
 
-  post: HTTPRequest = (url: string = '', options: TOptions = {}) => (
+  post: HTTPRequest = (url, options = {}) => (
     this.request(url, { ...options, method: METHODS.POST }, options.timeout)
   );
 
-  put: HTTPRequest = (url: string = '', options: TOptions = {}) => (
+  put: HTTPRequest = (url, options = {}) => (
     this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
   );
 
-  delete: HTTPRequest = (url: string = '', options: TOptions = {}) => (
+  delete: HTTPRequest = (url: string = '', options = {}) => (
     this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
   );
 
-  request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000) => {
+  request: HTTPRequest = (url: string = '', options = {}, timeout = 5000) => {
     const { headers = {}, method, data } = options;
     const { baseUrl } = this;
 

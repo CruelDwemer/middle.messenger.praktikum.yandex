@@ -13,6 +13,8 @@ import { State } from '../../common/core/Store';
 import SearchUsersModal from '../../common/components/searchUsersModal/searchUsersModal';
 import MessageController from '../../common/controllers/MessageController';
 import ChatListBlock from '../../common/components/chatListBlock/chatListBlock';
+import MenuButton from '../../common/components/menuButton/menuButton';
+import DeleteUserModal from '../../common/components/deleteUserModal/deleteUserModal';
 
 const sendMessage = (
   event: Event | undefined,
@@ -43,7 +45,7 @@ const sendMessage = (
 
 class MainPage extends Block {
   constructor() {
-    const modal = new SearchUsersModal({}) as Block;
+    const searchModal = new SearchUsersModal({}) as Block;
 
     const onSearchButtonClick = async () => {
       const { children } = this;
@@ -51,7 +53,7 @@ class MainPage extends Block {
         const res: Input | undefined = Object.values(children)
           .find(child => child instanceof Input && child.props.name === 'search') as Input | undefined;
         if (res && res.value()) {
-          await UsersController.searchUsers(modal, res.value());
+          await UsersController.searchUsers(searchModal, res.value());
         }
       }
     };
@@ -61,13 +63,28 @@ class MainPage extends Block {
       label: 'Искать',
       onClick: async () => {
         await onSearchButtonClick();
-        modal.show();
+        searchModal.show();
       },
     });
 
+    const deleteUserModal = new DeleteUserModal() as Block;
+
+    const onMenuButtonClick = async () => {
+      await ChatsController.getChatUsers(deleteUserModal);
+    };
+
+    const menuButton = new MenuButton({
+      onClick: async () => {
+        await onMenuButtonClick();
+        deleteUserModal.show();
+      },
+    }) as Block;
+
     super({
       messages: null,
-      modal,
+      searchModal,
+      menuButton,
+      deleteUserModal,
       chatListBlock: new ChatListBlock({}),
       activeChatTitle: '',
       messageInput: new InputField({

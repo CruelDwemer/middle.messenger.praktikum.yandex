@@ -7,7 +7,6 @@ import { ISearchUsersResult } from '../../controllers/UsersController';
 
 class SearchUserItem extends Block {
   constructor(props: ISearchUsersResult, onClose: () => void, hasActiveChat: boolean) {
-    console.log('props', props, onClose, hasActiveChat);
     super({
       ...props,
       startChatButton: new Button({

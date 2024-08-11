@@ -8,6 +8,7 @@ import ChatsApi from '../api/ChatsApi';
 import { searchObjInArray } from '../utils/objectUtils';
 import router from '../core/Router';
 import handleError from '../utils/handleError';
+import CURRENT_CHAT from '../actions/currentChatActions';
 
 interface WssMessageEvent extends Event {
   message?: string
@@ -17,7 +18,6 @@ interface WssCloseEvent extends Event {
   code?: number | string,
   reason?: string
 }
-// type WssListener = (e: WssEvent) => void
 
 class MessageController {
   public EVENTS: Record<string, keyof WebSocketEventMap> = {
@@ -85,8 +85,8 @@ class MessageController {
     if (!id) return;
     const chat = searchObjInArray<State['chats']>(Store.getState().chats, 'id', Number(id)) as IChat;
     if (chat && chat?.id !== Store?.getState()?.currentChat?.chat?.id) {
-      Store.set('currentChat.isLoading', true);
-      Store.set('currentChat.chat', chat);
+      Store.set(CURRENT_CHAT.IS_LOADING, true);
+      Store.set(CURRENT_CHAT.CHAT, chat);
 
       this.disconnect();
       this.connect().catch(handleError);
@@ -126,7 +126,7 @@ class MessageController {
   };
 
   private _handleOpen = () => {
-    Store.set('currentChat.messages', []);
+    Store.set(CURRENT_CHAT.MESSAGES, []);
     this.getMessage();
     this._ping = setInterval(() => {
       this.socket?.send(JSON.stringify({
@@ -137,25 +137,29 @@ class MessageController {
   };
 
   private _handleMessage = (e: MessageEvent) => {
-    const data = JSON.parse(e.data);
-    if (Array.isArray(data) && data.length < 20) {
-      this._allMessage = true;
-      Store.set('currentChat.isLoading', false);
-      Store.set('currentChat.isLoadingOldMsg', false);
-    }
-    if (Array.isArray(data) && data.length) {
-      if (data[0].id === 1) {
-        Store.set('currentChat.messages', data);
-        Store.set('currentChat.isLoading', false);
-      } else {
-        const oldMessages = Store?.getState()?.currentChat?.messages ?? [];
-        Store.set('currentChat.messages', [...oldMessages, ...data]);
-        Store.set('currentChat.isLoadingOldMsg', false);
+    try {
+      const data = JSON.parse(e.data);
+      if (Array.isArray(data) && data.length < 20) {
+        this._allMessage = true;
+        Store.set(CURRENT_CHAT.IS_LOADING, false);
+        Store.set(CURRENT_CHAT.IS_LOADING_OLD_MSG, false);
       }
-    } else if (typeof data === 'object' && data?.type === 'message') {
-      const oldMessages = Store?.getState()?.currentChat?.messages ?? [];
-      Store.set('currentChat.messages', [data, ...oldMessages]);
-      this._offset += 1;
+      if (Array.isArray(data) && data.length) {
+        if (data[0].id === 1) {
+          Store.set(CURRENT_CHAT.MESSAGES, data);
+          Store.set(CURRENT_CHAT.IS_LOADING, false);
+        } else {
+          const oldMessages = Store?.getState()?.currentChat?.messages ?? [];
+          Store.set(CURRENT_CHAT.MESSAGES, [...oldMessages, ...data]);
+          Store.set(CURRENT_CHAT.IS_LOADING_OLD_MSG, false);
+        }
+      } else if (typeof data === 'object' && data?.type === 'message') {
+        const oldMessages = Store?.getState()?.currentChat?.messages ?? [];
+        Store.set(CURRENT_CHAT.MESSAGES, [data, ...oldMessages]);
+        this._offset += 1;
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -171,7 +175,7 @@ class MessageController {
       return;
     }
     if (this._offset) {
-      Store.set('currentChat.isLoadingOldMsg', true);
+      Store.set(CURRENT_CHAT.IS_LOADING_OLD_MSG, true);
     }
     this.socket?.send(JSON.stringify({
       content: this._offset,
