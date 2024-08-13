@@ -1,0 +1,14 @@
+@import "src/common/styles/styles";
+
+.search-item {
+  margin-bottom: 7px;
+  padding: 5px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: $thin-grey-line;
+  border-radius: 5px;
+  background-color: $light-grey;
+}

@@ -1,87 +1,102 @@
 const METHODS = {
-    GET: 'GET',
-    POST: 'POST',
-    PUT: 'PUT',
-    DELETE: 'DELETE',
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  DELETE: 'DELETE',
 };
 
-type TOptionsData = Record<string, string | number>
-type TOptions = {
-    headers?: Record<string, string>,
-    data?: TOptionsData,
-    method?: string,
-    timeout?: number
+export type KeyValueData = Record<string, string | number | number[]>;
+export type TOptionsData<T = KeyValueData> = T | KeyValueData | FormData;
+interface TOptions <T = TOptionsData> {
+  headers?: Record<string, string>,
+  data?: T,
+  method?: string,
+  timeout?: number
 }
-type HTTPMethod = (url: string, options?: TOptions) => Promise<unknown>
-type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => Promise<unknown | void>
+
+export type HTTPResponse = Promise<{ status: number, response: string } | void>;
+export type HTTPRequest = (url: string, options?: TOptions, timeout?: number) => HTTPResponse;
 
 function queryStringify(data: TOptionsData): string {
-    if (typeof data !== 'object') {
-        throw new Error('Data must be object');
-    }
+  if (typeof data !== 'object') {
+    throw new Error('Data must be object');
+  }
 
-    const keys = Object.keys(data);
-    return keys
-        .reduce((result, key, index) => `${result}${key}=${data[key]}${index < keys.length - 1 ? '&' : ''}`, '?');
+  if (data instanceof FormData) {
+    throw new Error('Data must not be FormData');
+  }
+
+  const keys = Object.keys(data);
+  return keys
+    .reduce((result, key, index) => `${result}${key}=${data[key].toString()}${index < keys.length - 1 ? '&' : ''}`, '?');
 }
 
 export default class HTTPTransport {
-    static get: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.GET }, options.timeout)
-    );
+  baseUrl: string = '';
 
-    static post: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.POST }, options.timeout)
-    );
+  constructor(baseUrl: string) {
+    this.baseUrl = baseUrl;
+  }
 
-    static put: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
-    );
+  get: HTTPRequest = (url, options = {}) => (
+    this.request(url, { ...options, method: METHODS.GET }, options.timeout)
+  );
 
-    static delete: HTTPMethod = (url: string = '', options: TOptions = {}) => (
-        this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
-    );
+  post: HTTPRequest = (url, options = {}) => (
+    this.request(url, { ...options, method: METHODS.POST }, options.timeout)
+  );
 
-    static request: HTTPRequest = (url: string = '', options: TOptions = {}, timeout: number = 5000): Promise<unknown | void> => {
-        const { headers = {}, method, data } = options;
+  put: HTTPRequest = (url, options = {}) => (
+    this.request(url, { ...options, method: METHODS.PUT }, options.timeout)
+  );
 
-        return new Promise((resolve, reject) => {
-            if (!method) {
-                // eslint-disable-next-line prefer-promise-reject-errors
-                reject('No method');
-                return;
-            }
+  delete: HTTPRequest = (url: string = '', options = {}) => (
+    this.request(url, { ...options, method: METHODS.DELETE }, options.timeout)
+  );
 
-            // eslint-disable-next-line no-undef
-            const xhr = new XMLHttpRequest();
-            const isGet = method === METHODS.GET;
+  request: HTTPRequest = (url: string = '', options = {}, timeout = 5000) => {
+    const { headers = {}, method, data } = options;
+    const { baseUrl } = this;
 
-            xhr.open(
-                method,
-                isGet && !!data
-                    ? `${url}${queryStringify(data)}`
-                    : url,
-            );
-            Object.keys(headers).forEach((key) => {
-                xhr.setRequestHeader(key, headers[key]);
-            });
+    return new Promise((resolve, reject) => {
+      if (!method) {
+        // eslint-disable-next-line prefer-promise-reject-errors
+        reject('No method');
+        return;
+      }
 
-            // eslint-disable-next-line func-names
-            xhr.onload = function () {
-                resolve(xhr);
-            };
+      // eslint-disable-next-line no-undef
+      const xhr = new XMLHttpRequest();
+      xhr.withCredentials = true;
+      const isGet = method === METHODS.GET;
 
-            xhr.onabort = reject;
-            xhr.onerror = reject;
+      xhr.open(
+        method,
+        isGet && !!data
+          ? `${baseUrl}${url}${queryStringify(data)}`
+          : baseUrl + url,
+      );
+      Object.keys(headers).forEach((key) => {
+        xhr.setRequestHeader(key, headers[key]);
+      });
 
-            xhr.timeout = timeout;
-            xhr.ontimeout = reject;
+      // eslint-disable-next-line func-names
+      xhr.onload = function () {
+        resolve(xhr);
+      };
 
-            if (isGet || !data) {
-                xhr.send();
-            } else {
-                xhr.send(JSON.stringify(data));
-            }
-        });
-    };
+      xhr.onabort = reject;
+      xhr.onerror = reject;
+
+      xhr.timeout = timeout;
+      xhr.ontimeout = reject;
+
+      if (isGet || !data) {
+        xhr.send();
+      } else {
+        const sendData = data instanceof FormData ? data : JSON.stringify(data);
+        xhr.send(sendData);
+      }
+    });
+  };
 }
