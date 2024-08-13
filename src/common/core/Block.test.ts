@@ -11,7 +11,6 @@ describe('Test for Block', () => {
       constructor({ ...args }: BlockDataType) {
         super({ ...args });
       }
-
       render() {
         return ('<div id="button">{{text}}</div>');
       }
