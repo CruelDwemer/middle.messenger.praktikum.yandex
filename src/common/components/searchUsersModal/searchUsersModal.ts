@@ -1,5 +1,6 @@
 import { default as searchUsersModalTemplate } from './searchUsersModal.hbs?raw';
-import Block, { PropsWithChildrenType } from '../../core/Block';
+import Block  from '../../core/Block';
+import { PropsWithChildrenType } from '../../core/BlockBase';
 import './searchUsersModal.scss';
 import Button from '../button/button';
 import SearchUserItem from '../searchUserItem/searchUserItem';

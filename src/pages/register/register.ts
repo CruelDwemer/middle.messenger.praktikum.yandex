@@ -1,5 +1,6 @@
 import registerTemplate from './register.hbs?raw';
-import Block, { Props, Children } from '../../common/core/Block';
+import Block from '../../common/core/Block';
+import { Props, Children } from '../../common/core/BlockBase';
 import Button from '../../common/components/button/button';
 import Input from '../../common/components/inputField/inputField';
 import onSubmit from '../../common/utils/formSubmit';

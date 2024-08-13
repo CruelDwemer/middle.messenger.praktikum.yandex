@@ -62,7 +62,9 @@ type Indexed<T = unknown> = {
   [key in string]: T;
 };
 
-function merge(lhs: Indexed<T>, rhs: Indexed<T>): Indexed<T> {
+declare type A = string | number | object | boolean;
+
+function merge(lhs: Indexed<A>, rhs: Indexed<A>): Indexed<A> {
   // eslint-disable-next-line no-restricted-syntax
   for (const p in rhs) {
     if (!rhs.hasOwnProperty(p)) {
@@ -70,7 +72,7 @@ function merge(lhs: Indexed<T>, rhs: Indexed<T>): Indexed<T> {
     }
     try {
       if (rhs[p].constructor === Object) {
-        rhs[p] = merge(lhs[p] as Indexed<T>, rhs[p] as Indexed<T>);
+        rhs[p] = merge(lhs[p] as Indexed<A>, rhs[p] as Indexed<A>);
       } else {
         lhs[p] = rhs[p];
       }
@@ -90,10 +92,10 @@ export function set(object: unknown, path: string, value: unknown): unknown {
     throw new Error('path must be string');
   }
 
-  const result = path.split('.').reduceRight<Indexed<T>>((acc, key) => ({
+  const result = path.split('.').reduceRight<Indexed<A>>((acc, key) => ({
     [key]: acc,
-  }), value as Indexed<T>);
-  return merge(object as Indexed<T>, result);
+  }), value as Indexed<A>);
+  return merge(object as Indexed<A>, result);
 }
 
 export function cloneDeep(obj: unknown): unknown {
