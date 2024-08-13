@@ -1,8 +1,7 @@
 {
   "extensions": ["ts", "hbs"],
   "spec": "src/**/*.test.ts",
-  "loader": ["handlebars-loader", "ts-node/esm"],
-  "require": ["handlebars-loader", "ts-node/esm", "mochaSetup.js"],
-  "node-option": ["experimental-specifier-resolution=node", "loader=ts-node/esm"],
-  "exclude": "*.hbs"
+  "loader": ["ts-node/esm"],
+  "require": ["mochaSetup.js"],
+  "node-option": ["experimental-specifier-resolution=node"]
 }
