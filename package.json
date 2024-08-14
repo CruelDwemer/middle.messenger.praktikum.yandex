@@ -17,8 +17,8 @@
     "test": "mocha"
   },
   "lint-staged": {
-    ".ts": "eslint . --ext .ts --fix",
-    ".scss": "stylelint src/**/*.scss"
+    "*.ts": "eslint . --ext .ts --fix",
+    "*.scss": "stylelint src/**/*.scss"
   },
   "devDependencies": {
     "@types/chai": "^4.3.17",
