@@ -1,7 +1,8 @@
 import { default as menuButtonTemplate } from './menuButton.hbs?raw';
-import Block, { Props } from '../../core/Block';
+import Block from '../../core/Block';
+import { BlockDataType } from '../../core/BlockBase';
 
-interface ButtonProps extends Props {
+interface ButtonProps extends BlockDataType {
   onClick?: (e: Event | undefined) => void | Promise<void>
 }
 

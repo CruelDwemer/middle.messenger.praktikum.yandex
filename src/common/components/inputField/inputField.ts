@@ -1,8 +1,9 @@
 import inputFieldTemplate from './inputField.hbs?raw';
-import Block, { Props } from '../../core/Block';
+import Block from '../../core/Block';
 import './inputField.scss';
 import InputErrorLine from '../inputErrorLine/inputErrorLine';
 import Input, { IInput } from '../input/input';
+import { BlockDataType } from '../../core/BlockBase';
 
 export interface IInputField extends Block {
   value: () => string
@@ -15,13 +16,14 @@ interface IRules {
   regexpError?: string
 }
 
-export interface InputFieldProps extends Props {
+export interface InputFieldProps extends BlockDataType {
   name?: string,
   placeholder?: string,
   validationRules?: IRules,
   type?: string
   input?: IInput,
-  inputClassname?: string
+  inputClassname?: string,
+  classname?: string
 }
 
 export default class InputField extends Block implements IInputField {

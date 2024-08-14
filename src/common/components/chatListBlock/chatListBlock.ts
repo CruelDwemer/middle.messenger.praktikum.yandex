@@ -1,5 +1,6 @@
 import { default as mainTemplate } from './chatListBlock.hbs?raw';
-import Block, { BlockDataType } from '../../core/Block';
+import Block from '../../core/Block';
+import { BlockDataType } from '../../core/BlockBase';
 import ChatsController from '../../controllers/ChatsController';
 import connect from '../../utils/connect';
 import { IChat, State } from '../../core/Store';

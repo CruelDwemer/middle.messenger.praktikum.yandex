@@ -1,9 +1,12 @@
 import { default as buttonTemplate } from './button.hbs?raw';
-import Block, { Props } from '../../core/Block';
+import Block from '../../core/Block';
 import './button.scss';
+import { BlockDataType } from '../../core/BlockBase';
 
-interface ButtonProps extends Props {
-  onClick?: (e: Event | undefined) => void | Promise<void>
+interface ButtonProps extends BlockDataType {
+  onClick?: (e: Event | undefined) => void | Promise<void>,
+  classname?: string,
+  label: string
 }
 
 export default class Button extends Block {
