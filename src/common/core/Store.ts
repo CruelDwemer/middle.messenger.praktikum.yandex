@@ -1,6 +1,6 @@
 import { set } from '../utils/objectUtils';
 import EventBus from './EventBus';
-import { BlockDataType } from './Block';
+import { BlockDataType } from './BlockBase';
 
 // eslint-disable-next-line no-shadow
 export enum StoreEvent {

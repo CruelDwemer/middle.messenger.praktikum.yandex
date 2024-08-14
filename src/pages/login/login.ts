@@ -1,5 +1,6 @@
 import { default as loginTemplate } from './login.hbs?raw';
-import Block, { Children, BlockDataType } from '../../common/core/Block';
+import Block from '../../common/core/Block';
+import { Children, BlockDataType } from '../../common/core/BlockBase';
 import Button from '../../common/components/button/button';
 import connect from '../../common/utils/connect';
 import InputField from '../../common/components/inputField/inputField';

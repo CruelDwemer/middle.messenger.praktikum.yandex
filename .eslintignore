@@ -3,3 +3,4 @@
 server.js
 vite.config.js
 vitePrecompilePlugin.js
+mochaSetup.js

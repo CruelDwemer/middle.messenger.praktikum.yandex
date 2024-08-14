@@ -1,5 +1,5 @@
 import Input from '../components/inputField/inputField';
-import { Children } from '../core/Block';
+import { Children } from '../core/BlockBase';
 import Router from '../core/Router';
 
 const onSubmit = async (

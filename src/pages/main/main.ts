@@ -1,5 +1,6 @@
 import { default as mainTemplate } from './main.hbs?raw';
-import Block, { Children } from '../../common/core/Block';
+import Block from '../../common/core/Block';
+import { Children } from '../../common/core/BlockBase';
 import Button from '../../common/components/button/button';
 import SendButton from '../../common/components/sendButton/sendButton';
 import './main.scss';

@@ -1,4 +1,5 @@
-import Block, { BlockDataType } from '../core/Block';
+import Block from '../core/Block';
+import { BlockDataType } from '../core/BlockBase';
 import store from '../core/Store';
 import { StoreEvent } from '../core/Store';
 

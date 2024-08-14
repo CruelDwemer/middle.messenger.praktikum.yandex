@@ -1,7 +1,8 @@
 import { default as profileEditTemplate } from './profileEdit.hbs?raw';
-import Block, { Props, BlockDataType } from '../../core/Block';
+import Block from '../../core/Block';
+import { Props, BlockDataType } from '../../core/BlockBase';
 import Button from '../button/button';
-import Input from '../input/input';
+import Input, { InputProps } from '../input/input';
 import onSubmit from '../../utils/formSubmit';
 import InputField, { InputFieldProps } from '../inputField/inputField';
 import { PATH } from '../../core/Router';
@@ -12,7 +13,7 @@ import { toCamelCase } from '../../utils/stringUtils';
 import UsersController from '../../controllers/UsersController';
 
 export class ProfileInput extends Input {
-  constructor(props: Props) {
+  constructor(props: InputProps) {
     props.classname = 'profile-data-input';
     super(props);
   }
@@ -44,7 +45,7 @@ export class ProfileInputField extends InputField {
     });
   }
 
-  protected componentDidUpdate(_: Props, newProps: Props): boolean {
+  protected componentDidUpdate(_: InputProps, newProps: InputProps): boolean {
     if (newProps.value && this.children.input instanceof Block) {
       this.children.input.setProps({ value: newProps.value });
     }

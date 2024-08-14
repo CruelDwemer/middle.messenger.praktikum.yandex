@@ -1,6 +1,7 @@
 import inputTemplate from './input.hbs?raw';
-import Block, { Props } from '../../core/Block';
+import Block from '../../core/Block';
 import './input.scss';
+import { BlockDataType } from '../../core/BlockBase';
 
 export interface IInput extends Block {
   applyRegularStyle: () => void,
@@ -14,11 +15,16 @@ interface IRules {
   regexp?: RegExp
 }
 
-interface InputProps extends Props {
+export interface InputProps extends BlockDataType {
   placeholder?: string,
   validationRules?: IRules,
   onBlur?: (event: Event | undefined) => void,
-  type?: string
+  type?: string,
+  name?: string,
+  label?: string,
+  onChange?: ((e: Event) => void) | ((e: Event) => Promise<void>),
+  classname?: string,
+  value?: string
 }
 
 export default class Input extends Block implements IInput {

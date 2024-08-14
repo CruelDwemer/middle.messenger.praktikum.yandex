@@ -1,8 +1,10 @@
 import sendButtonTemplate from './sendButton.hbs?raw';
-import Block, { Props } from '../../core/Block';
+import Block from '../../core/Block';
+import { Props } from '../../core/BlockBase';
 
 interface ButtonProps extends Props {
-  onClick?: (e: Event | undefined) => void
+  onClick?: (e: Event | undefined) => void,
+  width?: string
 }
 
 export default class SendButton extends Block {
