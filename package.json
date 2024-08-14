@@ -12,9 +12,13 @@
     "lint:fix": "eslint . --ext .ts --fix",
     "lint:styles": "stylelint src/**/*.scss",
     "prepare": "husky install",
-    "pre-commit": "npm run lint:fix && npm run lint:styles && npm run test",
+    "pre-commit": "lint-staged && npm run test",
     "restart": "npm run build && npm run start",
     "test": "mocha"
+  },
+  "lint-staged": {
+    ".ts": "eslint . --ext .ts --fix",
+    ".scss": "stylelint src/**/*.scss"
   },
   "devDependencies": {
     "@types/chai": "^4.3.17",
@@ -30,6 +34,7 @@
     "eslint-config-airbnb-typescript": "^18.0.0",
     "husky": "8.0.3",
     "jsdom": "^24.1.1",
+    "lint-staged": "^15.2.9",
     "mocha": "^10.7.3",
     "sass": "^1.71.0",
     "sinon": "^18.0.0",
