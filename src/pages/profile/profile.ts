@@ -20,7 +20,7 @@ class ProfilePage extends Block {
       const data = new FormData();
       const elem = e.target as HTMLInputElement;
       if (elem.files && elem.files[0]) {
-        data.append('avatar', elem.files[0]);
+        data.append("avatar", elem.files[0]);
       }
       await UsersController.changeAvatar(data);
     }
