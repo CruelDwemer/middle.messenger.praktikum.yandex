@@ -22,6 +22,7 @@ class ProfilePage extends Block {
       if (elem.files && elem.files[0]) {
         data.append('avatar', elem.files[0]);
       }
+
       await UsersController.changeAvatar(data);
     }
 

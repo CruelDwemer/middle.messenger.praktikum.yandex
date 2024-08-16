@@ -1,5 +1,6 @@
 import { default as deleteUsersModalTemplate } from './deleteUserModal.hbs?raw';
-import Block, { PropsWithChildrenType } from '../../core/Block';
+import Block from '../../core/Block';
+import { PropsWithChildrenType } from '../../core/BlockBase';
 import Button from '../button/button';
 import { ISearchUsersResult } from '../../controllers/UsersController';
 import DeleteUserListItem from '../deleteUserListItem/deleteUserListItem';

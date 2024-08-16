@@ -1,5 +1,6 @@
 import { default as changePasswordTemplate } from './changePassword.hbs?raw';
-import Block, { Props } from '../../core/Block';
+import Block from '../../core/Block';
+import { BlockDataType } from '../../core/BlockBase';
 import Button from '../button/button';
 import onSubmit from '../../utils/formSubmit';
 import { PATH } from '../../core/Router';
@@ -32,7 +33,7 @@ class ChangePasswordModal extends Block {
       },
     });
 
-    const newProps: Props = {
+    const newProps: BlockDataType = {
       oldPassword,
       newPassword,
       saveButton: new Button({

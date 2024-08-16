@@ -7,7 +7,7 @@ const METHODS = {
 
 export type KeyValueData = Record<string, string | number | number[]>;
 export type TOptionsData<T = KeyValueData> = T | KeyValueData | FormData;
-interface TOptions <T = TOptionsData> {
+export interface TOptions <T = TOptionsData> {
   headers?: Record<string, string>,
   data?: T,
   method?: string,
